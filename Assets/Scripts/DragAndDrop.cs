@@ -5,14 +5,28 @@ using UnityEngine;
 public class DragAndDrop : MonoBehaviour
 {
     Vector3 distence;
+    Touch touch;
+    bool touchBool;
 
     private void OnMouseDown()
     {
-        distence = Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position);
+        touchBool = true;
     }
 
-    private void OnMouseDrag()
+    private void Update()
     {
-        transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition - distence);
+        if (Input.touchCount > 0 && touchBool)
+        {
+            touch = Input.GetTouch(0);
+            switch (touch.phase)
+            {
+                case TouchPhase.Began:
+                    distence = Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position);
+                    break;
+                case TouchPhase.Moved:
+                    transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition - distence);
+                    break;
+            }
+        }
     }
 }
