@@ -6,7 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class Buttons : MonoSingleton<Buttons>
 {
-    [SerializeField] private GameObject money;
+    //managerde bulunacak
+
+    [SerializeField] private GameObject _money;
 
     [SerializeField] private Button _settingButton;
     [SerializeField] private GameObject _settingGame;
@@ -52,14 +54,14 @@ public class Buttons : MonoSingleton<Buttons>
     {
         _settingGame.SetActive(true);
         _settingButton.gameObject.SetActive(false);
-        money.SetActive(false);
+        _money.SetActive(false);
     }
 
     private void SettingBackButton()
     {
         _settingGame.SetActive(false);
         _settingButton.gameObject.SetActive(true);
-        money.SetActive(true);
+        _money.SetActive(true);
     }
 
     private void SoundButton()

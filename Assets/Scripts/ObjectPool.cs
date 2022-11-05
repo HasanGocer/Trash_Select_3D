@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class ObjectPool : MonoSingleton<ObjectPool>
 {
+    //managerde bulunacak
+
     [Serializable]
     public struct Pool
     {

@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class GameManager : MonoSingleton<GameManager>
 {
-    //oyunun tüm prefeblerinin ve oyunun hangi safhasýnda olduðu deðeri burada dönülür
+    //managerde bulunacak
 
+    public bool inTransfer;
+    public bool dropTransfer;
 
     public int money;
     public int researchPoint;

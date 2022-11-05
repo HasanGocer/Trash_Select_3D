@@ -4,27 +4,27 @@ using UnityEngine;
 
 public class SoundSystem : MonoSingleton<SoundSystem>
 {
-    [SerializeField] private AudioSource mainSource;
-    [SerializeField] private AudioClip mainMusic, bloomEffect, goldEffect;
+    [SerializeField] private AudioSource _mainSource;
+    [SerializeField] private AudioClip _mainMusic, _bloomEffect, _goldEffect;
 
     public void MainMusicPlay()
     {
-        mainSource.clip = mainMusic;
-        mainSource.Play();
+        _mainSource.clip = _mainMusic;
+        _mainSource.Play();
     }
 
     public void MainMusicStop()
     {
-        mainSource.Stop();
+        _mainSource.Stop();
     }
 
     public void EffectCall()
     {
-        mainSource.PlayOneShot(bloomEffect);
+        _mainSource.PlayOneShot(_bloomEffect);
     }
     public void EffectGoldCall()
     {
-        mainSource.PlayOneShot(goldEffect);
+        _mainSource.PlayOneShot(_goldEffect);
 
     }
 }
