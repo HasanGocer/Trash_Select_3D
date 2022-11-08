@@ -5,13 +5,20 @@ using UnityEngine;
 public class ObjectManager : MonoSingleton<ObjectManager>
 {
     //managerde bulunacak
+    
+    [SerializeField] private GameObject tempalteItem;
+
 
     [System.Serializable]
     public class Object›nGame
     {
-        GameObject[] gameObject›nGame;
+        public List<GameObject> gameObject›nGame = new List<GameObject>();
     }
-    public Object›nGame object›nGame;
+    public Object›nGame[] object›nGame;
 
-    public int GameObjectCount;
+
+    public void Awake()
+    {
+        object›nGame = new Object›nGame[tempalteItem.transform.childCount];
+    }
 }

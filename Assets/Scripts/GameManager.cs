@@ -49,13 +49,9 @@ public class GameManager : MonoSingleton<GameManager>
         }
     }
 
-    public void SetResearchPoint()
+    public void SetMoney(int plus)
     {
-        PlayerPrefs.SetInt("researchPoint", researchPoint);
-    }
-
-    public void SetMoney()
-    {
+        money += plus;
         PlayerPrefs.SetInt("money", money);
     }
 
@@ -67,5 +63,30 @@ public class GameManager : MonoSingleton<GameManager>
     public void SetVibration()
     {
         PlayerPrefs.SetInt("vibration", vibration);
+    }
+
+    public void SetUpgradeTest(int i)
+    {
+        ItemData.Instance.test1[i].test2++;
+        if (i == 0)
+        {
+            PlayerPrefs.SetInt("Test0", ItemData.Instance.test1[i].test2);
+        }
+        else if (i == 1)
+        {
+            PlayerPrefs.SetInt("Test1", ItemData.Instance.test1[i].test2);
+        }
+        else if (i == 2)
+        {
+            PlayerPrefs.SetInt("Test2", ItemData.Instance.test1[i].test2);
+        }
+        else if (i == 3)
+        {
+            PlayerPrefs.SetInt("Test3", ItemData.Instance.test1[i].test2);
+        }
+        else if (i == 4)
+        {
+            PlayerPrefs.SetInt("Test4", ItemData.Instance.test1[i].test2);
+        }
     }
 }

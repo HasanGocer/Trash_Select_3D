@@ -41,7 +41,6 @@ public class StackSystem : MonoSingleton<StackSystem>
 
     IEnumerator StackAdd(Collider other)
     {
-        //türlere göre ayýrým yap
         other.transform.SetParent(_stackParent.transform);
         Vector3 pos = new Vector3(_stackPos.transform.position.x, _stackPos.transform.position.y + _stackDistance * Objects.Count, _stackPos.transform.position.z);
         other.transform.transform.DOLocalMove(pos, _stackMoveTime);
@@ -74,6 +73,7 @@ public class StackSystem : MonoSingleton<StackSystem>
             GameManager.Instance.dropTransfer = false;
         }
 
+        /*
         for (placeCount = 0; placeCount < Objects.Count - 1; placeCount++)
         {
             int distanceCount = 0;
@@ -83,6 +83,6 @@ public class StackSystem : MonoSingleton<StackSystem>
                 Objects[placeCount].transform.DOLocalMove(Objects[placeCount + distanceCount].transform.position, 0.1f);
                 Objects[placeCount] = Objects[placeCount + distanceCount];
             }
-        }
+        }*/
     }
 }

@@ -9,8 +9,9 @@ public class ItemData : MonoSingleton<ItemData>
     [System.Serializable]
     public class Field
     {
-
+        public int test2;
     }
+    public Field[] test1;
 
     public Field field;
     public Field standart;
