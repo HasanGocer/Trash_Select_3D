@@ -14,4 +14,18 @@ public class AIManager : MonoSingleton<AIManager>
 
     public float AIDistanceConstant;
     public int stackDistance;
+
+    public void StartAIStacker()
+    {
+        for (int i1 = 0; i1 < stackerÝnGame.Length; i1++)
+        {
+            for (int i2 = 0; i2 < stackerÝnGame[i1].boolStacker.Count; i2++)
+            {
+                if (stackerÝnGame[i1].boolStacker[i2])
+                {
+                    StartCoroutine(stackerÝnGame[i1].gameObjectStacker[i2].GetComponent<AIStackAndDrop>().Walk());
+                }
+            }
+        }
+    }
 }

@@ -9,12 +9,20 @@ public class AIStackAndDrop : MonoBehaviour
     [SerializeField] private int _AIStackerCount;
     [SerializeField] private GameObject _stackParent;
     [SerializeField] private List<GameObject> _stackersStack;
+    [SerializeField] private int _stackMaxStackCount;
+    [SerializeField] private int _OPTrashCount;
+    [SerializeField] private bool backpack›sFull;
 
-    public IEnumerator walk()
+    public IEnumerator Walk()
     {
         while (true)
         {
-            if (ObjectManager.Instance.object›nGame[_AIStackerCount].gameObject›nGame.Count > 0)
+            if (_stackersStack.Count > _stackMaxStackCount)
+            {
+                backpack›sFull = true;
+                StartCoroutine(GoToTheStackOut());
+            }
+            if (ObjectManager.Instance.object›nGame[_AIStackerCount].gameObject›nGame.Count > 0 && !backpack›sFull)
             {
                 List<GameObject> gameObject›nGame = ObjectManager.Instance.object›nGame[_AIStackerCount].gameObject›nGame;
                 int lastStackCount = gameObject›nGame.Count - 1;
@@ -29,10 +37,33 @@ public class AIStackAndDrop : MonoBehaviour
                     gameObject›nGame[lastStackCount].transform.SetParent(_stackParent.transform);
                     _stackersStack[lastStackCount].transform.DOLocalMove(new Vector3(_stackParent.transform.position.x, _stackParent.transform.position.y + AIManager.Instance.stackDistance * _stackersStack.Count, _stackParent.transform.position.z), _stackMoveTime);
                     gameObject›nGame.RemoveAt(lastStackCount);
-
                 }
             }
             yield return null;
         }
+    }
+
+    private IEnumerator GoToTheStackOut()
+    {
+        ObjectManager.Object›nGame objectinGame = ObjectManager.Instance.object›nGame[_AIStackerCount];
+        transform.DOMove(objectinGame.stackOutPlace.transform.position, AIManager.Instance.AIDistanceConstant * Vector3.Distance(objectinGame.stackOutPlace.transform.position, transform.position));
+        yield return new WaitForSeconds(AIManager.Instance.AIDistanceConstant * Vector3.Distance(objectinGame.stackOutPlace.transform.position, transform.position));
+        StartCoroutine(StackOut(ObjectManager.Instance.object›nGame[_AIStackerCount].stackOutPlace.transform.position));
+    }
+
+    private IEnumerator StackOut(Vector3 lastPos)
+    {
+        for (int i = 0; i < _stackersStack.Count; i++)
+        {
+            _stackersStack[i].transform.DOMove(lastPos, _stackMoveTime);
+        }
+        yield return new WaitForSeconds(_stackMoveTime);
+        for (int i = 0; i < _stackersStack.Count; i++)
+        {
+            _stackersStack[i].transform.GetChild(_AIStackerCount).gameObject.SetActive(false);
+            ObjectPool.Instance.AddObject(_OPTrashCount, _stackersStack[i]);
+            _stackersStack.RemoveAt(i);
+        }
+        backpack›sFull = false;
     }
 }

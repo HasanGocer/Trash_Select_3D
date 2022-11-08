@@ -13,6 +13,7 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     public class Object›nGame
     {
         public List<GameObject> gameObject›nGame = new List<GameObject>();
+        public GameObject stackOutPlace;
     }
     public Object›nGame[] object›nGame;
 
