@@ -7,7 +7,7 @@ public class WaitSystem : MonoSingleton<WaitSystem>
 {
     //place de bulunacak
 
-    public int placeCount;
+    public int[] placeCount;
     public bool inPlace;
     [SerializeField] private float _timerSpeed;
     [SerializeField] private Image _barImage;

@@ -16,6 +16,18 @@ public class AIManager : MonoSingleton<AIManager>
     public float AIDistanceConstant;
     public int stackDistance;
 
+    public void StartPlace()
+    {
+        for (int i1 = 0; i1 < stackerÝnGame.Length; i1++)
+        {
+            ArrayList countint = new ArrayList(ContractSystem.Instance.FocusContract[i1].itemCount.Keys);
+            for (int i2 = 0; i2 < ContractSystem.Instance.FocusContract[i1].itemCount.Count; i2++)
+            {
+                stackerÝnGame[i2].stackOutPlace.GetComponent<WaitSystem>().placeCount[i2] = (int)ContractSystem.Instance.FocusContract[i1].itemCount[i2];
+            }
+        }
+    }
+
     public void StartAIStacker()
     {
         for (int i1 = 0; i1 < stackerÝnGame.Length; i1++)
