@@ -10,6 +10,7 @@ public class GameManager : MonoSingleton<GameManager>
     public bool dropTransfer;
 
     public int money;
+    public int level;
     public int researchPoint;
     public int vibration;
     public int sound;
@@ -30,6 +31,15 @@ public class GameManager : MonoSingleton<GameManager>
             PlayerPrefs.SetInt("money", 100);
         }
 
+        if (PlayerPrefs.HasKey("level"))
+        {
+            level = PlayerPrefs.GetInt("level");
+        }
+        else
+        {
+            PlayerPrefs.SetInt("level", 1);
+        }
+
         if (PlayerPrefs.HasKey("vibration"))
         {
             vibration = PlayerPrefs.GetInt("vibration");
@@ -47,6 +57,50 @@ public class GameManager : MonoSingleton<GameManager>
         {
             PlayerPrefs.SetInt("sound", 1);
         }
+        ContractPlacement();
+    }
+
+    public void ContractPlacement()
+    {
+        //Json Gerekli
+        if (PlayerPrefs.HasKey("contractBool"))
+        {
+            if (PlayerPrefs.GetInt("contractBool") == 0)
+            {
+                ContractSystem.Instance.ContractBool = false;
+            }
+            else
+            {
+                int contractCount = 0;
+                if (PlayerPrefs.HasKey("contract1"))
+                {
+                    ContractSystem.Instance.PlayerPrefsContract(contractCount, PlayerPrefs.GetInt("contract1"));
+                }
+                if (PlayerPrefs.HasKey("contract2"))
+                {
+                    ContractSystem.Instance.PlayerPrefsContract(contractCount, PlayerPrefs.GetInt("contract2"));
+                }
+                if (PlayerPrefs.HasKey("contract3"))
+                {
+                    ContractSystem.Instance.PlayerPrefsContract(contractCount, PlayerPrefs.GetInt("contract3"));
+                }
+                if (PlayerPrefs.HasKey("contract4"))
+                {
+                    ContractSystem.Instance.PlayerPrefsContract(contractCount, PlayerPrefs.GetInt("contract4"));
+                }
+                if (PlayerPrefs.HasKey("contract5"))
+                {
+                    ContractSystem.Instance.PlayerPrefsContract(contractCount, PlayerPrefs.GetInt("contract5"));
+                }
+                ContractSystem.Instance.ContractBool = true;
+            }
+        }
+        else
+        {
+            PlayerPrefs.SetInt("contractBool", 0);
+            ContractSystem.Instance.ContractBool = false;
+        }
+
     }
 
     public void SetMoney(int plus)

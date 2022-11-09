@@ -15,6 +15,7 @@ public class StackSystem : MonoSingleton<StackSystem>
     [SerializeField] private int _OPTrashCount;
 
     public List<GameObject> Objects = new List<GameObject>();
+    public List<int> ObjectsCount = new List<int>();
 
     private void Start()
     {
@@ -46,6 +47,7 @@ public class StackSystem : MonoSingleton<StackSystem>
         other.transform.transform.DOLocalMove(pos, _stackMoveTime);
         other.GetComponent<ObjectTouchPlane>().Stack›nPlayer();
         Objects.Add(other.gameObject);
+        ObjectsCount.Add(other.GetComponent<ObjectTouchPlane>().objectCount);
         yield return new WaitForSeconds(_stackMoveTime);
     }
 
@@ -59,6 +61,7 @@ public class StackSystem : MonoSingleton<StackSystem>
             if (waitSystem.placeCount == Objects[placeCount].GetComponent<ObjectTouchPlane>().objectCount)
             {
                 GameObject obj = Objects[placeCount];
+                ObjectsCount.RemoveAt(placeCount);
                 Objects.RemoveAt(placeCount);
                 obj.transform.SetParent(_dropParent.transform);
                 Vector3 pos = new Vector3(_dropPos.transform.position.x, _dropPos.transform.position.y, _dropPos.transform.position.z);
@@ -66,23 +69,12 @@ public class StackSystem : MonoSingleton<StackSystem>
                 yield return new WaitForSeconds(_dropMoveTime);
                 obj.transform.GetChild(waitSystem.placeCount).gameObject.SetActive(false);
                 ObjectPool.Instance.AddObject(_OPTrashCount, obj);
+                //hareket fonksiyonu;
             }
             yield return null;
 
             placeCount++;
             GameManager.Instance.dropTransfer = false;
         }
-
-        /*
-        for (placeCount = 0; placeCount < Objects.Count - 1; placeCount++)
-        {
-            int distanceCount = 0;
-            if (Objects[placeCount] == null)
-            {
-                distanceCount++;
-                Objects[placeCount].transform.DOLocalMove(Objects[placeCount + distanceCount].transform.position, 0.1f);
-                Objects[placeCount] = Objects[placeCount + distanceCount];
-            }
-        }*/
     }
 }

@@ -6,20 +6,19 @@ public class ObjectManager : MonoSingleton<ObjectManager>
 {
     //managerde bulunacak
     
-    [SerializeField] private GameObject tempalteItem;
+    [SerializeField] private GameObject tempalateItem;
 
 
     [System.Serializable]
     public class Object›nGame
     {
         public List<GameObject> gameObject›nGame = new List<GameObject>();
-        public GameObject stackOutPlace;
     }
     public Object›nGame[] object›nGame;
 
 
     public void Awake()
     {
-        object›nGame = new Object›nGame[tempalteItem.transform.childCount];
+        object›nGame = new Object›nGame[tempalateItem.transform.childCount];
     }
 }

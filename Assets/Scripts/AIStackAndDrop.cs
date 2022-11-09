@@ -13,14 +13,14 @@ public class AIStackAndDrop : MonoBehaviour
     [SerializeField] private int _OPTrashCount;
     [SerializeField] private bool backpack›sFull;
 
-    public IEnumerator Walk()
+    public IEnumerator Walk(GameObject stackOutPlace)
     {
         while (true)
         {
             if (_stackersStack.Count > _stackMaxStackCount)
             {
                 backpack›sFull = true;
-                StartCoroutine(GoToTheStackOut());
+                StartCoroutine(GoToTheStackOut(stackOutPlace));
             }
             if (ObjectManager.Instance.object›nGame[_AIStackerCount].gameObject›nGame.Count > 0 && !backpack›sFull)
             {
@@ -43,12 +43,12 @@ public class AIStackAndDrop : MonoBehaviour
         }
     }
 
-    private IEnumerator GoToTheStackOut()
+    private IEnumerator GoToTheStackOut(GameObject stackOutPlace)
     {
         ObjectManager.Object›nGame objectinGame = ObjectManager.Instance.object›nGame[_AIStackerCount];
-        transform.DOMove(objectinGame.stackOutPlace.transform.position, AIManager.Instance.AIDistanceConstant * Vector3.Distance(objectinGame.stackOutPlace.transform.position, transform.position));
-        yield return new WaitForSeconds(AIManager.Instance.AIDistanceConstant * Vector3.Distance(objectinGame.stackOutPlace.transform.position, transform.position));
-        StartCoroutine(StackOut(ObjectManager.Instance.object›nGame[_AIStackerCount].stackOutPlace.transform.position));
+        transform.DOMove(stackOutPlace.transform.position, AIManager.Instance.AIDistanceConstant * Vector3.Distance(stackOutPlace.transform.position, transform.position));
+        yield return new WaitForSeconds(AIManager.Instance.AIDistanceConstant * Vector3.Distance(stackOutPlace.transform.position, transform.position));
+        StartCoroutine(StackOut(stackOutPlace.transform.position));
     }
 
     private IEnumerator StackOut(Vector3 lastPos)

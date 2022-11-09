@@ -9,6 +9,7 @@ public class AIManager : MonoSingleton<AIManager>
     {
         public List<GameObject> gameObjectStacker = new List<GameObject>();
         public List<bool> boolStacker = new List<bool>();
+        public GameObject stackOutPlace;
     }
     public Stacker›nGame[] stacker›nGame;
 
@@ -23,7 +24,7 @@ public class AIManager : MonoSingleton<AIManager>
             {
                 if (stacker›nGame[i1].boolStacker[i2])
                 {
-                    StartCoroutine(stacker›nGame[i1].gameObjectStacker[i2].GetComponent<AIStackAndDrop>().Walk());
+                    StartCoroutine(stacker›nGame[i1].gameObjectStacker[i2].GetComponent<AIStackAndDrop>().Walk(stacker›nGame[i1].stackOutPlace));
                 }
             }
         }

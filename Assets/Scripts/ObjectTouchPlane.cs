@@ -24,8 +24,13 @@ public class ObjectTouchPlane : MonoBehaviour
 
     public void Stack›nPlayer()
     {
-        _rb.isKinematic = false;
         _objectOfCircle.SetActive(false);
         _capsuleCollider.enabled = false;
+    }
+
+    public void AddedObjectPool(int count)
+    {
+        transform.GetChild(count).gameObject.SetActive(false);
+        _capsuleCollider.enabled = true;
     }
 }
