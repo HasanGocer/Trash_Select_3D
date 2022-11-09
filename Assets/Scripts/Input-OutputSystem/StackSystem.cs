@@ -12,7 +12,6 @@ public class StackSystem : MonoSingleton<StackSystem>
     [SerializeField] private int _stackMaximumCount;
     [SerializeField] private GameObject _stackParent, _dropParent;
     [SerializeField] private GameObject _stackPos, _dropPos;
-    [SerializeField] private int _OPTrashCount;
 
     public List<GameObject> Objects = new List<GameObject>();
     public List<int> ObjectsCount = new List<int>();
@@ -68,7 +67,7 @@ public class StackSystem : MonoSingleton<StackSystem>
                 obj.transform.DOLocalMove(pos, _dropMoveTime);
                 yield return new WaitForSeconds(_dropMoveTime);
                 obj.transform.GetChild(waitSystem.placeCount).gameObject.SetActive(false);
-                ObjectPool.Instance.AddObject(_OPTrashCount, obj);
+                RocketManager.Instance.AddedObjectPool(obj);
                 //hareket fonksiyonu;
             }
             yield return null;
