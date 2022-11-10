@@ -1499,9 +1499,7 @@ MonoBehaviour:
   _dropMoveTime: 0
   _stackMaximumCount: 0
   _stackParent: {fileID: 0}
-  _dropParent: {fileID: 0}
   _stackPos: {fileID: 0}
-  _dropPos: {fileID: 0}
   Objects: []
   ObjectsCount: 
 --- !u!95 &8592876449784279450
@@ -2255,6 +2253,7 @@ GameObject:
   - component: {fileID: 8592876449791270486}
   - component: {fileID: 8592876449784279450}
   - component: {fileID: 8592876449791689269}
+  - component: {fileID: 8592876449791689271}
   m_Layer: 0
   m_Name: Stickman_heads_sphere
   m_TagString: Untagged
@@ -2279,9 +2278,7 @@ MonoBehaviour:
   _dropMoveTime: 2
   _stackMaximumCount: 10
   _stackParent: {fileID: 8592876449791689268}
-  _dropParent: {fileID: 0}
   _stackPos: {fileID: 255022547}
-  _dropPos: {fileID: 0}
   Objects: []
   ObjectsCount: 
 --- !u!1 &8592876449791689270
@@ -2301,6 +2298,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &8592876449791689271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8592876449791689268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87baaf4cca14ec541b2a0f9beda5add3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementSpeed: 0
+  rotationSpeed: 0
 --- !u!1 &8592876449791689272
 GameObject:
   m_ObjectHideFlags: 0

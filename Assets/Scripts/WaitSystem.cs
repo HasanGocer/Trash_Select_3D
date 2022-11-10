@@ -11,6 +11,7 @@ public class WaitSystem : MonoSingleton<WaitSystem>
     public bool inPlace;
     [SerializeField] private float _timerSpeed;
     [SerializeField] private Image _barImage;
+    [SerializeField] private GameObject objectPos;
 
     private void OnTriggerExit(Collider other)
     {
@@ -30,7 +31,7 @@ public class WaitSystem : MonoSingleton<WaitSystem>
             if (_barImage.fillAmount == 0)
             {
                 inPlace = true;
-                StackSystem.Instance.StackDrop(this.gameObject);
+                StackSystem.Instance.StackDrop(this.gameObject, objectPos, objectPos.transform.position);
                 break;
             }
         }

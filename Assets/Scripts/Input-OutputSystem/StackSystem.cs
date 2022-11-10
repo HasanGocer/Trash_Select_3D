@@ -10,8 +10,8 @@ public class StackSystem : MonoSingleton<StackSystem>
     public float stackDistance;
     [SerializeField] private float _stackMoveTime, _dropMoveTime;
     [SerializeField] private int _stackMaximumCount;
-    [SerializeField] private GameObject _stackParent, _dropParent;
-    [SerializeField] private GameObject _stackPos, _dropPos;
+    [SerializeField] private GameObject _stackParent;
+    [SerializeField] private GameObject _stackPos;
 
     public List<GameObject> Objects = new List<GameObject>();
     public List<int> ObjectsCount = new List<int>();
@@ -50,7 +50,7 @@ public class StackSystem : MonoSingleton<StackSystem>
         yield return new WaitForSeconds(_stackMoveTime);
     }
 
-    public IEnumerator StackDrop(GameObject place)
+    public IEnumerator StackDrop(GameObject place,GameObject dropParent,Vector3 dropPos)
     {
         WaitSystem waitSystem = place.GetComponent<WaitSystem>();
         int placeCount = 0, distanceCount = 0;
@@ -65,8 +65,8 @@ public class StackSystem : MonoSingleton<StackSystem>
                     distanceCount++;
                     ObjectsCount.RemoveAt(placeCount);
                     Objects.RemoveAt(placeCount);
-                    obj.transform.SetParent(_dropParent.transform);
-                    Vector3 pos = new Vector3(_dropPos.transform.position.x, _dropPos.transform.position.y, _dropPos.transform.position.z);
+                    obj.transform.SetParent(dropParent.transform);
+                    Vector3 pos = new Vector3(dropPos.x, dropPos.y, dropPos.z);
                     obj.transform.DOLocalMove(pos, _dropMoveTime);
                     yield return new WaitForSeconds(_dropMoveTime);
                     obj.GetComponent<ObjectTouchPlane>().AddedObjectPool(waitSystem.placeCount[i]);
