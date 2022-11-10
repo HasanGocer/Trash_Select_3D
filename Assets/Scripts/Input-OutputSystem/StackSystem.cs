@@ -21,25 +21,26 @@ public class StackSystem : MonoSingleton<StackSystem>
         GameManager.Instance.dropTransfer = false;
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnCollisionStay(Collision collision)
     {
-        if (other.CompareTag("Input"))
+        if (collision.gameObject.CompareTag("Input"))
         {
             if (Objects.Count < _stackMaximumCount)
             {
-                StartCoroutine(StackAdd(other));
+                StartCoroutine(StackAdd(collision.gameObject));
             }
         }
-        else if (other.CompareTag("Output"))
+        else if (collision.gameObject.CompareTag("Output"))
         {
             if (!GameManager.Instance.dropTransfer == false)
             {
-                StartCoroutine(other.GetComponent<WaitSystem>().bar(this.gameObject));
+                StartCoroutine(collision.gameObject.GetComponent<WaitSystem>().bar(this.gameObject));
             }
         }
     }
 
-    IEnumerator StackAdd(Collider other)
+
+    IEnumerator StackAdd(GameObject other)
     {
         other.transform.SetParent(_stackParent.transform);
         Vector3 pos = new Vector3(_stackPos.transform.position.x, _stackPos.transform.position.y + stackDistance * Objects.Count, _stackPos.transform.position.z);
@@ -50,7 +51,7 @@ public class StackSystem : MonoSingleton<StackSystem>
         yield return new WaitForSeconds(_stackMoveTime);
     }
 
-    public IEnumerator StackDrop(GameObject place,GameObject dropParent,Vector3 dropPos)
+    public IEnumerator StackDrop(GameObject place, GameObject dropParent, Vector3 dropPos)
     {
         WaitSystem waitSystem = place.GetComponent<WaitSystem>();
         int placeCount = 0, distanceCount = 0;
