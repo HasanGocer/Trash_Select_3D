@@ -17,10 +17,12 @@ public class Buttons : MonoSingleton<Buttons>
     [SerializeField] private Button _settingBackButton;
     [SerializeField] private Button _soundButton, _vibrationButton;
 
+    [SerializeField] private Button contract;
+
     private void Start()
     {
         ButtonPlacement();
-        if (GameManager.Instance.sound == 1)
+        /*if (GameManager.Instance.sound == 1)
         {
             _soundButton.gameObject.GetComponent<Image>().sprite = _green;
             SoundSystem.Instance.MainMusicPlay();
@@ -37,18 +39,28 @@ public class Buttons : MonoSingleton<Buttons>
         else
         {
             _vibrationButton.gameObject.GetComponent<Image>().sprite = _red;
-        }
+        }*/
     }
 
     private void ButtonPlacement()
     {
-        _settingButton.onClick.AddListener(SettingButton);
+        /*_settingButton.onClick.AddListener(SettingButton);
         _settingBackButton.onClick.AddListener(SettingBackButton);
         _soundButton.onClick.AddListener(SoundButton);
-        _vibrationButton.onClick.AddListener(VibrationButton);
+        _vibrationButton.onClick.AddListener(VibrationButton);*/
+        contract.onClick.AddListener(Contract);
+
     }
 
+    private void Contract()
+    {
+        ContractSystem.Contract contract = ContractSystem.Instance.NewContractForUI(1, 2, 3, 10);
+        ContractSystem.Instance.FocusContract[0] = contract;
+        ContractSystem.Instance.NewContractSelected();
 
+        ArrayList arrayListK = new ArrayList(ContractSystem.Instance.FocusContract[0].itemCount.Keys);
+        ArrayList arrayListV = new ArrayList(ContractSystem.Instance.FocusContract[0].itemCount.Values);
+    }
 
     private void SettingButton()
     {

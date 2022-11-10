@@ -7,22 +7,37 @@ public class RocketManager : MonoSingleton<RocketManager>
     //managerde bulunacak
     //fazla atmas˝n ayarla
 
-    [SerializeField] private int _velocityPower;
-    [SerializeField] private GameObject _angleObject;
-    [SerializeField] private int _angleDownLimit, _angleUpLimit, _angleZCordinate = 30;
-    [SerializeField] private Rigidbody rb;
+    [SerializeField] private GameObject _rocketPushPos;
+    [SerializeField] private int _minVeloCityPower, _maxVeloCityPower;
+    [SerializeField] private int _minAngleLimit, _maxAngleLimit, angleZCordinate = 30;
     [SerializeField] private int _OPTrashCount;
+    public List<int> openObjectCount;
 
+    public IEnumerator RocketStart(float pushTime)
+    {
+        while (true)
+        {
+            if (GameManager.Instance.openContract)
+            {
+                JumpObject(_rocketPushPos.transform.position, openObjectCount, _minVeloCityPower, _maxVeloCityPower, _minAngleLimit, _maxAngleLimit, angleZCordinate);
+                yield return new WaitForSeconds(pushTime);
+            }
+            yield return null;
+        }
+    }
 
-    public void JumpObject()
+    public void JumpObject(Vector3 rocketPushPos, List<int> openObjectCount, int minVeloCityPower, int maxVeloCityPower, int minAngleLimit, int maxAngleLimit, int angleZCordinate = 30)
     {
         GameObject obj = ObjectPool.Instance.GetPooledObject(_OPTrashCount);
-        int angleLimitWithRandom = Random.Range(_angleDownLimit, _angleUpLimit);
-        ObjectManager.Instance.object›nGame[angleLimitWithRandom].gameObject›nGame.Add(obj);
-        obj.GetComponent<ObjectTouchPlane>().objectCount = angleLimitWithRandom;
-        obj.transform.GetChild(angleLimitWithRandom).gameObject.SetActive(true);
-        obj.transform.rotation = Quaternion.Euler(0, angleLimitWithRandom, _angleZCordinate);
-        rb.velocity = new Vector3(0, _velocityPower, 0);
+        obj.transform.position = rocketPushPos;
+        int angleLimitWithRandom = Random.Range(minAngleLimit, maxAngleLimit);
+        int objectCount = Random.Range(0, openObjectCount.Count);
+        ObjectManager.Instance.object›nGame[openObjectCount[objectCount]].gameObject›nGame.Add(obj);
+        obj.GetComponent<ObjectTouchPlane>().objectCount = openObjectCount[objectCount];
+        obj.transform.GetChild(openObjectCount[objectCount]).gameObject.SetActive(true);
+        obj.transform.rotation = Quaternion.Euler(0, angleLimitWithRandom, angleZCordinate);
+        int velocityPower = Random.Range(minVeloCityPower, maxVeloCityPower);
+        obj.GetComponent<Rigidbody>().velocity = new Vector3(0, velocityPower, 0);
     }
 
     public void AddedObjectPool(GameObject obj)

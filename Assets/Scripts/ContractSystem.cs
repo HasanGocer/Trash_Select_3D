@@ -7,11 +7,11 @@ public class ContractSystem : MonoSingleton<ContractSystem>
     [System.Serializable]
     public class Contract
     {
-        public Hashtable itemCount;
+        public Hashtable itemCount = new Hashtable();
         public int money;
+        public bool ContractBool;
     }
 
-    public bool ContractBool;
     public int contractLimit = 3;
     public Contract[] FocusContract;
 
@@ -20,15 +20,15 @@ public class ContractSystem : MonoSingleton<ContractSystem>
         FocusContract = new Contract[contractLimit];
     }
 
-    public Contract NewContractForUI(int levelMod, int minItemInCount, int maxItemInCount, int minItemCount, int maxItemCount, int contractBudget)
+    public Contract NewContractForUI(int levelMod, int maxItemInCount, int maxItemCount, int contractBudget)
     {
         Contract contract = new Contract();
         contract.money = contractBudget;
 
         for (int i = 0; i < GameManager.Instance.level / levelMod; i++)
         {
-            int itemCount = Random.Range(minItemCount, maxItemCount);
-            int itemInCount = Random.Range(minItemInCount, maxItemInCount);
+            int itemCount = Random.Range(0, maxItemCount);
+            int itemInCount = Random.Range(1, maxItemInCount);
 
             contract.itemCount.Add(itemCount, itemInCount);
         }
@@ -42,6 +42,7 @@ public class ContractSystem : MonoSingleton<ContractSystem>
         contract.itemCount.Clear();
         contract.money = 0;
         //yeni kontrat UI
+        ObjectCountUpdate();
     }
 
     public void ContractCanceled(Contract contract)
@@ -50,6 +51,7 @@ public class ContractSystem : MonoSingleton<ContractSystem>
         contract.itemCount.Clear();
         contract.money = 0;
         //yeni kontrat UI
+        ObjectCountUpdate();
     }
 
     public void NewContractSelected()
@@ -58,13 +60,12 @@ public class ContractSystem : MonoSingleton<ContractSystem>
         bool[] intbool = new bool[FocusContract.Length];
         for (int i1 = 0; i1 < FocusContract.Length; i1++)
         {
-            for (int i2 = 0; i2 < intbool.Length; i2++)
-            {
-                if (FocusContract[i1].itemCount.ContainsKey(i2))
+            if (FocusContract[i1].ContractBool)
+                for (int i2 = 0; i2 < intbool.Length; i2++)
                 {
-                    intbool[i2] = true;
+                    if (FocusContract[i1].itemCount.ContainsKey(i2))
+                        intbool[i2] = true;
                 }
-            }
         }
         for (int i1 = 0; i1 < intbool.Length; i1++)
         {
@@ -87,10 +88,10 @@ public class ContractSystem : MonoSingleton<ContractSystem>
                     StackSystem.Instance.Objects.RemoveAt(placeCount);
                     placeCount++;
                 }
-                //hareket fonksiyonu;
             }
         }
-        //Aý ayaralanacak
+
+        ObjectCountUpdate();
     }
 
     public int PlayerPrefsContract(int contractCount, int itemCount)
@@ -98,5 +99,28 @@ public class ContractSystem : MonoSingleton<ContractSystem>
         contractCount++;
         FocusContract[0].itemCount.Add(contractCount, itemCount);
         return contractCount;
+    }
+
+    private void ObjectCountUpdate()
+    {
+        RocketManager.Instance.openObjectCount.Clear();
+        for (int i1 = 0; i1 < FocusContract.Length; i1++)
+        {
+            if (FocusContract[i1].ContractBool)
+            {
+                for (int i2 = 0; i2 < FocusContract[i1].itemCount.Count; i2++)
+                {
+                    bool isFull = false;
+                    ArrayList arrayList = new ArrayList(FocusContract[i1].itemCount.Keys);
+                    for (int i3 = 0; i3 < RocketManager.Instance.openObjectCount.Count; i3++)
+                    {
+                        if (RocketManager.Instance.openObjectCount[i3] == (int)arrayList[i2])
+                            isFull = true;
+                        if (!isFull)
+                            RocketManager.Instance.openObjectCount.Add((int)arrayList[i2]);
+                    }
+                }
+            }
+        }
     }
 }

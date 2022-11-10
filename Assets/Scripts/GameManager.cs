@@ -8,6 +8,7 @@ public class GameManager : MonoSingleton<GameManager>
 
     public bool inTransfer;
     public bool dropTransfer;
+    public bool openContract;
 
     public int money;
     public int level;
@@ -67,7 +68,7 @@ public class GameManager : MonoSingleton<GameManager>
         {
             if (PlayerPrefs.GetInt("contractBool") == 0)
             {
-                ContractSystem.Instance.ContractBool = false;
+                ContractSystem.Instance.FocusContract[0].ContractBool = false;
             }
             else
             {
@@ -92,13 +93,13 @@ public class GameManager : MonoSingleton<GameManager>
                 {
                     ContractSystem.Instance.PlayerPrefsContract(contractCount, PlayerPrefs.GetInt("contract5"));
                 }
-                ContractSystem.Instance.ContractBool = true;
+                ContractSystem.Instance.FocusContract[0].ContractBool = true;
             }
         }
         else
         {
             PlayerPrefs.SetInt("contractBool", 0);
-            ContractSystem.Instance.ContractBool = false;
+            ContractSystem.Instance.FocusContract[0].ContractBool = false;
         }
 
     }

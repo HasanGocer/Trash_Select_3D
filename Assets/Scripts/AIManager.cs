@@ -23,7 +23,7 @@ public class AIManager : MonoSingleton<AIManager>
             ArrayList countint = new ArrayList(ContractSystem.Instance.FocusContract[i1].itemCount.Keys);
             for (int i2 = 0; i2 < ContractSystem.Instance.FocusContract[i1].itemCount.Count; i2++)
             {
-                stacker›nGame[i2].stackOutPlace.GetComponent<WaitSystem>().placeCount[i2] = (int)ContractSystem.Instance.FocusContract[i1].itemCount[i2];
+                stacker›nGame[i2].stackOutPlace.GetComponent<WaitSystem>().placeCount[i2] = (int)countint[i2];
             }
         }
     }
