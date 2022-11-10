@@ -19,6 +19,7 @@ public class ContractSystem : MonoSingleton<ContractSystem>
     {
         FocusContract = new Contract[contractLimit];
         Buttons.Instance.Contract();
+        WaitSysytemCountPlacement(0,0);
         StartCoroutine(RocketManager.Instance.RocketStart(1));
     }
 
@@ -120,6 +121,19 @@ public class ContractSystem : MonoSingleton<ContractSystem>
 
                 }
             }
+        }
+    }
+
+    public void WaitSysytemCountPlacement(int waitBar, int contractCount)
+    {
+        GameObject obj = UpgradeManager.Instance.ItemSelect(waitBar, contractCount);
+        WaitSystem waitSystem = obj.GetComponent<WaitSystem>();
+        ArrayList arrayList = new ArrayList(FocusContract[contractCount].itemCount.Keys);
+
+        waitSystem.placeCount = new int[arrayList.Count];
+        for (int i = 0; i < FocusContract[contractCount].itemCount.Count; i++)
+        {
+            waitSystem.placeCount[i] = (int)arrayList[i];
         }
     }
 }

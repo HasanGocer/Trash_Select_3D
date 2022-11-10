@@ -30,8 +30,6 @@ public class RocketManager : MonoSingleton<RocketManager>
         GameObject obj = ObjectPool.Instance.GetPooledObject(_OPTrashCount);
         obj.transform.position = rocketPushPos;
         int objectCount = Random.Range(0, openObjectCount.Count);
-        Debug.Log(openObjectCount[objectCount]);
-        Debug.Log(objectCount);
         ObjectManager.Instance.object›nGame[openObjectCount[objectCount]].gameObject›nGame.Add(obj);
         obj.GetComponent<ObjectTouchPlane>().objectCount = openObjectCount[objectCount];
         obj.transform.GetChild(openObjectCount[objectCount]).gameObject.SetActive(true);

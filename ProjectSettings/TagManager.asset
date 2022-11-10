@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Input
   - Plane
+  - Output
   layers:
   - Default
   - TransparentFX

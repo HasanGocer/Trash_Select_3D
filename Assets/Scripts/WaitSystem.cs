@@ -3,19 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WaitSystem : MonoSingleton<WaitSystem>
+public class WaitSystem : MonoBehaviour
 {
     //place de bulunacak
 
+    public int contractCount;
     public int[] placeCount;
     public bool inPlace;
     [SerializeField] private float _timerSpeed;
     [SerializeField] private Image _barImage;
     [SerializeField] private GameObject objectPos;
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            inPlace = true;
+            StartCoroutine(bar(other.gameObject));
+        }
+    }
+
     private void OnTriggerExit(Collider other)
     {
-        inPlace = false;
+        if (other.CompareTag("Player"))
+            inPlace = false;
     }
 
 
@@ -23,17 +34,19 @@ public class WaitSystem : MonoSingleton<WaitSystem>
     {
         float timer = 0;
 
-        while (true)
+        while (inPlace)
         {
             timer += Time.deltaTime * _timerSpeed;
             _barImage.fillAmount = Mathf.Lerp(1, 0, timer);
             yield return new WaitForEndOfFrame();
             if (_barImage.fillAmount == 0)
             {
-                inPlace = true;
-                StackSystem.Instance.StackDrop(this.gameObject, objectPos, objectPos.transform.position);
+                inPlace = false;
+                StartCoroutine(StackSystem.Instance.StackDrop(this, objectPos, objectPos.transform.position));
+                _barImage.fillAmount = 1;
                 break;
             }
         }
+        _barImage.fillAmount = 1;
     }
 }

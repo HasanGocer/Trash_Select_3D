@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UpgradeManager : MonoBehaviour
+public class UpgradeManager : MonoSingleton<UpgradeManager>
 {
     [System.Serializable]
-    private class UpgradeItem
+    public class UpgradeItem
     {
         public GameObject[] _items;
     }
-    private UpgradeItem[] _upgradeItem;
+    public UpgradeItem[] _upgradeItem;
 
     public GameObject ItemSelect(int item, int count)
     {

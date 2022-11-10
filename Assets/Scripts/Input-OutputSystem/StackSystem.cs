@@ -30,13 +30,6 @@ public class StackSystem : MonoSingleton<StackSystem>
                 StartCoroutine(StackAdd(other.gameObject));
             }
         }
-        else if (other.CompareTag("Output"))
-        {
-            if (!GameManager.Instance.dropTransfer == false)
-            {
-                StartCoroutine(other.GetComponent<WaitSystem>().bar(this.gameObject));
-            }
-        }
     }
 
     private void OnCollisionStay(Collision collision)
@@ -57,25 +50,29 @@ public class StackSystem : MonoSingleton<StackSystem>
         other.transform.SetParent(_stackParent.transform);
     }
 
-    public IEnumerator StackDrop(GameObject place, GameObject dropParent, Vector3 dropPos)
+    public IEnumerator StackDrop(WaitSystem waitSystem, GameObject dropParent, Vector3 dropPos)
     {
-        WaitSystem waitSystem = place.GetComponent<WaitSystem>();
-        int placeCount = 0, distanceCount = 0;
-        while (waitSystem.inPlace && placeCount < Objects.Count && !GameManager.Instance.dropTransfer)
+        int distanceCount = 0;
+        Debug.Log(ObjectsCount.Count);
+        for (int i1 = 0; i1 < ObjectsCount.Count; i1++)
         {
-            GameManager.Instance.dropTransfer = true;
+            Debug.Log("2");
             for (int i = 0; i < waitSystem.placeCount.Length; i++)
             {
-                GameObject obj = Objects[placeCount];
-                if (waitSystem.placeCount[i] == ObjectsCount[placeCount])
+                GameObject obj = Objects[i1];
+                Debug.Log("3");
+                if (waitSystem.placeCount[i] == ObjectsCount[i1])
                 {
+                    Debug.Log("4");
                     distanceCount++;
-                    ObjectsCount.RemoveAt(placeCount);
-                    Objects.RemoveAt(placeCount);
+                    ObjectsCount.RemoveAt(i1);
+                    Objects.RemoveAt(i1);
                     obj.transform.SetParent(dropParent.transform);
                     Vector3 pos = new Vector3(dropPos.x, dropPos.y, dropPos.z);
+                    Debug.Log("5");
                     obj.transform.DOLocalMove(pos, _dropMoveTime);
                     yield return new WaitForSeconds(_dropMoveTime);
+                    Debug.Log("6");
                     obj.GetComponent<ObjectTouchPlane>().AddedObjectPool(waitSystem.placeCount[i]);
                     RocketManager.Instance.AddedObjectPool(obj);
                 }
@@ -84,8 +81,7 @@ public class StackSystem : MonoSingleton<StackSystem>
             }
             yield return null;
 
-            placeCount++;
-            GameManager.Instance.dropTransfer = false;
+            i1++;
         }
     }
 
