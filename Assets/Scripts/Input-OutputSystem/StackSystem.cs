@@ -7,7 +7,7 @@ public class StackSystem : MonoSingleton<StackSystem>
 {
     //Playerde bulunacak
 
-    [SerializeField] private float _stackDistance;
+    public float stackDistance;
     [SerializeField] private float _stackMoveTime, _dropMoveTime;
     [SerializeField] private int _stackMaximumCount;
     [SerializeField] private GameObject _stackParent, _dropParent;
@@ -42,7 +42,7 @@ public class StackSystem : MonoSingleton<StackSystem>
     IEnumerator StackAdd(Collider other)
     {
         other.transform.SetParent(_stackParent.transform);
-        Vector3 pos = new Vector3(_stackPos.transform.position.x, _stackPos.transform.position.y + _stackDistance * Objects.Count, _stackPos.transform.position.z);
+        Vector3 pos = new Vector3(_stackPos.transform.position.x, _stackPos.transform.position.y + stackDistance * Objects.Count, _stackPos.transform.position.z);
         other.transform.transform.DOLocalMove(pos, _stackMoveTime);
         other.GetComponent<ObjectTouchPlane>().Stack›nPlayer();
         Objects.Add(other.gameObject);
@@ -73,7 +73,7 @@ public class StackSystem : MonoSingleton<StackSystem>
                     RocketManager.Instance.AddedObjectPool(obj);
                 }
                 else
-                    StartCoroutine(ObjectDistancePlacement(obj, distanceCount, _stackDistance));
+                    StartCoroutine(ObjectDistancePlacement(obj, distanceCount, stackDistance));
             }
             yield return null;
 
@@ -82,7 +82,7 @@ public class StackSystem : MonoSingleton<StackSystem>
         }
     }
 
-    public IEnumerator ObjectDistancePlacement(GameObject obj, int distanceCount, float distance,int objectPlacementTime=1)
+    public IEnumerator ObjectDistancePlacement(GameObject obj, int distanceCount, float distance, int objectPlacementTime = 1)
     {
         Vector3 pos = new Vector3(obj.transform.position.x, obj.transform.position.y - distance * distanceCount, obj.transform.position.z);
         yield return new WaitForSeconds(objectPlacementTime);

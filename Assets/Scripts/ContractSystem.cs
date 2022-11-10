@@ -8,16 +8,18 @@ public class ContractSystem : MonoSingleton<ContractSystem>
     public class Contract
     {
         public Hashtable itemCount = new Hashtable();
-        public int money;
-        public bool ContractBool;
+        public int money = 0;
+        public bool ContractBool = false;
     }
 
-    public int contractLimit = 3;
+    public int contractLimit = 1;
     public Contract[] FocusContract;
 
     private void Start()
     {
         FocusContract = new Contract[contractLimit];
+        Buttons.Instance.Contract();
+        StartCoroutine(RocketManager.Instance.RocketStart(1));
     }
 
     public Contract NewContractForUI(int levelMod, int maxItemInCount, int maxItemCount, int contractBudget)
@@ -57,37 +59,33 @@ public class ContractSystem : MonoSingleton<ContractSystem>
     public void NewContractSelected()
     {
         //object managerdekiler silinecek
-        bool[] intbool = new bool[FocusContract.Length];
-        for (int i1 = 0; i1 < FocusContract.Length; i1++)
+
+        for (int i1 = 0; i1 < ObjectManager.Instance.objectÝnGame.Length; i1++)
         {
-            if (FocusContract[i1].ContractBool)
-                for (int i2 = 0; i2 < intbool.Length; i2++)
-                {
-                    if (FocusContract[i1].itemCount.ContainsKey(i2))
-                        intbool[i2] = true;
-                }
-        }
-        for (int i1 = 0; i1 < intbool.Length; i1++)
-        {
-            if (!intbool[i1])
+            for (int i = 0; i < RocketManager.Instance.openObjectCount.Count; i++)
             {
-                for (int i2 = 0; i2 < ObjectManager.Instance.objectÝnGame[i1].gameObjectÝnGame.Count; i2++)
+                if (RocketManager.Instance.openObjectCount[i] == i1)
                 {
-                    GameObject obj = ObjectManager.Instance.objectÝnGame[i1].gameObjectÝnGame[i2];
-                    obj.GetComponent<ObjectTouchPlane>().AddedObjectPool(i1);
-                    RocketManager.Instance.AddedObjectPool(obj);
+                    for (int i2 = 0; i2 < ObjectManager.Instance.objectÝnGame[i1].gameObjectÝnGame.Count; i2++)
+                    {
+                        GameObject obj = ObjectManager.Instance.objectÝnGame[i1].gameObjectÝnGame[i2];
+                        obj.GetComponent<ObjectTouchPlane>().AddedObjectPool(i1);
+                        RocketManager.Instance.AddedObjectPool(obj);
+                    }
                 }
             }
+
             int placeCount = 0;
             for (int i = 0; i < StackSystem.Instance.Objects.Count; i++)
             {
+                GameObject obj = StackSystem.Instance.Objects[placeCount];
                 if (StackSystem.Instance.ObjectsCount[i] == i1)
                 {
-                    GameObject obj = StackSystem.Instance.Objects[placeCount];
                     StackSystem.Instance.ObjectsCount.RemoveAt(placeCount);
                     StackSystem.Instance.Objects.RemoveAt(placeCount);
                     placeCount++;
                 }
+                StartCoroutine(StackSystem.Instance.ObjectDistancePlacement(obj, placeCount, StackSystem.Instance.stackDistance));
             }
         }
 
@@ -101,7 +99,7 @@ public class ContractSystem : MonoSingleton<ContractSystem>
         return contractCount;
     }
 
-    private void ObjectCountUpdate()
+    public void ObjectCountUpdate()
     {
         RocketManager.Instance.openObjectCount.Clear();
         for (int i1 = 0; i1 < FocusContract.Length; i1++)
@@ -116,9 +114,10 @@ public class ContractSystem : MonoSingleton<ContractSystem>
                     {
                         if (RocketManager.Instance.openObjectCount[i3] == (int)arrayList[i2])
                             isFull = true;
-                        if (!isFull)
-                            RocketManager.Instance.openObjectCount.Add((int)arrayList[i2]);
                     }
+                    if (!isFull)
+                        RocketManager.Instance.openObjectCount.Add((int)arrayList[i2]);
+
                 }
             }
         }

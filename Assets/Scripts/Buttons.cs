@@ -48,18 +48,21 @@ public class Buttons : MonoSingleton<Buttons>
         _settingBackButton.onClick.AddListener(SettingBackButton);
         _soundButton.onClick.AddListener(SoundButton);
         _vibrationButton.onClick.AddListener(VibrationButton);*/
-        contract.onClick.AddListener(Contract);
+        contract.onClick.AddListener(bools);
 
     }
 
-    private void Contract()
+    public void bools()
+    {
+        GameManager.Instance.openContract = true;
+    }
+
+    public void Contract()
     {
         ContractSystem.Contract contract = ContractSystem.Instance.NewContractForUI(1, 2, 3, 10);
         ContractSystem.Instance.FocusContract[0] = contract;
-        ContractSystem.Instance.NewContractSelected();
-
-        ArrayList arrayListK = new ArrayList(ContractSystem.Instance.FocusContract[0].itemCount.Keys);
-        ArrayList arrayListV = new ArrayList(ContractSystem.Instance.FocusContract[0].itemCount.Values);
+        ContractSystem.Instance.FocusContract[0].ContractBool = true;
+        ContractSystem.Instance.ObjectCountUpdate();
     }
 
     private void SettingButton()

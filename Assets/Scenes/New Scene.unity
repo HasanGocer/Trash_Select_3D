@@ -135,13 +135,10 @@ GameObject:
   - component: {fileID: 15088249}
   - component: {fileID: 15088248}
   - component: {fileID: 15088247}
-  - component: {fileID: 15088246}
   - component: {fileID: 15088245}
   - component: {fileID: 15088250}
   - component: {fileID: 15088244}
-  - component: {fileID: 15088243}
-  - component: {fileID: 15088242}
-  - component: {fileID: 15088241}
+  - component: {fileID: 15088246}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -163,48 +160,6 @@ Transform:
   m_Father: {fileID: 519029875}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &15088241
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 15088239}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ab9da10f6a344b4bb089c97082493bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectClass: []
-  itemCount: 0
---- !u!114 &15088242
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 15088239}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba88eed62726eca43b692f6329e2b9a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  placeCount: 
-  inPlace: 0
-  _timerSpeed: 0
-  _barImage: {fileID: 0}
---- !u!114 &15088243
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 15088239}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f334b74afba88144b9c75c03d9a1f0b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &15088244
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -253,8 +208,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tempalateItem: {fileID: 9027098051370951863, guid: 888338f7bddc91f46bbe3d9680655ef0, type: 3}
-  "object\u0130nGame":
-  - "gameObject\u0130nGame": []
+  "object\u0130nGame": []
 --- !u!114 &15088247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -335,7 +289,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d77ffa2d78a3196489b6009c94ed2c03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  contractLimit: 3
+  contractLimit: 1
   FocusContract:
   - money: 0
     ContractBool: 0
@@ -1510,7 +1464,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73681e1a8e6ebce43acb6c6dad26f5cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stackDistance: 0
+  stackDistance: 0
   _stackMoveTime: 0
   _dropMoveTime: 0
   _stackMaximumCount: 0

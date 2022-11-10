@@ -40,7 +40,6 @@ public class ItemData : MonoSingleton<ItemData>
             field.runnerSpeed = max.runnerSpeed;
         }*/
 
-
     }
 
     /*public void RunnerCount()
