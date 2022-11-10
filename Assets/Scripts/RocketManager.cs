@@ -9,7 +9,6 @@ public class RocketManager : MonoSingleton<RocketManager>
 
     [SerializeField] private GameObject _rocketPushPos;
     [SerializeField] private int _minVeloCityPower, _maxVeloCityPower;
-    [SerializeField] private int _minAngleLimit, _maxAngleLimit, angleZCordinate = 30;
     [SerializeField] private int _OPTrashCount;
     public List<int> openObjectCount;
 
@@ -19,25 +18,27 @@ public class RocketManager : MonoSingleton<RocketManager>
         {
             if (GameManager.Instance.openContract)
             {
-                JumpObject(_rocketPushPos.transform.position, openObjectCount, _minVeloCityPower, _maxVeloCityPower, _minAngleLimit, _maxAngleLimit, angleZCordinate);
+                JumpObject(_rocketPushPos.transform.position, openObjectCount, _minVeloCityPower, _maxVeloCityPower);
                 yield return new WaitForSeconds(pushTime);
             }
             yield return null;
         }
     }
 
-    public void JumpObject(Vector3 rocketPushPos, List<int> openObjectCount, int minVeloCityPower, int maxVeloCityPower, int minAngleLimit, int maxAngleLimit, int angleZCordinate = 30)
+    public void JumpObject(Vector3 rocketPushPos, List<int> openObjectCount, int minVeloCityPower, int maxVeloCityPower)
     {
         GameObject obj = ObjectPool.Instance.GetPooledObject(_OPTrashCount);
         obj.transform.position = rocketPushPos;
-        int angleLimitWithRandom = Random.Range(minAngleLimit, maxAngleLimit);
         int objectCount = Random.Range(0, openObjectCount.Count);
+        Debug.Log(openObjectCount[objectCount]);
+        Debug.Log(objectCount);
         ObjectManager.Instance.object›nGame[openObjectCount[objectCount]].gameObject›nGame.Add(obj);
         obj.GetComponent<ObjectTouchPlane>().objectCount = openObjectCount[objectCount];
         obj.transform.GetChild(openObjectCount[objectCount]).gameObject.SetActive(true);
-        obj.transform.rotation = Quaternion.Euler(0, angleLimitWithRandom, angleZCordinate);
-        int velocityPower = Random.Range(minVeloCityPower, maxVeloCityPower);
-        obj.GetComponent<Rigidbody>().velocity = new Vector3(0, velocityPower, 0);
+        int velocityPowerX = Random.Range(minVeloCityPower, maxVeloCityPower);
+        int velocityPowerY = Random.Range(minVeloCityPower, maxVeloCityPower);
+        int velocityPowerZ = Random.Range(minVeloCityPower, maxVeloCityPower);
+        obj.GetComponent<Rigidbody>().velocity = new Vector3(velocityPowerX, velocityPowerY, velocityPowerZ);
     }
 
     public void AddedObjectPool(GameObject obj)

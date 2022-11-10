@@ -60,7 +60,7 @@ public class ContractSystem : MonoSingleton<ContractSystem>
     {
         //object managerdekiler silinecek
 
-        for (int i1 = 0; i1 < ObjectManager.Instance.objectÝnGame.Length; i1++)
+        for (int i1 = 0; i1 < ObjectManager.Instance.objectÝnGame.Count; i1++)
         {
             for (int i = 0; i < RocketManager.Instance.openObjectCount.Count; i++)
             {

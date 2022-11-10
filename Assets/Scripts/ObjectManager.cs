@@ -5,7 +5,7 @@ using UnityEngine;
 public class ObjectManager : MonoSingleton<ObjectManager>
 {
     //managerde bulunacak
-    
+
     [SerializeField] private GameObject tempalateItem;
 
 
@@ -14,11 +14,15 @@ public class ObjectManager : MonoSingleton<ObjectManager>
     {
         public List<GameObject> gameObject›nGame = new List<GameObject>();
     }
-    public Object›nGame[] object›nGame;
+    public List<Object›nGame> object›nGame = new List<Object›nGame>();
 
 
     public void Awake()
     {
-        object›nGame = new Object›nGame[tempalateItem.transform.childCount];
+        for (int i = 0; i < tempalateItem.transform.childCount; i++)
+        {
+            Object›nGame obj = new Object›nGame();
+            object›nGame.Add(obj);
+        }
     }
 }
