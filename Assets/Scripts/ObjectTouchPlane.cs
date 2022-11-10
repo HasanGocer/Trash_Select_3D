@@ -9,28 +9,28 @@ public class ObjectTouchPlane : MonoBehaviour
     public int objectCount;
     [SerializeField] private GameObject _objectOfCircle;
     [SerializeField] private Rigidbody _rb;
-    [SerializeField] private CapsuleCollider _capsuleCollider;
-
-    private void OnTriggerEnter(Collider other)
+    [SerializeField] private BoxCollider _boxCollider;
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.CompareTag("Plane"))
+        if (collision.gameObject.CompareTag("Plane"))
         {
-            _rb.velocity = new Vector3(0, 0, 0);
+            _rb.velocity = Vector3.zero;
+            _rb.isKinematic = false;
             transform.rotation = Quaternion.Euler(0, 0, 0);
             _objectOfCircle.SetActive(true);
-            _capsuleCollider.enabled = true;
+            _boxCollider.enabled = true;
         }
     }
 
     public void Stack›nPlayer()
     {
         _objectOfCircle.SetActive(false);
-        _capsuleCollider.enabled = false;
+        _boxCollider.enabled = false;
     }
 
     public void AddedObjectPool(int count)
     {
         transform.GetChild(count).gameObject.SetActive(false);
-        _capsuleCollider.enabled = true;
+        _boxCollider.enabled = true;
     }
 }
