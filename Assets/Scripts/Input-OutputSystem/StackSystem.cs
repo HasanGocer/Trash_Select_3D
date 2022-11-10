@@ -21,34 +21,40 @@ public class StackSystem : MonoSingleton<StackSystem>
         GameManager.Instance.dropTransfer = false;
     }
 
-    private void OnCollisionStay(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.CompareTag("Input"))
+        if (other.CompareTag("Input"))
         {
             if (Objects.Count < _stackMaximumCount)
             {
-                StartCoroutine(StackAdd(collision.gameObject));
+                StartCoroutine(StackAdd(other.gameObject));
             }
         }
-        else if (collision.gameObject.CompareTag("Output"))
+        else if (other.CompareTag("Output"))
         {
             if (!GameManager.Instance.dropTransfer == false)
             {
-                StartCoroutine(collision.gameObject.GetComponent<WaitSystem>().bar(this.gameObject));
+                StartCoroutine(other.GetComponent<WaitSystem>().bar(this.gameObject));
             }
         }
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+
     }
 
 
     IEnumerator StackAdd(GameObject other)
     {
-        other.transform.SetParent(_stackParent.transform);
         Vector3 pos = new Vector3(_stackPos.transform.position.x, _stackPos.transform.position.y + stackDistance * Objects.Count, _stackPos.transform.position.z);
         other.transform.transform.DOLocalMove(pos, _stackMoveTime);
         other.GetComponent<ObjectTouchPlane>().Stack›nPlayer();
         Objects.Add(other.gameObject);
         ObjectsCount.Add(other.GetComponent<ObjectTouchPlane>().objectCount);
         yield return new WaitForSeconds(_stackMoveTime);
+        other.transform.position = pos;
+        other.transform.SetParent(_stackParent.transform);
     }
 
     public IEnumerator StackDrop(GameObject place, GameObject dropParent, Vector3 dropPos)

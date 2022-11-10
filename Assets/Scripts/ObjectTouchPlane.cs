@@ -15,10 +15,11 @@ public class ObjectTouchPlane : MonoBehaviour
         if (collision.gameObject.CompareTag("Plane"))
         {
             _rb.velocity = Vector3.zero;
-            _rb.isKinematic = false;
             transform.rotation = Quaternion.Euler(0, 0, 0);
+            _rb.isKinematic = true;
             _objectOfCircle.SetActive(true);
             _boxCollider.enabled = true;
+            _boxCollider.isTrigger = true;
         }
     }
 
