@@ -22,9 +22,9 @@ public class AIStackAndDrop : MonoBehaviour
                 backpack›sFull = true;
                 StartCoroutine(GoToTheStackOut(stackOutPlace));
             }
-            for (int i = 0; i < ContractSystem.Instance.FocusContract[_AIStackerContractCount].itemCount.Count; i++)
+            for (int i = 0; i < ContractSystem.Instance.FocusContract[_AIStackerContractCount].objectTypeCount.Count; i++)
             {
-                if (ContractSystem.Instance.FocusContract[_AIStackerContractCount].itemCount.ContainsKey(i) && !backpack›sFull)
+                if (ObjectControl(i, ContractSystem.Instance.FocusContract[_AIStackerContractCount].objectTypeCount) && !backpack›sFull)
                 {
                     List<GameObject> gameObject›nGame = ObjectManager.Instance.object›nGame[i].gameObject›nGame;
                     int lastStackCount = gameObject›nGame.Count - 1;
@@ -68,5 +68,16 @@ public class AIStackAndDrop : MonoBehaviour
             _stackersStack.RemoveAt(i);
         }
         backpack›sFull = false;
+    }
+
+    public bool ObjectControl(int objectCount, List<int> objectTypeCount)
+    {
+        bool inThere = true;
+        for (int i = 0; i < objectTypeCount.Count; i++)
+        {
+            if (objectTypeCount[i] == objectCount)
+                inThere = false;
+        }
+        return inThere;
     }
 }

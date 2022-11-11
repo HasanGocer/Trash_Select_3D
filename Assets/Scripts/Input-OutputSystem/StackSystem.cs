@@ -32,12 +32,6 @@ public class StackSystem : MonoSingleton<StackSystem>
         }
     }
 
-    private void OnCollisionStay(Collision collision)
-    {
-
-    }
-
-
     IEnumerator StackAdd(GameObject other)
     {
         Vector3 pos = new Vector3(_stackPos.transform.position.x, _stackPos.transform.position.y + stackDistance * Objects.Count, _stackPos.transform.position.z);
@@ -50,38 +44,27 @@ public class StackSystem : MonoSingleton<StackSystem>
         other.transform.SetParent(_stackParent.transform);
     }
 
-    public IEnumerator StackDrop(WaitSystem waitSystem, GameObject dropParent, Vector3 dropPos)
+    public IEnumerator StackDrop(WaitSystem waitSystem, GameObject dropParent, Vector3 dropPos, int contractCount)
     {
-        int distanceCount = 0;
-        Debug.Log(ObjectsCount.Count);
-        for (int i1 = 0; i1 < ObjectsCount.Count; i1++)
+        for (int i1 = 0; (i1 < ObjectsCount.Count && ContractSystem.Instance.FocusContract[contractCount].ContractBool); i1++)
         {
-            Debug.Log("2");
             for (int i = 0; i < waitSystem.placeCount.Length; i++)
             {
                 GameObject obj = Objects[i1];
-                Debug.Log("3");
                 if (waitSystem.placeCount[i] == ObjectsCount[i1])
                 {
-                    Debug.Log("4");
-                    distanceCount++;
-                    ObjectsCount.RemoveAt(i1);
-                    Objects.RemoveAt(i1);
+                    ContractSystem.Instance.ContractDownÝtem(contractCount, ObjectsCount[i1], i1);
                     obj.transform.SetParent(dropParent.transform);
                     Vector3 pos = new Vector3(dropPos.x, dropPos.y, dropPos.z);
-                    Debug.Log("5");
                     obj.transform.DOLocalMove(pos, _dropMoveTime);
                     yield return new WaitForSeconds(_dropMoveTime);
-                    Debug.Log("6");
                     obj.GetComponent<ObjectTouchPlane>().AddedObjectPool(waitSystem.placeCount[i]);
                     RocketManager.Instance.AddedObjectPool(obj);
                 }
                 else
-                    StartCoroutine(ObjectDistancePlacement(obj, distanceCount, stackDistance));
+                    StartCoroutine(ObjectDistancePlacement(obj, i1, stackDistance));
             }
             yield return null;
-
-            i1++;
         }
     }
 

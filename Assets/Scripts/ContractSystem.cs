@@ -7,7 +7,8 @@ public class ContractSystem : MonoSingleton<ContractSystem>
     [System.Serializable]
     public class Contract
     {
-        public Hashtable itemCount = new Hashtable();
+        public List<int> objectTypeCount = new List<int>();
+        public List<int> objectCount = new List<int>();
         public int money = 0;
         public bool ContractBool = false;
     }
@@ -19,7 +20,7 @@ public class ContractSystem : MonoSingleton<ContractSystem>
     {
         FocusContract = new Contract[contractLimit];
         Buttons.Instance.Contract();
-        WaitSysytemCountPlacement(0,0);
+        WaitSysytemCountPlacement(0, 0);
         StartCoroutine(RocketManager.Instance.RocketStart(1));
     }
 
@@ -33,25 +34,18 @@ public class ContractSystem : MonoSingleton<ContractSystem>
             int itemCount = Random.Range(0, maxItemCount);
             int itemInCount = Random.Range(1, maxItemInCount);
 
-            contract.itemCount.Add(itemCount, itemInCount);
+            contract.objectTypeCount.Add(itemCount);
+            contract.objectCount.Add(itemInCount);
         }
 
         return contract;
     }
 
-    public void ContractCompleted(Contract contract)
-    {
-        GameManager.Instance.SetMoney(contract.money);
-        contract.itemCount.Clear();
-        contract.money = 0;
-        //yeni kontrat UI
-        ObjectCountUpdate();
-    }
-
     public void ContractCanceled(Contract contract)
     {
         GameManager.Instance.SetMoney(contract.money * -1);
-        contract.itemCount.Clear();
+        contract.objectCount.Clear();
+        contract.objectTypeCount.Clear();
         contract.money = 0;
         //yeni kontrat UI
         ObjectCountUpdate();
@@ -96,7 +90,8 @@ public class ContractSystem : MonoSingleton<ContractSystem>
     public int PlayerPrefsContract(int contractCount, int itemCount)
     {
         contractCount++;
-        FocusContract[0].itemCount.Add(contractCount, itemCount);
+        FocusContract[0].objectTypeCount.Add(contractCount);
+        FocusContract[0].objectTypeCount.Add(itemCount);
         return contractCount;
     }
 
@@ -107,33 +102,67 @@ public class ContractSystem : MonoSingleton<ContractSystem>
         {
             if (FocusContract[i1].ContractBool)
             {
-                for (int i2 = 0; i2 < FocusContract[i1].itemCount.Count; i2++)
+                for (int i2 = 0; i2 < FocusContract[i1].objectTypeCount.Count; i2++)
                 {
                     bool isFull = false;
-                    ArrayList arrayList = new ArrayList(FocusContract[i1].itemCount.Keys);
                     for (int i3 = 0; i3 < RocketManager.Instance.openObjectCount.Count; i3++)
                     {
-                        if (RocketManager.Instance.openObjectCount[i3] == (int)arrayList[i2])
+                        if (RocketManager.Instance.openObjectCount[i3] == FocusContract[i1].objectTypeCount[i2])
                             isFull = true;
                     }
                     if (!isFull)
-                        RocketManager.Instance.openObjectCount.Add((int)arrayList[i2]);
-
+                        RocketManager.Instance.openObjectCount.Add(FocusContract[i1].objectTypeCount[i2]);
                 }
             }
         }
+        if (RocketManager.Instance.openObjectCount.Count == 0)
+            GameManager.Instance.openContract = false;
     }
 
     public void WaitSysytemCountPlacement(int waitBar, int contractCount)
     {
         GameObject obj = UpgradeManager.Instance.ItemSelect(waitBar, contractCount);
         WaitSystem waitSystem = obj.GetComponent<WaitSystem>();
-        ArrayList arrayList = new ArrayList(FocusContract[contractCount].itemCount.Keys);
+        waitSystem.placeCount = new int[FocusContract[contractCount].objectTypeCount.Count];
 
-        waitSystem.placeCount = new int[arrayList.Count];
-        for (int i = 0; i < FocusContract[contractCount].itemCount.Count; i++)
+        for (int i = 0; i < FocusContract[contractCount].objectTypeCount.Count; i++)
         {
-            waitSystem.placeCount[i] = (int)arrayList[i];
+            waitSystem.placeCount[i] = FocusContract[contractCount].objectTypeCount[i];
         }
+    }
+
+    public void ContractDownÝtem(int contractCount, int objectTypeCount, int forCount)
+    {
+        for (int i = 0; i < FocusContract[contractCount].objectTypeCount.Count; i++)
+        {
+            if (FocusContract[contractCount].objectTypeCount[i] == objectTypeCount)
+            {
+                FocusContract[contractCount].objectCount[i]--;
+                StackSystem.Instance.ObjectsCount.RemoveAt(forCount);
+                StackSystem.Instance.Objects.RemoveAt(forCount);
+
+                if (FocusContract[contractCount].objectCount[i] <= 0)
+                {
+                    FocusContract[contractCount].objectTypeCount.RemoveAt(i);
+                    FocusContract[contractCount].objectCount.RemoveAt(i);
+                }
+
+                if (FocusContract[contractCount].objectTypeCount.Count == 0)
+                    ContractCompleted(FocusContract[contractCount], i);
+                ObjectCountUpdate();
+            }
+        }
+    }
+
+
+    public void ContractCompleted(Contract contract, int contractCount)
+    {
+        GameManager.Instance.SetMoney(contract.money);
+        contract.objectCount.Clear();
+        contract.objectTypeCount.Clear();
+        contract.money = 0;
+        FocusContract[contractCount].ContractBool = false;
+        //yeni kontrat UI
+        ObjectCountUpdate();
     }
 }

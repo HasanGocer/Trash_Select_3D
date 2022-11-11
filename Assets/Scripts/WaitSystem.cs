@@ -42,7 +42,7 @@ public class WaitSystem : MonoBehaviour
             if (_barImage.fillAmount == 0)
             {
                 inPlace = false;
-                StartCoroutine(StackSystem.Instance.StackDrop(this, objectPos, objectPos.transform.position));
+                StartCoroutine(StackSystem.Instance.StackDrop(this, objectPos, objectPos.transform.position, contractCount));
                 _barImage.fillAmount = 1;
                 break;
             }
