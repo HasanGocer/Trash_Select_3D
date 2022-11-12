@@ -53,7 +53,7 @@ public class StackSystem : MonoSingleton<StackSystem>
                 GameObject obj = Objects[i1];
                 if (waitSystem.placeCount[i] == ObjectsCount[i1])
                 {
-                    ContractSystem.Instance.ContractDown›tem(contractCount, ObjectsCount[i1], i1);
+                    ContractSystem.Instance.ContractDown›tem(contractCount, ObjectsCount[i1], i1, true);
                     Vector3 pos = new Vector3(dropPos.x, dropPos.y, dropPos.z);
                     obj.transform.DOMove(pos, _dropMoveTime);
                     yield return new WaitForSeconds(_dropMoveTime);

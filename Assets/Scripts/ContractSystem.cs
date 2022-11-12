@@ -57,9 +57,9 @@ public class ContractSystem : MonoSingleton<ContractSystem>
 
         for (int i1 = 0; i1 < ObjectManager.Instance.object›nGame.Count; i1++)
         {
-            for (int i = 0; i < RocketManager.Instance.openObjectCount.Count; i++)
+            for (int i = 0; i < RocketManager.Instance.openObjectTypeCount.Count; i++)
             {
-                if (RocketManager.Instance.openObjectCount[i] == i1)
+                if (RocketManager.Instance.openObjectTypeCount[i] == i1)
                 {
                     for (int i2 = 0; i2 < ObjectManager.Instance.object›nGame[i1].gameObject›nGame.Count; i2++)
                     {
@@ -97,7 +97,8 @@ public class ContractSystem : MonoSingleton<ContractSystem>
 
     public void ObjectCountUpdate()
     {
-        RocketManager.Instance.openObjectCount.Clear();
+            Debug.Log(FocusContract[0].ContractBool);
+        RocketManager.Instance.openObjectTypeCount.Clear();
         for (int i1 = 0; i1 < FocusContract.Length; i1++)
         {
             if (FocusContract[i1].ContractBool)
@@ -105,17 +106,17 @@ public class ContractSystem : MonoSingleton<ContractSystem>
                 for (int i2 = 0; i2 < FocusContract[i1].objectTypeCount.Count; i2++)
                 {
                     bool isFull = false;
-                    for (int i3 = 0; i3 < RocketManager.Instance.openObjectCount.Count; i3++)
+                    for (int i3 = 0; i3 < RocketManager.Instance.openObjectTypeCount.Count; i3++)
                     {
-                        if (RocketManager.Instance.openObjectCount[i3] == FocusContract[i1].objectTypeCount[i2])
+                        if (RocketManager.Instance.openObjectTypeCount[i3] == FocusContract[i1].objectTypeCount[i2])
                             isFull = true;
                     }
                     if (!isFull)
-                        RocketManager.Instance.openObjectCount.Add(FocusContract[i1].objectTypeCount[i2]);
+                        RocketManager.Instance.openObjectTypeCount.Add(FocusContract[i1].objectTypeCount[i2]);
                 }
             }
         }
-        if (RocketManager.Instance.openObjectCount.Count == 0)
+        if (RocketManager.Instance.openObjectTypeCount.Count == 0)
             GameManager.Instance.openContract = false;
     }
 
@@ -131,27 +132,42 @@ public class ContractSystem : MonoSingleton<ContractSystem>
         }
     }
 
-    public void ContractDown›tem(int contractCount, int objectTypeCount, int forCount)
+    public void ContractDown›tem(int contractCount, int objectTypeCount, int forCount, bool isStack)
     {
+        Debug.Log("1");
         for (int i = 0; i < FocusContract[contractCount].objectTypeCount.Count; i++)
         {
+            Debug.Log("2");
             if (FocusContract[contractCount].objectTypeCount[i] == objectTypeCount)
             {
+                Debug.Log("3");
                 FocusContract[contractCount].objectCount[i]--;
-                StackSystem.Instance.ObjectsCount.RemoveAt(forCount);
-                StackSystem.Instance.Objects.RemoveAt(forCount);
+                if (isStack)
+                {
+                    StackSystem.Instance.ObjectsCount.RemoveAt(forCount);
+                    StackSystem.Instance.Objects.RemoveAt(forCount);
+                }
+                Debug.Log("4");
 
+                Debug.Log("5");
                 if (FocusContract[contractCount].objectCount[i] <= 0)
                 {
+                    Debug.Log("6");
                     FocusContract[contractCount].objectTypeCount.RemoveAt(i);
                     FocusContract[contractCount].objectCount.RemoveAt(i);
+                    Debug.Log("7");
                 }
 
+                Debug.Log("8");
                 if (FocusContract[contractCount].objectTypeCount.Count == 0)
                 {
+                    Debug.Log("9");
                     ContractCompleted(FocusContract[contractCount], i);
+                    Debug.Log("10");
                 }
+                Debug.Log("11");
                 ObjectCountUpdate();
+                Debug.Log("12");
             }
         }
     }

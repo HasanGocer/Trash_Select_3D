@@ -12,7 +12,7 @@ public class WaitSystem : MonoBehaviour
     public bool inPlace;
     [SerializeField] private float _timerSpeed;
     [SerializeField] private Image _barImage;
-    [SerializeField] private GameObject objectPos;
+    public GameObject objectPos, AIWaitPlace;
 
     private void OnTriggerEnter(Collider other)
     {

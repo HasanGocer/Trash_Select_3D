@@ -55,6 +55,8 @@ public class Buttons : MonoSingleton<Buttons>
     public void bools()
     {
         GameManager.Instance.openContract = true;
+        AIManager.Instance.StartPlace();
+        AIManager.Instance.StartAIStacker();
     }
 
     public void Contract()

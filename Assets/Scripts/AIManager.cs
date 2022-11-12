@@ -20,9 +20,11 @@ public class AIManager : MonoSingleton<AIManager>
     {
         for (int i1 = 0; i1 < stackerÝnGame.Length; i1++)
         {
-            for (int i2 = 0; i2 < ContractSystem.Instance.FocusContract[i1].objectTypeCount.Count; i2++)
+            for (int i2 = 0; i2 < stackerÝnGame[i1].gameObjectStacker.Count; i2++)
             {
-                stackerÝnGame[i2].stackOutPlace.GetComponent<WaitSystem>().placeCount[i2] = ContractSystem.Instance.FocusContract[i1].objectTypeCount[i2];
+                if (ContractSystem.Instance.FocusContract[i1].ContractBool)
+                    stackerÝnGame[i1].boolStacker[i2] = true;
+                //satýn alýma göre bool ayarla
             }
         }
     }
@@ -31,7 +33,7 @@ public class AIManager : MonoSingleton<AIManager>
     {
         for (int i1 = 0; i1 < stackerÝnGame.Length; i1++)
         {
-            for (int i2 = 0; i2 < stackerÝnGame[i1].boolStacker.Count; i2++)
+            for (int i2 = 0; i2 < stackerÝnGame[i1].gameObjectStacker.Count; i2++)
             {
                 if (stackerÝnGame[i1].boolStacker[i2])
                 {
