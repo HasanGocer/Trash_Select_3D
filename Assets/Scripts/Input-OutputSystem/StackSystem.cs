@@ -54,12 +54,14 @@ public class StackSystem : MonoSingleton<StackSystem>
                 if (waitSystem.placeCount[i] == ObjectsCount[i1])
                 {
                     ContractSystem.Instance.ContractDownÝtem(contractCount, ObjectsCount[i1], i1);
-                    obj.transform.SetParent(dropParent.transform);
                     Vector3 pos = new Vector3(dropPos.x, dropPos.y, dropPos.z);
-                    obj.transform.DOLocalMove(pos, _dropMoveTime);
+                    obj.transform.DOMove(pos, _dropMoveTime);
                     yield return new WaitForSeconds(_dropMoveTime);
-                    obj.GetComponent<ObjectTouchPlane>().AddedObjectPool(waitSystem.placeCount[i]);
-                    RocketManager.Instance.AddedObjectPool(obj);
+                    obj.transform.SetParent(dropParent.transform);
+
+                    //bunu contract bitince yapýcaz kamyon gidince
+                    /*obj.GetComponent<ObjectTouchPlane>().AddedObjectPool(waitSystem.placeCount[i]);
+                    RocketManager.Instance.AddedObjectPool(obj);*/
                 }
                 else
                     StartCoroutine(ObjectDistancePlacement(obj, i1, stackDistance));

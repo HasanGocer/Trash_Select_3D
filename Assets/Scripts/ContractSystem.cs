@@ -148,7 +148,9 @@ public class ContractSystem : MonoSingleton<ContractSystem>
                 }
 
                 if (FocusContract[contractCount].objectTypeCount.Count == 0)
+                {
                     ContractCompleted(FocusContract[contractCount], i);
+                }
                 ObjectCountUpdate();
             }
         }
