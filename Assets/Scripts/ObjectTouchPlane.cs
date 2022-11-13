@@ -7,6 +7,7 @@ public class ObjectTouchPlane : MonoBehaviour
     //objede bulunacak
 
     public int objectCount;
+    public bool inWaitPlace;
     [SerializeField] private GameObject _objectOfCircle;
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private BoxCollider _boxCollider;
@@ -20,7 +21,13 @@ public class ObjectTouchPlane : MonoBehaviour
             _objectOfCircle.SetActive(true);
             _boxCollider.enabled = true;
             _boxCollider.isTrigger = true;
+            ObjectAddObjectManager();
         }
+    }
+
+    private void ObjectAddObjectManager()
+    {
+        ObjectManager.Instance.object›nGame[objectCount].gameObject›nGame.Add(gameObject);
     }
 
     public void Stack›nPlayer()

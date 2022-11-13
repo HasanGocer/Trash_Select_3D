@@ -44,7 +44,6 @@ public class RocketManager : MonoSingleton<RocketManager>
     {
         GameObject obj = ObjectPool.Instance.GetPooledObject(_OPTrashCount);
         obj.transform.position = rocketPushPos;
-        ObjectManager.Instance.object›nGame[openObjectCount].gameObject›nGame.Add(obj);
         obj.GetComponent<ObjectTouchPlane>().objectCount = openObjectCount;
         obj.transform.GetChild(openObjectCount).gameObject.SetActive(true);
         int velocityPowerX = Random.Range(minVeloCityPower, maxVeloCityPower);

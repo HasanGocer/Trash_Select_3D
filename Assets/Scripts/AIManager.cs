@@ -22,8 +22,6 @@ public class AIManager : MonoSingleton<AIManager>
         {
             for (int i2 = 0; i2 < stacker›nGame[i1].gameObjectStacker.Count; i2++)
             {
-                if (ContractSystem.Instance.FocusContract[i1].ContractBool)
-                    stacker›nGame[i1].boolStacker[i2] = true;
                 //sat˝n al˝ma gˆre bool ayarla
             }
         }
@@ -37,7 +35,7 @@ public class AIManager : MonoSingleton<AIManager>
             {
                 if (stacker›nGame[i1].boolStacker[i2])
                 {
-                    StartCoroutine(stacker›nGame[i1].gameObjectStacker[i2].GetComponent<AIStackAndDrop>().Walk(stacker›nGame[i1].stackOutPlace));
+                    StartCoroutine(stacker›nGame[i1].gameObjectStacker[i2].GetComponent<AIStackAndDrop>().WalkAI(stacker›nGame[i1].stackOutPlace));
                 }
             }
         }

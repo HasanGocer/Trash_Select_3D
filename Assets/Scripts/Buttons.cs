@@ -57,11 +57,12 @@ public class Buttons : MonoSingleton<Buttons>
         GameManager.Instance.openContract = true;
         AIManager.Instance.StartPlace();
         AIManager.Instance.StartAIStacker();
+        contract.gameObject.SetActive(false);
     }
 
     public void Contract()
     {
-        ContractSystem.Contract contract = ContractSystem.Instance.NewContractForUI(1, 2, 3, 10);
+        ContractSystem.Contract contract = ContractSystem.Instance.NewContractForUI(1, 5, 3, 10);
         ContractSystem.Instance.FocusContract[0] = contract;
         ContractSystem.Instance.FocusContract[0].ContractBool = true;
         ContractSystem.Instance.ObjectCountUpdate();
