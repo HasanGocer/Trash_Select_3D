@@ -11,6 +11,7 @@ public class RocketManager : MonoSingleton<RocketManager>
     [SerializeField] private int _minVeloCityPower, _maxVeloCityPower;
     [SerializeField] private int _OPTrashCount;
     public List<int> openObjectTypeCount;
+    public List<bool> openObjectTypeBool;
 
     public IEnumerator RocketStart(float pushTime)
     {
@@ -22,8 +23,9 @@ public class RocketManager : MonoSingleton<RocketManager>
                 {
                     for (int i2 = 0; i2 < ContractSystem.Instance.FocusContract[i].objectTypeCount.Count; i2++)
                     {
-                        if (openObjectTypeCount[i1] == ContractSystem.Instance.FocusContract[i].objectTypeCount[i2])
+                        if (openObjectTypeCount[i1] == ContractSystem.Instance.FocusContract[i].objectTypeCount[i2]&& openObjectTypeBool[i1])
                         {
+                            //buraya arkadan gelecek nesile göre atama yapýlacak
                             for (int i3 = 0; i3 < ContractSystem.Instance.FocusContract[i].objectCount[i2] - ObjectManager.Instance.objectÝnGame[openObjectTypeCount[i1]].gameObjectÝnGame.Count; i3++)
                             {
                                 if (GameManager.Instance.openContract)
