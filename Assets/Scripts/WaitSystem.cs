@@ -7,6 +7,7 @@ public class WaitSystem : MonoBehaviour
 {
     //place de bulunacak
 
+    public bool isClear;
     public int contractCount;
     public int[] placeCount;
     public bool inPlace;
@@ -19,7 +20,7 @@ public class WaitSystem : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             inPlace = true;
-            StartCoroutine(bar(other.gameObject, other.GetComponent<ObjectTouchPlane>().isClear));
+            StartCoroutine(bar(isClear));
         }
     }
 
@@ -30,7 +31,7 @@ public class WaitSystem : MonoBehaviour
     }
 
 
-    public IEnumerator bar(GameObject player, bool isClear)
+    public IEnumerator bar(bool isClear)
     {
         float timer = 0;
 

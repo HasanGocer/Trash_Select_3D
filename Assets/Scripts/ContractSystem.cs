@@ -22,6 +22,7 @@ public class ContractSystem : MonoSingleton<ContractSystem>
         Buttons.Instance.Contract();
         WaitSysytemCountPlacement(0, 0);
         StartCoroutine(RocketManager.Instance.RocketStart(2));
+        DirtyManager.Instance.NewDirtyListPlacement();
     }
 
     public Contract NewContractForUI(int levelMod, int maxItemInCount, int maxItemCount, int contractBudget)
@@ -98,6 +99,9 @@ public class ContractSystem : MonoSingleton<ContractSystem>
     public void ObjectCountUpdate()
     {
         RocketManager.Instance.openObjectTypeCount.Clear();
+        RocketManager.Instance.openObjectCount.Clear();
+        RocketManager.Instance.openObjectTypeBool.Clear();
+
         for (int i1 = 0; i1 < FocusContract.Length; i1++)
         {
             if (FocusContract[i1].ContractBool)

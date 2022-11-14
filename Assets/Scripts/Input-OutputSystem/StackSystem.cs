@@ -21,6 +21,7 @@ public class StackSystem : MonoSingleton<StackSystem>
     {
         GameManager.Instance.dropTransfer = false;
     }
+    
 
     private void OnTriggerEnter(Collider other)
     {
@@ -40,11 +41,12 @@ public class StackSystem : MonoSingleton<StackSystem>
     {
         Vector3 pos = new Vector3(_stackPos.transform.position.x, _stackPos.transform.position.y + stackDistance * Objects.Count, _stackPos.transform.position.z);
         other.transform.transform.DOLocalMove(pos, _stackMoveTime);
-        other.GetComponent<ObjectTouchPlane>().Stack›nPlayer();
+        other.GetComponent<ObjectTouchPlane>().Stack›nPlayer(!isDirty);
         Objects.Add(other.gameObject);
         ObjectsCount.Add(other.GetComponent<ObjectTouchPlane>().objectCount);
         ObjectsBool.Add(isDirty);
         yield return new WaitForSeconds(_stackMoveTime);
+        pos = new Vector3(_stackPos.transform.position.x, _stackPos.transform.position.y + stackDistance * (Objects.Count - 1), _stackPos.transform.position.z);
         other.transform.position = pos;
         other.transform.SetParent(_stackParent.transform);
     }
@@ -62,6 +64,11 @@ public class StackSystem : MonoSingleton<StackSystem>
                 obj.transform.DOMove(pos, _dropMoveTime);
                 yield return new WaitForSeconds(_dropMoveTime);
                 obj.transform.SetParent(dropParent.transform);
+                DirtyManager.Instance.ListPlacement(ObjectsCount[i1]);
+                Objects.RemoveAt(i1);
+                ObjectsCount.RemoveAt(i1);
+                ObjectsBool.RemoveAt(i1);
+                //temizi pushlat
             }
             else
                 StartCoroutine(ObjectDistancePlacement(obj, misObject, stackDistance));

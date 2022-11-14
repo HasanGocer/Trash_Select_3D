@@ -31,9 +31,10 @@ public class ObjectTouchPlane : MonoBehaviour
         ObjectManager.Instance.object›nGame[objectCount].gameObject›nGame.Add(gameObject);
     }
 
-    public void Stack›nPlayer()
+    public void Stack›nPlayer(bool isClear)
     {
-        _objectOfCircle.SetActive(false);
+        if (isClear)
+            _objectOfCircle.SetActive(false);
         _boxCollider.enabled = false;
     }
 
@@ -46,6 +47,5 @@ public class ObjectTouchPlane : MonoBehaviour
     public void DirtyThrashFirstSpawn()
     {
         _rb.isKinematic = true;
-        _boxCollider.isTrigger = false;
     }
 }

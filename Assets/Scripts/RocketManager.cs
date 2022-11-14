@@ -10,9 +10,9 @@ public class RocketManager : MonoSingleton<RocketManager>
     [SerializeField] private GameObject _rocketPushPos;
     [SerializeField] private int _minVeloCityPower, _maxVeloCityPower;
     [SerializeField] private int _OPTrashCount;
-    public List<int> openObjectTypeCount;
-    public List<int> openObjectCount;
-    public List<bool> openObjectTypeBool;
+    public List<int> openObjectTypeCount = new List<int>();
+    public List<int> openObjectCount = new List<int>();
+    public List<bool> openObjectTypeBool = new List<bool>();
 
     public IEnumerator RocketStart(float pushTime)
     {
@@ -33,6 +33,7 @@ public class RocketManager : MonoSingleton<RocketManager>
                                     JumpObject(_rocketPushPos.transform.position, ContractSystem.Instance.FocusContract[i].objectTypeCount[i2], _minVeloCityPower, _maxVeloCityPower);
                                     yield return new WaitForSeconds(pushTime);
                                 }
+                                openObjectTypeBool[i1] = false;
                             }
                         }
                     }

@@ -24,7 +24,6 @@ public class FirstSpawn : MonoBehaviour
                     {
                         for (int i2 = 0; i2 < RocketManager.Instance.openObjectCount[i1]; i2++)
                         {
-                            print(1);
                             //belki animasyon
                             GameObject obj = ObjectPool.Instance.GetPooledObject(_OPDirtyThrashCount);
                             obj.transform.position = transform.position;
@@ -34,6 +33,7 @@ public class FirstSpawn : MonoBehaviour
                             obj.transform.GetChild(_dirtyThrashItemID).gameObject.SetActive(true);
                             obj.transform.DOMove(pos, _objectTransferTime);
                             Objects.Add(obj);
+                            obj.GetComponent<ObjectTouchPlane>().objectCount = _dirtyThrashItemID;  
                             yield return new WaitForSeconds(_objectTransferTime);
                             obj.GetComponent<ObjectTouchPlane>().DirtyThrashFirstSpawn();
                         }
