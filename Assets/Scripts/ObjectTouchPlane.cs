@@ -8,12 +8,13 @@ public class ObjectTouchPlane : MonoBehaviour
 
     public int objectCount;
     public bool inWaitPlace;
+    public bool isClear;
     [SerializeField] private GameObject _objectOfCircle;
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private BoxCollider _boxCollider;
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Plane"))
+        if (collision.gameObject.CompareTag("Plane") && isClear)
         {
             _rb.velocity = Vector3.zero;
             transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -40,5 +41,11 @@ public class ObjectTouchPlane : MonoBehaviour
     {
         transform.GetChild(count).gameObject.SetActive(false);
         _boxCollider.enabled = true;
+    }
+
+    public void DirtyThrashFirstSpawn()
+    {
+        _rb.isKinematic = true;
+        _boxCollider.isTrigger = false;
     }
 }

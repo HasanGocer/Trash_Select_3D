@@ -57,6 +57,7 @@ public class Buttons : MonoSingleton<Buttons>
         GameManager.Instance.openContract = true;
         AIManager.Instance.StartPlace();
         AIManager.Instance.StartAIStacker();
+        UpgradeManager.Instance.StartFirstSpawn();  
         contract.gameObject.SetActive(false);
     }
 

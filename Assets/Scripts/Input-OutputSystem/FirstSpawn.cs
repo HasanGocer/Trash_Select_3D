@@ -5,40 +5,41 @@ using DG.Tweening;
 
 public class FirstSpawn : MonoBehaviour
 {
+    [SerializeField] private int _dirtyThrashItemID;
     [SerializeField] private float _spawnDistance;
-    [SerializeField] private int _objectCount, _objectTransferTime, _OPDirtyThrashCount;
+    [SerializeField] private int _objectTransferTime, _OPDirtyThrashCount;
 
     [SerializeField] private GameObject _spawnPosition;
 
     public List<GameObject> Objects = new List<GameObject>();
 
-    private void Start()
+    public IEnumerator ItemSpawn()
     {
-        StartCoroutine(ItemSpawn());
-    }
-
-    IEnumerator ItemSpawn()
-    {
-        if (GameManager.Instance.openContract)
+        while (true)
         {
-            while (true)
+            if (GameManager.Instance.openContract) { }
+            for (int i1 = 0; i1 < RocketManager.Instance.openObjectTypeCount.Count; i1++)
             {
-                if (_objectCount > Objects.Count)
+                if (_dirtyThrashItemID == RocketManager.Instance.openObjectTypeCount[i1] && Objects.Count <= RocketManager.Instance.openObjectCount[i1])
                 {
-                    //belki animasyon
-                    GameObject obj = ObjectPool.Instance.GetPooledObject(_OPDirtyThrashCount);
-                    Vector3 pos = new Vector3(_spawnPosition.transform.position.x,
-                        _spawnPosition.transform.position.y + (Objects.Count * _spawnDistance),
-                        _spawnPosition.transform.position.z);
-                    obj.transform.DOMove(pos, _objectTransferTime);
-                    Objects.Add(obj);
-                    yield return new WaitForSeconds(_objectTransferTime);
-                }
-                else
-                {
-                    yield return null;
+                    print(i1);
+                    for (int i2 = 0; i2 < RocketManager.Instance.openObjectCount[i1]; i2++)
+                    {
+                        //belki animasyon
+                        GameObject obj = ObjectPool.Instance.GetPooledObject(_OPDirtyThrashCount);
+                        obj.transform.position = transform.position;
+                        Vector3 pos = new Vector3(_spawnPosition.transform.position.x,
+                                                _spawnPosition.transform.position.y + (Objects.Count * _spawnDistance),
+                                                _spawnPosition.transform.position.z);
+                        obj.transform.GetChild(_dirtyThrashItemID).gameObject.SetActive(true);
+                        obj.transform.DOMove(pos, _objectTransferTime);
+                        Objects.Add(obj);
+                        yield return new WaitForSeconds(_objectTransferTime);
+                        obj.GetComponent<ObjectTouchPlane>().DirtyThrashFirstSpawn();
+                    }
                 }
             }
+            yield return null;
         }
     }
 }

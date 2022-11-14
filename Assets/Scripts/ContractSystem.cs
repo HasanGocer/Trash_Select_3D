@@ -104,19 +104,32 @@ public class ContractSystem : MonoSingleton<ContractSystem>
             {
                 for (int i2 = 0; i2 < FocusContract[i1].objectTypeCount.Count; i2++)
                 {
-                    bool isFull = false;
-                    for (int i3 = 0; i3 < RocketManager.Instance.openObjectTypeCount.Count; i3++)
-                    {
-                        if (RocketManager.Instance.openObjectTypeCount[i3] == FocusContract[i1].objectTypeCount[i2])
-                            isFull = true;
-                    }
-                    if (!isFull)
-                        RocketManager.Instance.openObjectTypeCount.Add(FocusContract[i1].objectTypeCount[i2]);
+                    CheckObject(FocusContract[i1].objectTypeCount[i2], FocusContract[i1].objectCount[i2]);
                 }
             }
         }
         if (RocketManager.Instance.openObjectTypeCount.Count == 0)
             GameManager.Instance.openContract = false;
+    }
+
+    public void CheckObject(int objectType, int objectCount)
+    {
+        bool isThere = false;
+        for (int i = 0; i < RocketManager.Instance.openObjectTypeCount.Count; i++)
+        {
+            if (objectType == RocketManager.Instance.openObjectTypeCount[i])
+            {
+                RocketManager.Instance.openObjectCount[i] += objectCount;
+                isThere = true;
+            }
+
+        }
+        if (!isThere)
+        {
+            RocketManager.Instance.openObjectTypeCount.Add(objectType);
+            RocketManager.Instance.openObjectCount.Add(objectType);
+            RocketManager.Instance.openObjectTypeBool.Add(false);
+        }
     }
 
     public void WaitSysytemCountPlacement(int waitBar, int contractCount)

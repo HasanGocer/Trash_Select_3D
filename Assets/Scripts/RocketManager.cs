@@ -11,24 +11,24 @@ public class RocketManager : MonoSingleton<RocketManager>
     [SerializeField] private int _minVeloCityPower, _maxVeloCityPower;
     [SerializeField] private int _OPTrashCount;
     public List<int> openObjectTypeCount;
+    public List<int> openObjectCount;
     public List<bool> openObjectTypeBool;
 
     public IEnumerator RocketStart(float pushTime)
     {
         while (true)
         {
-            for (int i = 0; i < ContractSystem.Instance.FocusContract.Length; i++)
-            {
-                for (int i1 = 0; i1 < openObjectTypeCount.Count; i1++)
+            if (GameManager.Instance.openContract)
+                for (int i = 0; i < ContractSystem.Instance.FocusContract.Length; i++)
                 {
-                    for (int i2 = 0; i2 < ContractSystem.Instance.FocusContract[i].objectTypeCount.Count; i2++)
+                    for (int i1 = 0; i1 < openObjectTypeCount.Count; i1++)
                     {
-                        if (openObjectTypeCount[i1] == ContractSystem.Instance.FocusContract[i].objectTypeCount[i2]&& openObjectTypeBool[i1])
+                        for (int i2 = 0; i2 < ContractSystem.Instance.FocusContract[i].objectTypeCount.Count; i2++)
                         {
-                            //buraya arkadan gelecek nesile göre atama yapýlacak
-                            for (int i3 = 0; i3 < ContractSystem.Instance.FocusContract[i].objectCount[i2] - ObjectManager.Instance.objectÝnGame[openObjectTypeCount[i1]].gameObjectÝnGame.Count; i3++)
+                            if (openObjectTypeCount[i1] == ContractSystem.Instance.FocusContract[i].objectTypeCount[i2] && openObjectTypeBool[i1])
                             {
-                                if (GameManager.Instance.openContract)
+                                //buraya arkadan gelecek nesile göre atama yapýlacak
+                                for (int i3 = 0; i3 < openObjectCount[i1]; i3++)
                                 {
                                     JumpObject(_rocketPushPos.transform.position, ContractSystem.Instance.FocusContract[i].objectTypeCount[i2], _minVeloCityPower, _maxVeloCityPower);
                                     yield return new WaitForSeconds(pushTime);
@@ -37,7 +37,6 @@ public class RocketManager : MonoSingleton<RocketManager>
                         }
                     }
                 }
-            }
             yield return null;
         }
     }
@@ -47,6 +46,7 @@ public class RocketManager : MonoSingleton<RocketManager>
         GameObject obj = ObjectPool.Instance.GetPooledObject(_OPTrashCount);
         obj.transform.position = rocketPushPos;
         obj.GetComponent<ObjectTouchPlane>().objectCount = openObjectCount;
+        obj.GetComponent<ObjectTouchPlane>().isClear = true;
         obj.transform.GetChild(openObjectCount).gameObject.SetActive(true);
         int velocityPowerX = Random.Range(minVeloCityPower, maxVeloCityPower);
         int velocityPowerY = Random.Range(minVeloCityPower, maxVeloCityPower);

@@ -7,12 +7,19 @@ public class UpgradeManager : MonoSingleton<UpgradeManager>
     [System.Serializable]
     public class UpgradeItem
     {
-        public GameObject[] _items;
+        public List<GameObject> _items = new List<GameObject>();
     }
-    public UpgradeItem[] _upgradeItem;
+    public List<UpgradeItem> _upgradeItem = new List<UpgradeItem>();
 
     public GameObject ItemSelect(int item, int count)
     {
         return _upgradeItem[item]._items[count];
+    }
+    public void StartFirstSpawn()
+    {
+        for (int i = 0; i < _upgradeItem[2]._items.Count; i++)
+        {
+            StartCoroutine(_upgradeItem[2]._items[i].GetComponent<FirstSpawn>().ItemSpawn());
+        }
     }
 }
