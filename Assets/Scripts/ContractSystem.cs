@@ -127,7 +127,7 @@ public class ContractSystem : MonoSingleton<ContractSystem>
         if (!isThere)
         {
             RocketManager.Instance.openObjectTypeCount.Add(objectType);
-            RocketManager.Instance.openObjectCount.Add(objectType);
+            RocketManager.Instance.openObjectCount.Add(objectCount);
             RocketManager.Instance.openObjectTypeBool.Add(false);
         }
     }

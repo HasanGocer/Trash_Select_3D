@@ -19,7 +19,7 @@ public class WaitSystem : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             inPlace = true;
-            StartCoroutine(bar(other.gameObject));
+            StartCoroutine(bar(other.gameObject, other.GetComponent<ObjectTouchPlane>().isClear));
         }
     }
 
@@ -30,7 +30,7 @@ public class WaitSystem : MonoBehaviour
     }
 
 
-    public IEnumerator bar(GameObject player)
+    public IEnumerator bar(GameObject player, bool isClear)
     {
         float timer = 0;
 
@@ -42,7 +42,11 @@ public class WaitSystem : MonoBehaviour
             if (_barImage.fillAmount == 0)
             {
                 inPlace = false;
-                StartCoroutine(StackSystem.Instance.StackDrop(this, objectPos, objectPos.transform.position, contractCount));
+                if (isClear)
+                    StartCoroutine(StackSystem.Instance.StackDrop(this, objectPos, objectPos.transform.position, contractCount));
+                else
+                    StartCoroutine(StackSystem.Instance.DirtyThrashDropObject(objectPos, objectPos.transform.position));
+
                 _barImage.fillAmount = 1;
                 break;
             }
