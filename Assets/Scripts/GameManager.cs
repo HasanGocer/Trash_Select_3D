@@ -8,7 +8,7 @@ public class GameManager : MonoSingleton<GameManager>
 
     public bool inTransfer;
     public bool dropTransfer;
-    public bool openContract;
+    public bool inStart;
 
     public int money;
     public int level;

@@ -16,6 +16,12 @@ public class AIManager : MonoSingleton<AIManager>
     public float AIDistanceConstant;
     public int stackDistance;
 
+    public void AIManagerStart()
+    {
+        StartPlace();
+        StartAIStacker();
+    }
+
     public void StartPlace()
     {
         for (int i1 = 0; i1 < stackerÝnGame.Length; i1++)

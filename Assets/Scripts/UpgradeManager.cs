@@ -11,6 +11,11 @@ public class UpgradeManager : MonoSingleton<UpgradeManager>
     }
     public List<UpgradeItem> _upgradeItem = new List<UpgradeItem>();
 
+    public void UpgradeSystemStart()
+    {
+        StartFirstSpawn();
+    }
+
     public GameObject ItemSelect(int item, int count)
     {
         return _upgradeItem[item]._items[count];

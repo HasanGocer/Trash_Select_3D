@@ -10,15 +10,16 @@ public class RocketManager : MonoSingleton<RocketManager>
     [SerializeField] private GameObject _rocketPushPos;
     [SerializeField] private int _minVeloCityPower, _maxVeloCityPower;
     [SerializeField] private int _OPTrashCount;
+    [SerializeField] private float _pushTime;
     public List<int> openObjectTypeCount = new List<int>();
     public List<int> openObjectCount = new List<int>();
     public List<bool> openObjectTypeBool = new List<bool>();
 
-    public IEnumerator RocketStart(float pushTime)
+    public IEnumerator RocketStart()
     {
         while (true)
         {
-            if (GameManager.Instance.openContract)
+            if (GameManager.Instance.inStart)
                 for (int i = 0; i < ContractSystem.Instance.FocusContract.Length; i++)
                 {
                     for (int i1 = 0; i1 < openObjectTypeCount.Count; i1++)
@@ -31,7 +32,7 @@ public class RocketManager : MonoSingleton<RocketManager>
                                 for (int i3 = 0; i3 < openObjectCount[i1]; i3++)
                                 {
                                     JumpObject(_rocketPushPos.transform.position, ContractSystem.Instance.FocusContract[i].objectTypeCount[i2], _minVeloCityPower, _maxVeloCityPower);
-                                    yield return new WaitForSeconds(pushTime);
+                                    yield return new WaitForSeconds(_pushTime);
                                 }
                                 openObjectTypeBool[i1] = false;
                             }

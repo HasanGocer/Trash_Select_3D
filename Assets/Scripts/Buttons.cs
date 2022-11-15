@@ -10,6 +10,8 @@ public class Buttons : MonoSingleton<Buttons>
 
     [SerializeField] private GameObject _money;
 
+    [SerializeField] private Button _startButton;
+
     [SerializeField] private Button _settingButton;
     [SerializeField] private GameObject _settingGame;
 
@@ -17,12 +19,10 @@ public class Buttons : MonoSingleton<Buttons>
     [SerializeField] private Button _settingBackButton;
     [SerializeField] private Button _soundButton, _vibrationButton;
 
-    [SerializeField] private Button contract;
-
     private void Start()
     {
         ButtonPlacement();
-        /*if (GameManager.Instance.sound == 1)
+        if (GameManager.Instance.sound == 1)
         {
             _soundButton.gameObject.GetComponent<Image>().sprite = _green;
             SoundSystem.Instance.MainMusicPlay();
@@ -39,35 +39,28 @@ public class Buttons : MonoSingleton<Buttons>
         else
         {
             _vibrationButton.gameObject.GetComponent<Image>().sprite = _red;
-        }*/
+        }
     }
 
     private void ButtonPlacement()
     {
-        /*_settingButton.onClick.AddListener(SettingButton);
+        _settingButton.onClick.AddListener(SettingButton);
         _settingBackButton.onClick.AddListener(SettingBackButton);
         _soundButton.onClick.AddListener(SoundButton);
-        _vibrationButton.onClick.AddListener(VibrationButton);*/
-        contract.onClick.AddListener(bools);
-
+        _vibrationButton.onClick.AddListener(VibrationButton);
+        _startButton.onClick.AddListener(StartButton);
     }
 
-    public void bools()
+    private void StartButton()
     {
-        GameManager.Instance.openContract = true;
-        AIManager.Instance.StartPlace();
-        AIManager.Instance.StartAIStacker();
-        UpgradeManager.Instance.StartFirstSpawn();  
-        contract.gameObject.SetActive(false);
+        _startButton.gameObject.SetActive(false);
+        ContractSystem.Instance.ContractStart();
+        RocketManager.Instance.RocketStart();
+        DirtyManager.Instance.DirtyManagerStart();
+        AIManager.Instance.AIManagerStart();
+        UpgradeManager.Instance.UpgradeSystemStart();
     }
 
-    public void Contract()
-    {
-        ContractSystem.Contract contract = ContractSystem.Instance.NewContractForUI(1, 5, 3, 10);
-        ContractSystem.Instance.FocusContract[0] = contract;
-        ContractSystem.Instance.FocusContract[0].ContractBool = true;
-        ContractSystem.Instance.ObjectCountUpdate();
-    }
 
     private void SettingButton()
     {

@@ -17,7 +17,7 @@ public class FirstSpawn : MonoBehaviour
     {
         while (true)
         {
-            if (GameManager.Instance.openContract)
+            if (GameManager.Instance.inStart)
                 for (int i1 = 0; i1 < RocketManager.Instance.openObjectTypeCount.Count; i1++)
                 {
                     if (_dirtyThrashItemID == RocketManager.Instance.openObjectTypeCount[i1] && Objects.Count < RocketManager.Instance.openObjectCount[i1])

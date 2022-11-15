@@ -13,30 +13,36 @@ public class ContractSystem : MonoSingleton<ContractSystem>
         public bool ContractBool = false;
     }
 
-    public int contractLimit = 1;
+    public int contractLimit;
+    public int levelMod, maxItemCount, maxitemTypeCount, contractBudge;
+    public int waitBarUSCount;
     public Contract[] FocusContract;
 
-    private void Start()
+    public void ContractStart()
     {
         FocusContract = new Contract[contractLimit];
-        Buttons.Instance.Contract();
-        WaitSysytemCountPlacement(0, 0);
-        StartCoroutine(RocketManager.Instance.RocketStart(2));
-        DirtyManager.Instance.NewDirtyListPlacement();
+        Contract contract = NewContractForUI(levelMod, maxItemCount, maxitemTypeCount, contractBudge);
+        for (int i = 0; i < contractLimit; i++)
+        {
+            FocusContract[i] = contract;
+            FocusContract[i].ContractBool = true;
+            WaitSysytemCountPlacement(waitBarUSCount, i);
+        }
+        ObjectCountUpdate();
     }
 
-    public Contract NewContractForUI(int levelMod, int maxItemInCount, int maxItemCount, int contractBudget)
+    public Contract NewContractForUI(int levelMod, int maxItemCount, int maxitemTypeCount, int contractBudget)
     {
         Contract contract = new Contract();
         contract.money = contractBudget;
 
         for (int i = 0; i < GameManager.Instance.level / levelMod; i++)
         {
-            int itemCount = Random.Range(0, maxItemCount);
-            int itemInCount = Random.Range(1, maxItemInCount);
+            int itemTypeCount = Random.Range(0, maxitemTypeCount);
+            int itemCount = Random.Range(1, maxItemCount);
 
-            contract.objectTypeCount.Add(itemCount);
-            contract.objectCount.Add(itemInCount);
+            contract.objectTypeCount.Add(itemTypeCount);
+            contract.objectCount.Add(itemCount);
         }
 
         return contract;
@@ -113,7 +119,7 @@ public class ContractSystem : MonoSingleton<ContractSystem>
             }
         }
         if (RocketManager.Instance.openObjectTypeCount.Count == 0)
-            GameManager.Instance.openContract = false;
+            GameManager.Instance.inStart = false;
     }
 
     public void CheckObject(int objectType, int objectCount)

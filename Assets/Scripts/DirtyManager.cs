@@ -7,6 +7,11 @@ public class DirtyManager : MonoSingleton<DirtyManager>
     public List<int> openObjectTypeCount = new List<int>();
     public List<int> openObjectCount = new List<int>();
 
+    public void DirtyManagerStart()
+    {
+        DirtyManager.Instance.NewDirtyListPlacement();
+    }
+
     public void NewDirtyListPlacement()
     {
         for (int i = 0; i < RocketManager.Instance.openObjectTypeCount.Count; i++)
