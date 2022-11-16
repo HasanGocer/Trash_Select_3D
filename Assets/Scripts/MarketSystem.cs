@@ -28,7 +28,7 @@ public class MarketSystem : MonoBehaviour
 
     [SerializeField] private GameObject upperScroll;
 
-    [SerializeField] private int _OPScrollBarTemplateCount, _OPUpperScrollBarTemplateCount;
+    [SerializeField] private int _OPScrollBarTemplateCount, _OPUpperScrollBarTemplateCount, _OPPropTemplateCount;
     [SerializeField] private float verticalPropPosPlus, horizontalMarketPosPlus, verticalPropPosTemplate, horizontalMarketPosTemplate;
     public void MarketStart()
     {
@@ -47,14 +47,34 @@ public class MarketSystem : MonoBehaviour
             objImage2.rectTransform.right = new Vector3(horizontalMarketPosTemplate + i1 * horizontalMarketPosPlus, 0, 0);
             objImage2 = obj2.transform.GetChild(0).gameObject.GetComponent<Image>();
             objImage2 = market[i1].marketImage;
-
+            Button objButton2 = obj2.transform.GetChild(0).gameObject.GetComponent<Button>();
+            objButton2 = market[i1].marketButtton;
 
 
             //üst resim ayarla
             for (int i2 = 0; i2 < market[i1].marketField.Length; i2++)
             {
-                //field ata
-            }
+                Prop prop = market[i1].marketField[i2];
+                GameObject obj = ObjectPool.Instance.GetPooledObject(_OPPropTemplateCount);
+                Button objButton = obj.transform.GetChild(0).GetComponent<Button>();
+                objButton = prop.propButton;
+                //button ata
+
+                Image objImage = obj.transform.GetChild(1).GetComponent<Image>();
+                objImage = prop.propImage;
+
+                objImage = obj.transform.GetChild(2).GetComponent<Image>();
+                objImage = prop.propMoneyImage;
+
+                Text objText = obj.transform.GetChild(3).GetComponent<Text>();
+                objText = prop.propName;
+
+                 objText = obj.transform.GetChild(4).GetComponent<Text>();
+                objText = prop.propMoney;
+
+                objText = obj.transform.GetChild(5).GetComponent<Text>();
+                objText = prop.propCount;
+            } 
         }
     }
 }
