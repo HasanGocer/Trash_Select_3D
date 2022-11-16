@@ -19,13 +19,19 @@ public class Buttons : MonoSingleton<Buttons>
     [SerializeField] private Button _settingBackButton;
     [SerializeField] private Button _soundButton, _vibrationButton;
 
+    public Button _contractBackButton;
+    [SerializeField] private Button _contractAceptedButton, _bactToTheContractSelectPanelButton;
+    public GameObject _contractGame;
+
+    public Button marketButton;
+
     private void Start()
     {
         ButtonPlacement();
         if (GameManager.Instance.sound == 1)
         {
             _soundButton.gameObject.GetComponent<Image>().sprite = _green;
-            SoundSystem.Instance.MainMusicPlay();
+            //SoundSystem.Instance.MainMusicPlay();
         }
         else
         {
@@ -49,18 +55,30 @@ public class Buttons : MonoSingleton<Buttons>
         _soundButton.onClick.AddListener(SoundButton);
         _vibrationButton.onClick.AddListener(VibrationButton);
         _startButton.onClick.AddListener(StartButton);
+        _contractBackButton.onClick.AddListener(ContractCloseButton);
+        _contractAceptedButton.onClick.AddListener(() => ContractUISystem.Instance.SelectTheContract(ContractUISystem.Instance.contractCount, ContractUISystem.Instance.contract[ContractUISystem.Instance.selectedContractCount]));
+        _bactToTheContractSelectPanelButton.onClick.AddListener(ContractUISystem.Instance.BackToTheContracts);
+
+        ContractUISystem.Instance.PosButton[0].onClick.AddListener(() => ContractUISystem.Instance.ContractUIPlacement(ContractUISystem.Instance.contract[0], 0));
+        ContractUISystem.Instance.PosButton[1].onClick.AddListener(() => ContractUISystem.Instance.ContractUIPlacement(ContractUISystem.Instance.contract[1], 1));
+        ContractUISystem.Instance.PosButton[2].onClick.AddListener(() => ContractUISystem.Instance.ContractUIPlacement(ContractUISystem.Instance.contract[2], 2));
+        ContractUISystem.Instance.PosButton[3].onClick.AddListener(() => ContractUISystem.Instance.ContractUIPlacement(ContractUISystem.Instance.contract[3], 3));
+        ContractUISystem.Instance.PosButton[4].onClick.AddListener(() => ContractUISystem.Instance.ContractUIPlacement(ContractUISystem.Instance.contract[4], 4));
     }
 
     private void StartButton()
     {
         _startButton.gameObject.SetActive(false);
-        ContractSystem.Instance.ContractStart();
         RocketManager.Instance.RocketStart();
         DirtyManager.Instance.DirtyManagerStart();
         AIManager.Instance.AIManagerStart();
         UpgradeManager.Instance.UpgradeSystemStart();
     }
 
+    private void ContractCloseButton()
+    {
+        _contractGame.SetActive(false);
+    }
 
     private void SettingButton()
     {

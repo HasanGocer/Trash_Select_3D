@@ -58,6 +58,7 @@ public class GameManager : MonoSingleton<GameManager>
         {
             PlayerPrefs.SetInt("sound", 1);
         }
+        ContractSystem.Instance.ContractStart();
         ContractPlacement();
     }
 
