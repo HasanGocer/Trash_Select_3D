@@ -15,10 +15,4 @@ public class UpgradeSystem : MonoBehaviour
 
     public int itemCount;
 
-    public void UpgradePlus()
-    {
-        objectClass[ItemData.Instance.test1[itemCount].test2].item.SetActive(false);
-        ItemData.Instance.test1[itemCount].test2++;
-        objectClass[ItemData.Instance.test1[itemCount].test2].item.SetActive(true);
-    }
 }
