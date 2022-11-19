@@ -9,6 +9,7 @@ public class GameManager : MonoSingleton<GameManager>
     public bool inTransfer;
     public bool dropTransfer;
     public bool inStart;
+    [SerializeField] private bool inFirstStart;
 
     public int money;
     public int level;
@@ -58,21 +59,45 @@ public class GameManager : MonoSingleton<GameManager>
         {
             PlayerPrefs.SetInt("sound", 1);
         }
+
+        if (PlayerPrefs.HasKey("first"))
+        {
+            if (PlayerPrefs.GetInt("first") == 1)
+                ContractPlacementRead();
+            else
+            {
+                for (int i = 0; i < ContractSystem.Instance.contractLimit; i++)
+                {
+                    ContractSystem.Contract contract = new ContractSystem.Contract();
+                    ContractSystem.Instance.FocusContract.Contracts.Add(contract);
+                }
+                ContractPlacementWrite(ContractSystem.Instance.FocusContract);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < ContractSystem.Instance.contractLimit; i++)
+            {
+                ContractSystem.Contract contract = new ContractSystem.Contract();
+                ContractSystem.Instance.FocusContract.Contracts.Add(contract);
+            }
+            ContractPlacementWrite(ContractSystem.Instance.FocusContract);
+        }
         ContractSystem.Instance.ContractStart();
         ContractSystem.Instance.FocusContract = ContractPlacementRead();
     }
 
-    public void ContractPlacementWrite(ContractSystem.Contract[] contract)
+    public void ContractPlacementWrite(ContractSystem.ContractArray contract)
     {
         string jsonData = JsonUtility.ToJson(contract);
         System.IO.File.WriteAllText(Application.persistentDataPath + "/ContractData.json", jsonData);
     }
 
-    public ContractSystem.Contract[] ContractPlacementRead()
+    public ContractSystem.ContractArray ContractPlacementRead()
     {
         string jsonRead = System.IO.File.ReadAllText(Application.persistentDataPath + "/ContractData.json");
-        ContractSystem.Contract[] contracts = new ContractSystem.Contract[ContractSystem.Instance.contractLimit];
-        contracts = JsonUtility.FromJson<ContractSystem.Contract[]>(jsonRead);
+        ContractSystem.ContractArray contracts = new ContractSystem.ContractArray();
+        contracts = JsonUtility.FromJson<ContractSystem.ContractArray>(jsonRead);
         return contracts;
     }
 

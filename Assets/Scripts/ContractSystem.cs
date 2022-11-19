@@ -10,22 +10,28 @@ public class ContractSystem : MonoSingleton<ContractSystem>
         public List<int> objectTypeCount = new List<int>();
         public List<int> objectCount = new List<int>();
         public int money = 0;
-        public bool ContractBool = false;
+        public bool contractBool = false;
+        public bool contractBuy = false;
     }
+
+    public class ContractArray
+    {
+        public List<Contract> Contracts;
+    }
+    public ContractArray FocusContract;
 
     public int contractLimit;
     public int levelMod, maxItemCount, maxitemTypeCount, contractBudge;
     public int waitBarUSCount;
-    public Contract[] FocusContract;
 
     public void ContractStart()
     {
-        FocusContract = new Contract[contractLimit];
         Contract contract = NewContractForUI(levelMod, maxItemCount, maxitemTypeCount, contractBudge);
         for (int i = 0; i < contractLimit; i++)
         {
-            FocusContract[i] = contract;
-            FocusContract[i].ContractBool = true;
+            FocusContract.Contracts[i] = contract;
+            FocusContract.Contracts[i].contractBool = true;
+            FocusContract.Contracts[i].contractBuy = true;
             WaitSysytemCountPlacement(waitBarUSCount, i);
         }
         ObjectCountUpdate();
@@ -94,27 +100,19 @@ public class ContractSystem : MonoSingleton<ContractSystem>
         ObjectCountUpdate();
     }
 
-    public int PlayerPrefsContract(int contractCount, int itemCount)
-    {
-        contractCount++;
-        FocusContract[0].objectTypeCount.Add(contractCount);
-        FocusContract[0].objectTypeCount.Add(itemCount);
-        return contractCount;
-    }
-
     public void ObjectCountUpdate()
     {
         RocketManager.Instance.openObjectTypeCount.Clear();
         RocketManager.Instance.openObjectCount.Clear();
         RocketManager.Instance.openObjectTypeBool.Clear();
 
-        for (int i1 = 0; i1 < FocusContract.Length; i1++)
+        for (int i1 = 0; i1 < FocusContract.Contracts.Count; i1++)
         {
-            if (FocusContract[i1].ContractBool)
+            if (FocusContract.Contracts[i1].ContractBool)
             {
-                for (int i2 = 0; i2 < FocusContract[i1].objectTypeCount.Count; i2++)
+                for (int i2 = 0; i2 < FocusContract.Contracts[i1].objectTypeCount.Count; i2++)
                 {
-                    CheckObject(FocusContract[i1].objectTypeCount[i2], FocusContract[i1].objectCount[i2]);
+                    CheckObject(FocusContract.Contracts[i1].objectTypeCount[i2], FocusContract.Contracts[i1].objectCount[i2]);
                 }
             }
         }
@@ -146,36 +144,36 @@ public class ContractSystem : MonoSingleton<ContractSystem>
     {
         GameObject obj = UpgradeManager.Instance.ItemSelect(waitBar, contractCount);
         WaitSystem waitSystem = obj.GetComponent<WaitSystem>();
-        waitSystem.placeCount = new int[FocusContract[contractCount].objectTypeCount.Count];
+        waitSystem.placeCount = new int[FocusContract.Contracts[contractCount].objectTypeCount.Count];
 
-        for (int i = 0; i < FocusContract[contractCount].objectTypeCount.Count; i++)
+        for (int i = 0; i < FocusContract.Contracts[contractCount].objectTypeCount.Count; i++)
         {
-            waitSystem.placeCount[i] = FocusContract[contractCount].objectTypeCount[i];
+            waitSystem.placeCount[i] = FocusContract.Contracts[contractCount].objectTypeCount[i];
         }
     }
 
     public void ContractDownÝtem(int contractCount, int objectTypeCount, int forCount, bool isStack)
     {
-        for (int i = 0; i < FocusContract[contractCount].objectTypeCount.Count; i++)
+        for (int i = 0; i < FocusContract.Contracts[contractCount].objectTypeCount.Count; i++)
         {
-            if (FocusContract[contractCount].objectTypeCount[i] == objectTypeCount)
+            if (FocusContract.Contracts[contractCount].objectTypeCount[i] == objectTypeCount)
             {
-                FocusContract[contractCount].objectCount[i]--;
+                FocusContract.Contracts[contractCount].objectCount[i]--;
                 if (isStack)
                 {
                     StackSystem.Instance.ObjectsCount.RemoveAt(forCount);
                     StackSystem.Instance.Objects.RemoveAt(forCount);
                 }
 
-                if (FocusContract[contractCount].objectCount[i] <= 0)
+                if (FocusContract.Contracts[contractCount].objectCount[i] <= 0)
                 {
-                    FocusContract[contractCount].objectTypeCount.RemoveAt(i);
-                    FocusContract[contractCount].objectCount.RemoveAt(i);
+                    FocusContract.Contracts[contractCount].objectTypeCount.RemoveAt(i);
+                    FocusContract.Contracts[contractCount].objectCount.RemoveAt(i);
                 }
 
-                if (FocusContract[contractCount].objectTypeCount.Count == 0)
+                if (FocusContract.Contracts[contractCount].objectTypeCount.Count == 0)
                 {
-                    ContractCompleted(FocusContract[contractCount], i);
+                    ContractCompleted(FocusContract.Contracts[contractCount], i);
                 }
                 ObjectCountUpdate();
             }
@@ -189,7 +187,7 @@ public class ContractSystem : MonoSingleton<ContractSystem>
         contract.objectCount.Clear();
         contract.objectTypeCount.Clear();
         contract.money = 0;
-        FocusContract[contractCount].ContractBool = false;
+        FocusContract.Contracts[contractCount].ContractBool = false;
         //yeni kontrat UI
         ObjectCountUpdate();
     }

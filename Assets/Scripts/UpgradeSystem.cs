@@ -14,5 +14,5 @@ public class UpgradeSystem : MonoBehaviour
     public ObjectClass[] objectClass;
 
     public int itemCount;
-
+    
 }
