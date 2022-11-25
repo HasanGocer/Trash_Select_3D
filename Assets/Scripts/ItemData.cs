@@ -9,6 +9,9 @@ public class ItemData : MonoSingleton<ItemData>
     [System.Serializable]
     public class Field
     {
+        public int[,] AIStackCount;
+        public int[] AICount;
+        public int playerStackCount, AICountTemp, AIStackCountTemp, dirtyGarbage, garbageCar;
     }
 
     public Field field;
@@ -21,43 +24,83 @@ public class ItemData : MonoSingleton<ItemData>
 
     private void Start()
     {
-        /*field.runnerSpeed = standart.runnerSpeed - (factor.runnerSpeed * constant.runnerSpeed);
-        fieldPrice.runnerSpeed = fieldPrice.runnerSpeed * factor.runnerSpeed;
+        field.playerStackCount = standart.playerStackCount + (factor.playerStackCount * constant.playerStackCount);
+        fieldPrice.playerStackCount = fieldPrice.playerStackCount * factor.playerStackCount;
 
-        field.runnerCount = standart.runnerCount + (factor.runnerCount * constant.runnerCount);
-        fieldPrice.runnerCount = fieldPrice.runnerCount * factor.runnerCount;
+        field.AICount = new int[AIManager.Instance.maxStackerTypeCount];
+        factor.AICount = new int[AIManager.Instance.maxStackerTypeCount];
+        fieldPrice.AICount = new int[AIManager.Instance.maxStackerTypeCount];
 
-        if (field.runnerCount > max.runnerCount)
+        for (int i = 0; i < AIManager.Instance.maxStackerTypeCount; i++)
         {
-            field.runnerCount = max.runnerCount;
+            field.AICount[i] = standart.AICountTemp + (factor.AICount[i] * constant.AICountTemp);
+            fieldPrice.AICount[i] = fieldPrice.AICount[i] * factor.AICount[i];
         }
 
+        field.AIStackCount = new int[AIManager.Instance.maxStackerTypeCount, AIManager.Instance.maxStackerCount];
+        factor.AIStackCount = new int[AIManager.Instance.maxStackerTypeCount, AIManager.Instance.maxStackerCount];
+        fieldPrice.AIStackCount = new int[AIManager.Instance.maxStackerTypeCount, AIManager.Instance.maxStackerCount];
 
-        if (field.runnerSpeed < max.runnerSpeed)
+        for (int i1 = 0; i1 < AIManager.Instance.maxStackerTypeCount; i1++)
         {
-            field.runnerSpeed = max.runnerSpeed;
-        }*/
+            for (int i2 = 0; i2 < AIManager.Instance.maxStackerCount; i2++)
+            {
+                field.AIStackCount[i1, i2] = standart.AIStackCountTemp + (factor.AIStackCount[i1, i2] * constant.AIStackCountTemp);
+                fieldPrice.AIStackCount[i1, i2] = fieldPrice.AIStackCount[i1, i2] * factor.AIStackCount[i1, i2];
+            }
+        }
 
+        field.dirtyGarbage = standart.dirtyGarbage + (factor.dirtyGarbage * constant.dirtyGarbage);
+        fieldPrice.dirtyGarbage = fieldPrice.dirtyGarbage * factor.dirtyGarbage;
+
+        field.garbageCar = standart.garbageCar + (factor.garbageCar * constant.garbageCar);
+        fieldPrice.garbageCar = fieldPrice.garbageCar * factor.garbageCar;
     }
 
-    /*public void RunnerCount()
+    public void SetPlayerStackCount()
     {
-        field.runnerCount = standart.runnerCount + (factor.runnerCount * constant.runnerCount);
+        fieldPrice.playerStackCount = fieldPrice.playerStackCount / factor.playerStackCount;
+        fieldPrice.playerStackCount++;
 
-        if (field.runnerCount > max.runnerCount)
-        {
-            field.runnerCount = max.runnerCount;
-        }
+        fieldPrice.playerStackCount = fieldPrice.playerStackCount * factor.playerStackCount;
+        field.playerStackCount = standart.playerStackCount + (factor.playerStackCount * constant.playerStackCount);
+        GameManager.Instance.FactorPlacementWrite(factor);
     }
 
-
-    public void RunnerSpeed()
+    public void SetAICount(int StackerTypeCount)
     {
-        field.runnerSpeed = standart.runnerSpeed - (factor.runnerSpeed * constant.runnerSpeed);
+        fieldPrice.AICount[StackerTypeCount] = fieldPrice.AICount[StackerTypeCount] / factor.AICount[StackerTypeCount];
+        fieldPrice.AICount[StackerTypeCount]++;
+        fieldPrice.AICount[StackerTypeCount] = fieldPrice.AICount[StackerTypeCount] * factor.AICount[StackerTypeCount];
+        field.AICount[StackerTypeCount] = standart.AICountTemp + (factor.AICount[StackerTypeCount] * constant.AICountTemp);
+        GameManager.Instance.FactorPlacementWrite(factor);
+    }
 
-        if (field.runnerSpeed < max.runnerSpeed)
-        {
-            field.runnerSpeed = max.runnerSpeed;
-        }
-    }*/
+    public void SetAIStackCount(int StackerTypeCount, int StackerCount)
+    {
+        fieldPrice.AIStackCount[StackerTypeCount, StackerCount] = fieldPrice.AIStackCount[StackerTypeCount, StackerCount] / factor.AIStackCount[StackerTypeCount, StackerCount];
+        fieldPrice.AIStackCount[StackerTypeCount, StackerCount]++;
+        fieldPrice.AIStackCount[StackerTypeCount, StackerCount] = fieldPrice.AIStackCount[StackerTypeCount, StackerCount] * factor.AIStackCount[StackerTypeCount, StackerCount];
+        field.AIStackCount[StackerTypeCount, StackerCount] = standart.AIStackCountTemp + (factor.AIStackCount[StackerTypeCount, StackerCount] * constant.AIStackCountTemp);
+        GameManager.Instance.FactorPlacementWrite(factor);
+    }
+
+    public void SetDirtyGarbage()
+    {
+        fieldPrice.dirtyGarbage = fieldPrice.dirtyGarbage / factor.dirtyGarbage;
+        fieldPrice.dirtyGarbage++;
+        fieldPrice.dirtyGarbage = fieldPrice.dirtyGarbage * factor.dirtyGarbage;
+        field.dirtyGarbage = standart.dirtyGarbage + (factor.dirtyGarbage * constant.dirtyGarbage);
+        GameManager.Instance.FactorPlacementWrite(factor);
+    }
+
+    public void SetGarbageCar()
+    {
+        fieldPrice.garbageCar = fieldPrice.garbageCar / factor.garbageCar;
+        fieldPrice.garbageCar++;
+        fieldPrice.garbageCar = fieldPrice.garbageCar * factor.garbageCar;
+        field.garbageCar = standart.garbageCar + (factor.garbageCar * constant.garbageCar);
+        GameManager.Instance.FactorPlacementWrite(factor);
+        ContractSystem.Instance.FocusContract.contractLimit = field.garbageCar;
+    }
 }

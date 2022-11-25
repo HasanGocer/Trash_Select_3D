@@ -63,28 +63,34 @@ public class GameManager : MonoSingleton<GameManager>
         if (PlayerPrefs.HasKey("first"))
         {
             if (PlayerPrefs.GetInt("first") == 1)
-                ContractPlacementRead();
+            {
+                ContractSystem.Instance.FocusContract = ContractPlacementRead();
+                ItemData.Instance.factor = FactorPlacementRead();
+            }
             else
             {
-                for (int i = 0; i < ContractSystem.Instance.contractLimit; i++)
+                for (int i = 0; i < ContractSystem.Instance.FocusContract.contractLimit; i++)
                 {
                     ContractSystem.Contract contract = new ContractSystem.Contract();
                     ContractSystem.Instance.FocusContract.Contracts.Add(contract);
                 }
                 ContractPlacementWrite(ContractSystem.Instance.FocusContract);
+                FactorPlacementWrite(ItemData.Instance.factor);
             }
         }
         else
         {
-            for (int i = 0; i < ContractSystem.Instance.contractLimit; i++)
+            for (int i = 0; i < ContractSystem.Instance.FocusContract.contractLimit; i++)
             {
                 ContractSystem.Contract contract = new ContractSystem.Contract();
                 ContractSystem.Instance.FocusContract.Contracts.Add(contract);
             }
             ContractPlacementWrite(ContractSystem.Instance.FocusContract);
+            FactorPlacementWrite(ItemData.Instance.factor);
         }
         ContractSystem.Instance.ContractStart();
         ContractSystem.Instance.FocusContract = ContractPlacementRead();
+        ItemData.Instance.factor = FactorPlacementRead();
     }
 
     public void ContractPlacementWrite(ContractSystem.ContractArray contract)
@@ -93,12 +99,26 @@ public class GameManager : MonoSingleton<GameManager>
         System.IO.File.WriteAllText(Application.persistentDataPath + "/ContractData.json", jsonData);
     }
 
+    public void FactorPlacementWrite(ItemData.Field factor)
+    {
+        string jsonData = JsonUtility.ToJson(factor);
+        System.IO.File.WriteAllText(Application.persistentDataPath + "/FactorData.json", jsonData);
+    }
+
     public ContractSystem.ContractArray ContractPlacementRead()
     {
         string jsonRead = System.IO.File.ReadAllText(Application.persistentDataPath + "/ContractData.json");
         ContractSystem.ContractArray contracts = new ContractSystem.ContractArray();
         contracts = JsonUtility.FromJson<ContractSystem.ContractArray>(jsonRead);
         return contracts;
+    }
+
+    public ItemData.Field FactorPlacementRead()
+    {
+        string jsonRead = System.IO.File.ReadAllText(Application.persistentDataPath + "/FactorData.json");
+        ItemData.Field factor = new ItemData.Field();
+        factor = JsonUtility.FromJson<ItemData.Field>(jsonRead);
+        return factor;
     }
 
     public void SetMoney(int plus)

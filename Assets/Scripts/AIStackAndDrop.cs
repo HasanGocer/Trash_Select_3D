@@ -18,15 +18,15 @@ public class AIStackAndDrop : MonoBehaviour
     {
         while (true)
         {
-            if (ContractSystem.Instance.FocusContract[_AIStackerContractCount].ContractBool && !(ContractControl()) && !backpack›sFull)
+            if (ContractSystem.Instance.FocusContract.Contracts[_AIStackerContractCount].contractBool && !(ContractControl()) && !backpack›sFull)
             {
-                for (int i1 = 0; i1 < ContractSystem.Instance.FocusContract[_AIStackerContractCount].objectTypeCount.Count; i1++)
+                for (int i1 = 0; i1 < ContractSystem.Instance.FocusContract.Contracts[_AIStackerContractCount].objectTypeCount.Count; i1++)
                 {
                     for (int i2 = 0; i2 < ObjectManager.Instance.object›nGame.Count; i2++)
                     {
-                        if (ContractSystem.Instance.FocusContract[_AIStackerContractCount].objectTypeCount[i1] == i2 && ObjectManager.Instance.object›nGame[i2].gameObject›nGame.Count > 0)
+                        if (ContractSystem.Instance.FocusContract.Contracts[_AIStackerContractCount].objectTypeCount[i1] == i2 && ObjectManager.Instance.object›nGame[i2].gameObject›nGame.Count > 0)
                         {
-                            for (int i3 = 0; i3 < ContractSystem.Instance.FocusContract[_AIStackerContractCount].objectCount[i1]; i3++)
+                            for (int i3 = 0; i3 < ContractSystem.Instance.FocusContract.Contracts[_AIStackerContractCount].objectCount[i1]; i3++)
                             {
                                 if (!backpack›sFull)
                                 {
@@ -109,15 +109,15 @@ public class AIStackAndDrop : MonoBehaviour
     {
         bool game = true;
         List<bool> globalBool = new List<bool>();
-        for (int i1 = 0; i1 < ContractSystem.Instance.FocusContract[_AIStackerContractCount].objectTypeCount.Count; i1++)
+        for (int i1 = 0; i1 < ContractSystem.Instance.FocusContract.Contracts[_AIStackerContractCount].objectTypeCount.Count; i1++)
         {
             globalBool.Add(false);
-            for (int i2 = 0; i2 < ContractSystem.Instance.FocusContract[_AIStackerContractCount].objectCount[i1]; i2++)
+            for (int i2 = 0; i2 < ContractSystem.Instance.FocusContract.Contracts[_AIStackerContractCount].objectCount[i1]; i2++)
             {
-                int contractCount = ContractSystem.Instance.FocusContract[_AIStackerContractCount].objectCount[i1];
+                int contractCount = ContractSystem.Instance.FocusContract.Contracts[_AIStackerContractCount].objectCount[i1];
                 for (int i3 = 0; i3 < _stackersStack.Count; i3++)
                 {
-                    if (_stackerStackCount[i3] == ContractSystem.Instance.FocusContract[_AIStackerContractCount].objectTypeCount[i1])
+                    if (_stackerStackCount[i3] == ContractSystem.Instance.FocusContract.Contracts[_AIStackerContractCount].objectTypeCount[i1])
                     {
                         contractCount--;
                     }

@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class MarketSystem : MonoBehaviour
 {
+    //iptal 
+    //Ýtem data baðanacak ve UI yerleþtirilmesi denemleri yapýlacak
     [System.Serializable]
     public class Prop
     {
@@ -27,9 +29,14 @@ public class MarketSystem : MonoBehaviour
     public Market[] market;
 
     [SerializeField] private GameObject upperScroll;
+    [SerializeField] private GameObject MarketPanel;
 
     [SerializeField] private int _OPScrollBarTemplateCount, _OPUpperScrollBarTemplateCount, _OPPropTemplateCount;
     [SerializeField] private float verticalPropPosPlus, horizontalMarketPosPlus, verticalPropPosTemplate, horizontalMarketPosTemplate;
+    [SerializeField] private List<Image> ScrollBars = new List<Image>();
+
+
+
     public void MarketStart()
     {
         for (int i1 = 0; i1 < market.Length; i1++)
@@ -37,6 +44,7 @@ public class MarketSystem : MonoBehaviour
             GameObject obj1 = ObjectPool.Instance.GetPooledObject(_OPScrollBarTemplateCount);
             market[i1].scrollBarTemplate = obj1.GetComponent<Image>();
             market[i1].scrollBarTemplate.rectTransform.up = new Vector3(0, verticalPropPosTemplate + market[i1].marketField.Length * verticalPropPosPlus, 0);
+            ScrollBars.Add(market[i1].scrollBarTemplate);
             //boyut ayarla 
             //satýn alým iþlemi kodlarý girilir
 
@@ -46,9 +54,9 @@ public class MarketSystem : MonoBehaviour
             Image objImage2 = obj2.GetComponent<Image>();
             objImage2.rectTransform.right = new Vector3(horizontalMarketPosTemplate + i1 * horizontalMarketPosPlus, 0, 0);
             objImage2 = obj2.transform.GetChild(0).gameObject.GetComponent<Image>();
-            objImage2 = market[i1].marketImage;
+            market[i1].marketImage = objImage2;
             Button objButton2 = obj2.transform.GetChild(0).gameObject.GetComponent<Button>();
-            objButton2 = market[i1].marketButtton;
+            market[i1].marketButtton = objButton2;
 
 
             //üst resim ayarla
@@ -57,24 +65,31 @@ public class MarketSystem : MonoBehaviour
                 Prop prop = market[i1].marketField[i2];
                 GameObject obj = ObjectPool.Instance.GetPooledObject(_OPPropTemplateCount);
                 Button objButton = obj.transform.GetChild(0).GetComponent<Button>();
-                objButton = prop.propButton;
+                prop.propButton = objButton;
+
+                prop.propButton.onClick.AddListener(BuyProp);
                 //button ata
 
                 Image objImage = obj.transform.GetChild(1).GetComponent<Image>();
-                objImage = prop.propImage;
+                prop.propImage = objImage;
 
                 objImage = obj.transform.GetChild(2).GetComponent<Image>();
-                objImage = prop.propMoneyImage;
+                prop.propMoneyImage = objImage;
 
                 Text objText = obj.transform.GetChild(3).GetComponent<Text>();
-                objText = prop.propName;
+                prop.propName = objText;
 
-                 objText = obj.transform.GetChild(4).GetComponent<Text>();
-                objText = prop.propMoney;
+                objText = obj.transform.GetChild(4).GetComponent<Text>();
+                prop.propMoney = objText;
 
                 objText = obj.transform.GetChild(5).GetComponent<Text>();
-                objText = prop.propCount;
-            } 
+                prop.propCount = objText;
+            }
         }
+    }
+
+    public void BuyProp()
+    {
+
     }
 }

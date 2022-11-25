@@ -8,10 +8,10 @@ public class GarbageCarTouch : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (ContractSystem.Instance.FocusContract[contractCount].ContractBool)
-            ContractUISystem.Instance.ContractUIPlacement(ContractSystem.Instance.FocusContract[contractCount]);
+        ContractUISystem.Instance.contractCount = contractCount;
+        if (ContractSystem.Instance.FocusContract.Contracts[contractCount].contractBool)
+            ContractUISystem.Instance.ContractUIPlacement(ContractSystem.Instance.FocusContract.Contracts[contractCount]);
         else
             ContractUISystem.Instance.NewContractPlacement();
-        ContractUISystem.Instance.contractCount = contractCount;
     }
 }

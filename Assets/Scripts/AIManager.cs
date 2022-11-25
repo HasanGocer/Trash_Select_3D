@@ -11,38 +11,21 @@ public class AIManager : MonoSingleton<AIManager>
         public List<bool> boolStacker = new List<bool>();
         public GameObject stackOutPlace;
     }
-    public Stacker›nGame[] stacker›nGame;
+    public Stacker›nGame[] stackerInGame;
 
     public float AIDistanceConstant;
     public int stackDistance;
-
-    public void AIManagerStart()
-    {
-        StartPlace();
-        StartAIStacker();
-    }
+    public int maxStackerCount;
+    public int maxStackerTypeCount;
 
     public void StartPlace()
     {
-        for (int i1 = 0; i1 < stacker›nGame.Length; i1++)
+        for (int i1 = 0; i1 < maxStackerTypeCount; i1++)
         {
-            for (int i2 = 0; i2 < stacker›nGame[i1].gameObjectStacker.Count; i2++)
+            for (int i2 = 0; i2 < ItemData.Instance.field.AICount[i1]; i2++)
             {
-                //sat˝n al˝ma gˆre bool ayarla
-            }
-        }
-    }
-
-    public void StartAIStacker()
-    {
-        for (int i1 = 0; i1 < stacker›nGame.Length; i1++)
-        {
-            for (int i2 = 0; i2 < stacker›nGame[i1].gameObjectStacker.Count; i2++)
-            {
-                if (stacker›nGame[i1].boolStacker[i2])
-                {
-                    StartCoroutine(stacker›nGame[i1].gameObjectStacker[i2].GetComponent<AIStackAndDrop>().WalkAI(stacker›nGame[i1].stackOutPlace));
-                }
+                stackerInGame[i1].boolStacker[i2] = true;
+                StartCoroutine(stackerInGame[i1].gameObjectStacker[i2].GetComponent<AIStackAndDrop>().WalkAI(stackerInGame[i1].stackOutPlace));
             }
         }
     }

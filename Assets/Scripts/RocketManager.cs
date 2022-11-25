@@ -20,18 +20,18 @@ public class RocketManager : MonoSingleton<RocketManager>
         while (true)
         {
             if (GameManager.Instance.inStart)
-                for (int i = 0; i < ContractSystem.Instance.FocusContract.Length; i++)
+                for (int i = 0; i < ContractSystem.Instance.FocusContract.Contracts.Count; i++)
                 {
                     for (int i1 = 0; i1 < openObjectTypeCount.Count; i1++)
                     {
-                        for (int i2 = 0; i2 < ContractSystem.Instance.FocusContract[i].objectTypeCount.Count; i2++)
+                        for (int i2 = 0; i2 < ContractSystem.Instance.FocusContract.Contracts[i].objectTypeCount.Count; i2++)
                         {
-                            if (openObjectTypeCount[i1] == ContractSystem.Instance.FocusContract[i].objectTypeCount[i2] && openObjectTypeBool[i1])
+                            if (openObjectTypeCount[i1] == ContractSystem.Instance.FocusContract.Contracts[i].objectTypeCount[i2] && openObjectTypeBool[i1])
                             {
                                 //buraya arkadan gelecek nesile göre atama yapýlacak
                                 for (int i3 = 0; i3 < openObjectCount[i1]; i3++)
                                 {
-                                    JumpObject(_rocketPushPos.transform.position, ContractSystem.Instance.FocusContract[i].objectTypeCount[i2], _minVeloCityPower, _maxVeloCityPower);
+                                    JumpObject(_rocketPushPos.transform.position, ContractSystem.Instance.FocusContract.Contracts[i].objectTypeCount[i2], _minVeloCityPower, _maxVeloCityPower);
                                     yield return new WaitForSeconds(_pushTime);
                                 }
                                 openObjectTypeBool[i1] = false;

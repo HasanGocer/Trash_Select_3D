@@ -9,7 +9,6 @@ public class StackSystem : MonoSingleton<StackSystem>
 
     public float stackDistance;
     [SerializeField] private float _stackMoveTime, _dropMoveTime;
-    [SerializeField] private int _stackMaximumCount;
     [SerializeField] private GameObject _stackParent;
     [SerializeField] private GameObject _stackPos;
 
@@ -27,12 +26,12 @@ public class StackSystem : MonoSingleton<StackSystem>
     {
         if (other.CompareTag("Input"))
         {
-            if (Objects.Count < _stackMaximumCount)
+            if (Objects.Count < ItemData.Instance.field.playerStackCount)
                 StartCoroutine(StackAdd(other.gameObject, false));
         }
         else if (other.CompareTag("DirtyInput"))
         {
-            if (Objects.Count < _stackMaximumCount)
+            if (Objects.Count < ItemData.Instance.field.playerStackCount)
                 StartCoroutine(StackAdd(other.gameObject, true));
         }
     }
@@ -77,7 +76,7 @@ public class StackSystem : MonoSingleton<StackSystem>
 
     public IEnumerator StackDrop(WaitSystem waitSystem, GameObject dropParent, Vector3 dropPos, int contractCount)
     {
-        for (int i1 = 0; (i1 < ObjectsCount.Count && ContractSystem.Instance.FocusContract[contractCount].ContractBool); i1++)
+        for (int i1 = 0; (i1 < ObjectsCount.Count && ContractSystem.Instance.FocusContract.Contracts[contractCount].contractBool); i1++)
         {
             for (int i = 0; (i < waitSystem.placeCount.Length && Objects[i].GetComponent<ObjectTouchPlane>().isClear); i++)
             {
