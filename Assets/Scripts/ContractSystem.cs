@@ -28,15 +28,14 @@ public class ContractSystem : MonoSingleton<ContractSystem>
     public void ContractStart()
     {
         FocusContract.contractLimit = ItemData.Instance.field.garbageCar;
+        ContractUISystem.Instance.contract = new Contract[FocusContract.contractLimit];
         Contract contract = NewContractForUI(levelMod, maxItemCount, maxitemTypeCount, contractBudge);
         for (int i = 0; i < FocusContract.contractLimit; i++)
         {
-            FocusContract.Contracts[i] = contract;
-            FocusContract.Contracts[i].contractBool = true;
-            FocusContract.Contracts[i].contractBuy = true;
-            WaitSystemCountPlacement(waitBarUSCount, i);
+            ContractUISystem.Instance.contract[i] = contract;
+            ContractUISystem.Instance.contract[i].contractBool = true;
+            ContractUISystem.Instance.contract[i].contractBuy = true;
         }
-        ObjectCountUpdate();
     }
 
     public Contract NewContractForUI(int levelMod, int maxItemCount, int maxitemTypeCount, int contractBudget)
@@ -137,6 +136,7 @@ public class ContractSystem : MonoSingleton<ContractSystem>
         }
         if (!isThere)
         {
+            GameManager.Instance.inStart = true;
             RocketManager.Instance.openObjectTypeCount.Add(objectType);
             RocketManager.Instance.openObjectCount.Add(objectCount);
             RocketManager.Instance.openObjectTypeBool.Add(false);
@@ -162,6 +162,7 @@ public class ContractSystem : MonoSingleton<ContractSystem>
             if (FocusContract.Contracts[contractCount].objectTypeCount[i] == objectTypeCount)
             {
                 FocusContract.Contracts[contractCount].objectCount[i]--;
+                GameManager.Instance.ContractPlacementWrite(ContractSystem.Instance.FocusContract);
                 if (isStack)
                 {
                     StackSystem.Instance.ObjectsCount.RemoveAt(forCount);

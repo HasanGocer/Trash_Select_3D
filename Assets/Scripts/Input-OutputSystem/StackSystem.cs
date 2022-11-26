@@ -96,7 +96,7 @@ public class StackSystem : MonoSingleton<StackSystem>
                     RocketManager.Instance.AddedObjectPool(obj);*/
                 }
                 else
-                    StartCoroutine(ObjectDistancePlacement(obj, misObject, stackDistance));
+                StartCoroutine(ObjectDistancePlacement(obj, misObject, stackDistance));
             }
             yield return null;
         }

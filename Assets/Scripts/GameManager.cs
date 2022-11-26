@@ -31,6 +31,7 @@ public class GameManager : MonoSingleton<GameManager>
         else
         {
             PlayerPrefs.SetInt("money", 100);
+            money = PlayerPrefs.GetInt("money");
         }
 
         if (PlayerPrefs.HasKey("level"))
@@ -40,6 +41,7 @@ public class GameManager : MonoSingleton<GameManager>
         else
         {
             PlayerPrefs.SetInt("level", 1);
+            level = PlayerPrefs.GetInt("level");
         }
 
         if (PlayerPrefs.HasKey("vibration"))
@@ -49,6 +51,7 @@ public class GameManager : MonoSingleton<GameManager>
         else
         {
             PlayerPrefs.SetInt("vibration", 1);
+            vibration = PlayerPrefs.GetInt("vibration");
         }
 
         if (PlayerPrefs.HasKey("sound"))
@@ -58,6 +61,7 @@ public class GameManager : MonoSingleton<GameManager>
         else
         {
             PlayerPrefs.SetInt("sound", 1);
+            sound = PlayerPrefs.GetInt("sound");
         }
 
         if (PlayerPrefs.HasKey("first"))
@@ -76,7 +80,6 @@ public class GameManager : MonoSingleton<GameManager>
             FactorPlacementWrite(ItemData.Instance.factor);
             PlayerPrefs.SetInt("first", 1);
         }
-        ContractSystem.Instance.ContractStart();
         ContractSystem.Instance.FocusContract = ContractPlacementRead();
         ItemData.Instance.factor = FactorPlacementRead();
     }

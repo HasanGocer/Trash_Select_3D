@@ -5,19 +5,21 @@ using UnityEngine.UI;
 
 public class ContractUISystem : MonoSingleton<ContractUISystem>
 {
-    [SerializeField] private List<Image> _TemplateImage = new List<Image>();
+    [SerializeField] private List<Sprite> _TemplateImage = new List<Sprite>();
 
     [SerializeField] private List<Image> _PosContractImage = new List<Image>();
     [SerializeField] private List<Text> _PosContractText = new List<Text>();
+    public Button backContractButton, acceptedContractButton;
 
     public List<Button> PosNewContractButton = new List<Button>();
-        
+
     [SerializeField] private List<Image> _PosSelectImage = new List<Image>();
     [SerializeField] private List<Text> _PosSelectText = new List<Text>();
 
 
     public int contractCount;
-    [SerializeField] private int contractLimitCount;
+    public int selectContractCount;
+    public int contractLimitCount;
 
     public ContractSystem.Contract[] contract;
 
@@ -25,7 +27,7 @@ public class ContractUISystem : MonoSingleton<ContractUISystem>
     {
         Buttons.Instance.contractGame.SetActive(true);
 
-        for (int i = 0; i < _TemplateImage.Count; i++)
+        for (int i = 0; i < _PosContractImage.Count; i++)
         {
             _PosContractImage[i].gameObject.SetActive(false);
             _PosContractText[i].gameObject.SetActive(false);
@@ -33,18 +35,20 @@ public class ContractUISystem : MonoSingleton<ContractUISystem>
 
         for (int i2 = 0; i2 < contract.objectTypeCount.Count; i2++)
         {
-            _PosContractImage[i2] = _TemplateImage[contract.objectTypeCount[i2]];
+            _PosContractImage[i2].sprite = _TemplateImage[contract.objectTypeCount[i2]];
             _PosContractImage[i2].gameObject.SetActive(true);
             _PosContractText[i2].text = contract.objectCount[i2].ToString();
             _PosContractText[i2].gameObject.SetActive(true);
         }
     }
 
-    public void TouchContractButton(ContractSystem.Contract contract)
+    public void TouchContractButton(ContractSystem.Contract contract, int sContractCount)
     {
         Buttons.Instance.contractSelectGame.SetActive(true);
+        Buttons.Instance.newContractSelectGame.SetActive(false);
+        selectContractCount = sContractCount;
 
-        for (int i = 0; i < _TemplateImage.Count; i++)
+        for (int i = 0; i < _PosSelectImage.Count; i++)
         {
             _PosSelectImage[i].gameObject.SetActive(false);
             _PosSelectText[i].gameObject.SetActive(false);
@@ -52,8 +56,8 @@ public class ContractUISystem : MonoSingleton<ContractUISystem>
 
         for (int i = 0; i < contract.objectTypeCount.Count; i++)
         {
-            _PosSelectImage[i] = _TemplateImage[contract.objectTypeCount[i]];
-            _PosSelectImage[i].gameObject.SetActive(false);
+            _PosSelectImage[i].sprite = _TemplateImage[contract.objectTypeCount[i]];
+            _PosSelectImage[i].gameObject.SetActive(true);
             _PosSelectText[i].text = contract.objectCount[i].ToString();
             _PosSelectText[i].gameObject.SetActive(true);
         }
@@ -62,14 +66,19 @@ public class ContractUISystem : MonoSingleton<ContractUISystem>
 
     public void SelectTheContract(int contractCount, ContractSystem.Contract contract)
     {
+        Buttons.Instance.contractSelectGame.SetActive(false);
         ContractSystem.Instance.FocusContract.Contracts[contractCount] = contract;
         ContractSystem.Instance.FocusContract.Contracts[contractCount].contractBool = true;
         ContractSystem.Instance.FocusContract.Contracts[contractCount].contractBuy = true;
+        ContractSystem.Instance.ObjectCountUpdate();
         ContractSystem.Instance.WaitSystemCountPlacement(ContractSystem.Instance.waitBarUSCount, contractCount);
+        GameManager.Instance.ContractPlacementWrite(ContractSystem.Instance.FocusContract);
     }
 
     public void BackToTheContracts()
     {
+        Buttons.Instance.contractSelectGame.SetActive(false);
+        Buttons.Instance.newContractSelectGame.SetActive(true);
         for (int i = 0; i < contractLimitCount; i++)
         {
             PosNewContractButton[i].gameObject.SetActive(true);
@@ -78,7 +87,7 @@ public class ContractUISystem : MonoSingleton<ContractUISystem>
 
     public void NewContractPlacement()
     {
-        contract = new ContractSystem.Contract[contractLimitCount];
+        Buttons.Instance.newContractSelectGame.SetActive(true);
         for (int i = 0; i < contractLimitCount; i++)
         {
             contract[i] = ContractSystem.Instance.NewContractForUI(ContractSystem.Instance.levelMod, ContractSystem.Instance.maxItemCount, ContractSystem.Instance.maxitemTypeCount, ContractSystem.Instance.contractBudge);

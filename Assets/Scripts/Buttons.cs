@@ -60,21 +60,28 @@ public class Buttons : MonoSingleton<Buttons>
         _bactToTheContractSelectPanelButton.onClick.AddListener(ContractUISystem.Instance.BackToTheContracts);
 
         //hata yeni kod yaz
-        ContractUISystem.Instance.PosNewContractButton[0].onClick.AddListener(() => ContractUISystem.Instance.TouchContractButton(ContractUISystem.Instance.contract[0]));
-        ContractUISystem.Instance.PosNewContractButton[1].onClick.AddListener(() => ContractUISystem.Instance.TouchContractButton(ContractUISystem.Instance.contract[1]));
-        ContractUISystem.Instance.PosNewContractButton[2].onClick.AddListener(() => ContractUISystem.Instance.TouchContractButton(ContractUISystem.Instance.contract[2]));
-        ContractUISystem.Instance.PosNewContractButton[3].onClick.AddListener(() => ContractUISystem.Instance.TouchContractButton(ContractUISystem.Instance.contract[3]));
-        ContractUISystem.Instance.PosNewContractButton[4].onClick.AddListener(() => ContractUISystem.Instance.TouchContractButton(ContractUISystem.Instance.contract[4]));
+        ContractUISystem.Instance.PosNewContractButton[0].onClick.AddListener(() => ContractUISystem.Instance.TouchContractButton(ContractUISystem.Instance.contract[0], 0));
+        ContractUISystem.Instance.PosNewContractButton[1].onClick.AddListener(() => ContractUISystem.Instance.TouchContractButton(ContractUISystem.Instance.contract[1], 1));
+        ContractUISystem.Instance.PosNewContractButton[2].onClick.AddListener(() => ContractUISystem.Instance.TouchContractButton(ContractUISystem.Instance.contract[2], 2));
+        ContractUISystem.Instance.PosNewContractButton[3].onClick.AddListener(() => ContractUISystem.Instance.TouchContractButton(ContractUISystem.Instance.contract[3], 3));
+        ContractUISystem.Instance.PosNewContractButton[4].onClick.AddListener(() => ContractUISystem.Instance.TouchContractButton(ContractUISystem.Instance.contract[4], 4));
+
+        ContractUISystem.Instance.backContractButton.onClick.AddListener(ContractUISystem.Instance.BackToTheContracts);
+        ContractUISystem.Instance.acceptedContractButton.onClick.AddListener(() => ContractUISystem.Instance.SelectTheContract(ContractUISystem.Instance.contractCount, ContractUISystem.Instance.contract[ContractUISystem.Instance.selectContractCount]));
     }
 
     private void StartButton()
     {
-        print(1);
         _startButton.gameObject.SetActive(false);
         print(2);
         GarbageSystem.Instance.GarbagePlacement();
+        ContractSystem.Instance.ObjectCountUpdate();
+        for (int i = 0; i < ContractSystem.Instance.FocusContract.Contracts.Count; i++)
+        {
+            ContractSystem.Instance.WaitSystemCountPlacement(ContractSystem.Instance.waitBarUSCount, i);
+        }
         print(3);
-        RocketManager.Instance.RocketStart();
+        StartCoroutine(RocketManager.Instance.RocketStart());
         print(4);
         DirtyManager.Instance.DirtyManagerStart();
         print(5);
@@ -82,6 +89,7 @@ public class Buttons : MonoSingleton<Buttons>
         print(6);
         UpgradeManager.Instance.UpgradeSystemStart();
         print(7);
+        ContractUISystem.Instance.contract = new ContractSystem.Contract[ContractUISystem.Instance.contractLimitCount];
     }
 
     private void ContractCloseButton()
