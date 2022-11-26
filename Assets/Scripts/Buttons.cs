@@ -8,7 +8,7 @@ public class Buttons : MonoSingleton<Buttons>
 {
     //managerde bulunacak
 
-    [SerializeField] private GameObject _money;
+    public Text moneyText;
 
     [SerializeField] private Button _startButton;
 
@@ -22,8 +22,9 @@ public class Buttons : MonoSingleton<Buttons>
     public Button _contractBackButton;
     [SerializeField] private Button _contractAceptedButton, _bactToTheContractSelectPanelButton;
     public GameObject contractGame, newContractSelectGame, contractSelectGame;
-
-    public Button marketButton;
+    public Button AIStackCountButton, AICountButton, stackCountButton, dirtyThrashCountButton, contractCountButton;
+    public Text AIStackCountText, AICountText, stackCountText, dirtyThrashCountText, contractCountText;
+    public int GarbageCarCount;
 
     private void Start()
     {
@@ -59,7 +60,12 @@ public class Buttons : MonoSingleton<Buttons>
         _contractAceptedButton.onClick.AddListener(() => ContractUISystem.Instance.SelectTheContract(ContractUISystem.Instance.contractCount, ContractUISystem.Instance.contract[ContractUISystem.Instance.contractCount]));
         _bactToTheContractSelectPanelButton.onClick.AddListener(ContractUISystem.Instance.BackToTheContracts);
 
-        //hata yeni kod yaz
+        dirtyThrashCountButton.onClick.AddListener(DirtyThrashCountFunc);
+        AIStackCountButton.onClick.AddListener(AIStackCountFunc);
+        AICountButton.onClick.AddListener(AIStackFunc);
+        contractCountButton.onClick.AddListener(ContractCountFunc);
+        stackCountButton.onClick.AddListener(StackCountFunc);
+
         ContractUISystem.Instance.PosNewContractButton[0].onClick.AddListener(() => ContractUISystem.Instance.TouchContractButton(ContractUISystem.Instance.contract[0], 0));
         ContractUISystem.Instance.PosNewContractButton[1].onClick.AddListener(() => ContractUISystem.Instance.TouchContractButton(ContractUISystem.Instance.contract[1], 1));
         ContractUISystem.Instance.PosNewContractButton[2].onClick.AddListener(() => ContractUISystem.Instance.TouchContractButton(ContractUISystem.Instance.contract[2], 2));
@@ -73,22 +79,16 @@ public class Buttons : MonoSingleton<Buttons>
     private void StartButton()
     {
         _startButton.gameObject.SetActive(false);
-        print(2);
         GarbageSystem.Instance.GarbagePlacement();
         ContractSystem.Instance.ObjectCountUpdate();
         for (int i = 0; i < ContractSystem.Instance.FocusContract.Contracts.Count; i++)
         {
             ContractSystem.Instance.WaitSystemCountPlacement(ContractSystem.Instance.waitBarUSCount, i);
         }
-        print(3);
         StartCoroutine(RocketManager.Instance.RocketStart());
-        print(4);
         DirtyManager.Instance.DirtyManagerStart();
-        print(5);
         AIManager.Instance.StartPlace();
-        print(6);
         UpgradeManager.Instance.UpgradeSystemStart();
-        print(7);
         ContractUISystem.Instance.contract = new ContractSystem.Contract[ContractUISystem.Instance.contractLimitCount];
     }
 
@@ -101,14 +101,12 @@ public class Buttons : MonoSingleton<Buttons>
     {
         _settingGame.SetActive(true);
         _settingButton.gameObject.SetActive(false);
-        _money.SetActive(false);
     }
 
     private void SettingBackButton()
     {
         _settingGame.SetActive(false);
         _settingButton.gameObject.SetActive(true);
-        _money.SetActive(true);
     }
 
     private void SoundButton()
@@ -146,6 +144,71 @@ public class Buttons : MonoSingleton<Buttons>
             _vibrationButton.gameObject.GetComponent<Image>().sprite = _green;
             GameManager.Instance.vibration = 1;
             GameManager.Instance.SetVibration();
+        }
+    }
+
+    private void AIStackCountFunc()
+    {
+        if (GameManager.Instance.money >= ItemData.Instance.fieldPrice.AIStackCount[GarbageCarCount] && ItemData.Instance.factor.AIStackCount[GarbageCarCount] <= ItemData.Instance.maxFactor.AIStackCount[GarbageCarCount])
+        {
+            GameManager.Instance.SetMoney(ItemData.Instance.fieldPrice.AIStackCount[GarbageCarCount] * -1);
+            ItemData.Instance.factor.AIStackCount[GarbageCarCount]++;
+            ItemData.Instance.SetAIStackCount(GarbageCarCount);
+            AIStackCountText.text = ItemData.Instance.fieldPrice.AIStackCount[GarbageCarCount].ToString();
+
+            //entegrasyon
+        }
+    }
+
+    private void AIStackFunc()
+    {
+        if (GameManager.Instance.money >= ItemData.Instance.fieldPrice.AICount[GarbageCarCount] && ItemData.Instance.factor.AICount[GarbageCarCount] <= ItemData.Instance.maxFactor.AICount[GarbageCarCount])
+        {
+            GameManager.Instance.SetMoney(ItemData.Instance.fieldPrice.AICount[GarbageCarCount] * -1);
+            ItemData.Instance.factor.AICount[GarbageCarCount]++;
+            ItemData.Instance.SetAICount(GarbageCarCount);
+            AICountText.text = ItemData.Instance.fieldPrice.AICount[GarbageCarCount].ToString();
+
+            //entegrasyon
+        }
+    }
+
+    private void ContractCountFunc()
+    {
+        if (GameManager.Instance.money >= ItemData.Instance.fieldPrice.garbageCar && ItemData.Instance.factor.garbageCar <= ItemData.Instance.maxFactor.garbageCar)
+        {
+            GameManager.Instance.SetMoney(ItemData.Instance.fieldPrice.garbageCar * -1);
+            ItemData.Instance.factor.garbageCar++;
+            ItemData.Instance.SetGarbageCar();
+            contractCountText.text = ItemData.Instance.fieldPrice.garbageCar.ToString();
+
+            ContractSystem.Contract contract = new ContractSystem.Contract();
+            ContractSystem.Instance.FocusContract.Contracts.Add(contract);
+            UpgradeManager.Instance._upgradeItem[GarbageSystem.Instance.ContractGarbageUSCount]._items[ItemData.Instance.factor.garbageCar - 1].SetActive(true);
+        }
+    }
+
+    private void StackCountFunc()
+    {
+        if (GameManager.Instance.money >= ItemData.Instance.fieldPrice.playerStackCount && ItemData.Instance.factor.playerStackCount <= ItemData.Instance.maxFactor.playerStackCount)
+        {
+            GameManager.Instance.SetMoney(ItemData.Instance.fieldPrice.playerStackCount * -1);
+            ItemData.Instance.factor.playerStackCount++;
+            ItemData.Instance.SetPlayerStackCount();
+            stackCountText.text = ItemData.Instance.fieldPrice.playerStackCount.ToString();
+        }
+    }
+
+    private void DirtyThrashCountFunc()
+    {
+        if (GameManager.Instance.money >= ItemData.Instance.fieldPrice.dirtyGarbage && ItemData.Instance.factor.dirtyGarbage <= ItemData.Instance.maxFactor.dirtyGarbage)
+        {
+            GameManager.Instance.SetMoney(ItemData.Instance.fieldPrice.dirtyGarbage * -1);
+            ItemData.Instance.factor.dirtyGarbage++;
+            ItemData.Instance.SetDirtyGarbage();
+            dirtyThrashCountText.text = ItemData.Instance.fieldPrice.dirtyGarbage.ToString();
+
+            UpgradeManager.Instance._upgradeItem[GarbageSystem.Instance.garbagePlaceUSCount]._items[ItemData.Instance.factor.dirtyGarbage - 1].SetActive(true);
         }
     }
 }

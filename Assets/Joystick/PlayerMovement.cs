@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[RequireComponent(typeof(Rigidbody), typeof(BoxCollider))]
+[RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private new Rigidbody rigidbody;
@@ -12,7 +12,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        Movement();  
+        Movement();
     }
 
     void Movement()

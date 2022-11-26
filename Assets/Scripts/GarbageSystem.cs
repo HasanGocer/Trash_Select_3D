@@ -4,18 +4,19 @@ using UnityEngine;
 
 public class GarbageSystem : MonoSingleton<GarbageSystem>
 {
-    [SerializeField] private int _garbagePlaceUSCount;
-    [SerializeField] private int _garbageCarUSCount;
+    public int garbagePlaceUSCount;
+    public int garbageCarUSCount;
+    public int ContractGarbageUSCount;
 
     public void GarbagePlacement()
     {
         for (int i = 0; i < ItemData.Instance.field.dirtyGarbage; i++)
         {
-            UpgradeManager.Instance._upgradeItem[_garbagePlaceUSCount]._items[i].SetActive(true);
+            UpgradeManager.Instance._upgradeItem[garbagePlaceUSCount]._items[i].SetActive(true);
         }
         for (int i = 0; i < ItemData.Instance.field.garbageCar; i++)
         {
-            UpgradeManager.Instance._upgradeItem[_garbageCarUSCount]._items[i].SetActive(true);
+            UpgradeManager.Instance._upgradeItem[garbageCarUSCount]._items[i].SetActive(true);
         }
     }
 }

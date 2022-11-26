@@ -116,6 +116,7 @@ public class GameManager : MonoSingleton<GameManager>
     {
         money += plus;
         PlayerPrefs.SetInt("money", money);
+        Buttons.Instance.moneyText.text = money.ToString();
     }
 
     public void SetSound()

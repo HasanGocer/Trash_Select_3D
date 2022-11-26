@@ -8,6 +8,9 @@ TagManager:
   - Plane
   - Output
   - DirtyInput
+  - GarbageCar
+  - Mid
+  - Dirty
   layers:
   - Default
   - TransparentFX

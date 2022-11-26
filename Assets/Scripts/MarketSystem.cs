@@ -7,7 +7,7 @@ public class MarketSystem : MonoBehaviour
 {
     //iptal 
     //Ýtem data baðanacak ve UI yerleþtirilmesi denemleri yapýlacak
-    [System.Serializable]
+    /*[System.Serializable]
     public class Prop
     {
         public Button propButton;
@@ -86,10 +86,5 @@ public class MarketSystem : MonoBehaviour
                 prop.propCount = objText;
             }
         }
-    }
-
-    public void BuyProp()
-    {
-
-    }
+    }*/
 }
