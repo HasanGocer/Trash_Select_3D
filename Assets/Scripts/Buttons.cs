@@ -69,12 +69,19 @@ public class Buttons : MonoSingleton<Buttons>
 
     private void StartButton()
     {
+        print(1);
         _startButton.gameObject.SetActive(false);
+        print(2);
         GarbageSystem.Instance.GarbagePlacement();
+        print(3);
         RocketManager.Instance.RocketStart();
+        print(4);
         DirtyManager.Instance.DirtyManagerStart();
+        print(5);
         AIManager.Instance.StartPlace();
+        print(6);
         UpgradeManager.Instance.UpgradeSystemStart();
+        print(7);
     }
 
     private void ContractCloseButton()

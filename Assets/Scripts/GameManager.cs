@@ -62,21 +62,8 @@ public class GameManager : MonoSingleton<GameManager>
 
         if (PlayerPrefs.HasKey("first"))
         {
-            if (PlayerPrefs.GetInt("first") == 1)
-            {
-                ContractSystem.Instance.FocusContract = ContractPlacementRead();
-                ItemData.Instance.factor = FactorPlacementRead();
-            }
-            else
-            {
-                for (int i = 0; i < ContractSystem.Instance.FocusContract.contractLimit; i++)
-                {
-                    ContractSystem.Contract contract = new ContractSystem.Contract();
-                    ContractSystem.Instance.FocusContract.Contracts.Add(contract);
-                }
-                ContractPlacementWrite(ContractSystem.Instance.FocusContract);
-                FactorPlacementWrite(ItemData.Instance.factor);
-            }
+            ContractSystem.Instance.FocusContract = ContractPlacementRead();
+            ItemData.Instance.factor = FactorPlacementRead();
         }
         else
         {
@@ -87,6 +74,7 @@ public class GameManager : MonoSingleton<GameManager>
             }
             ContractPlacementWrite(ContractSystem.Instance.FocusContract);
             FactorPlacementWrite(ItemData.Instance.factor);
+            PlayerPrefs.SetInt("first", 1);
         }
         ContractSystem.Instance.ContractStart();
         ContractSystem.Instance.FocusContract = ContractPlacementRead();

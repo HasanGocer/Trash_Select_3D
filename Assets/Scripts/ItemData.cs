@@ -45,8 +45,9 @@ public class ItemData : MonoSingleton<ItemData>
         {
             for (int i2 = 0; i2 < AIManager.Instance.maxStackerCount; i2++)
             {
+                factor.AIStackCount[i1, i2] = 1;
                 field.AIStackCount[i1, i2] = standart.AIStackCountTemp + (factor.AIStackCount[i1, i2] * constant.AIStackCountTemp);
-                fieldPrice.AIStackCount[i1, i2] = fieldPrice.AIStackCount[i1, i2] * factor.AIStackCount[i1, i2];
+                fieldPrice.AIStackCount[i1, i2] = fieldPrice.AIStackCountTemp * factor.AIStackCount[i1, i2];
             }
         }
 
