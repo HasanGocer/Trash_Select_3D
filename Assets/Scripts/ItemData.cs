@@ -49,8 +49,7 @@ public class ItemData : MonoSingleton<ItemData>
     public void SetPlayerStackCount()
     {
         fieldPrice.playerStackCount = fieldPrice.playerStackCount / factor.playerStackCount;
-        fieldPrice.playerStackCount++;
-
+        factor.playerStackCount++;
         fieldPrice.playerStackCount = fieldPrice.playerStackCount * factor.playerStackCount;
         field.playerStackCount = standart.playerStackCount + (factor.playerStackCount * constant.playerStackCount);
         GameManager.Instance.FactorPlacementWrite(factor);
@@ -59,7 +58,7 @@ public class ItemData : MonoSingleton<ItemData>
     public void SetAICount(int StackerTypeCount)
     {
         fieldPrice.AICount[StackerTypeCount] = fieldPrice.AICount[StackerTypeCount] / factor.AICount[StackerTypeCount];
-        fieldPrice.AICount[StackerTypeCount]++;
+        factor.AICount[StackerTypeCount]++;
         fieldPrice.AICount[StackerTypeCount] = fieldPrice.AICount[StackerTypeCount] * factor.AICount[StackerTypeCount];
         field.AICount[StackerTypeCount] = standart.AICountTemp + (factor.AICount[StackerTypeCount] * constant.AICountTemp);
         GameManager.Instance.FactorPlacementWrite(factor);
@@ -68,7 +67,7 @@ public class ItemData : MonoSingleton<ItemData>
     public void SetAIStackCount(int StackerTypeCount)
     {
         fieldPrice.AIStackCount[StackerTypeCount] = fieldPrice.AIStackCount[StackerTypeCount] / factor.AIStackCount[StackerTypeCount];
-        fieldPrice.AIStackCount[StackerTypeCount]++;
+        factor.AIStackCount[StackerTypeCount]++;
         fieldPrice.AIStackCount[StackerTypeCount] = fieldPrice.AIStackCount[StackerTypeCount] * factor.AIStackCount[StackerTypeCount];
         field.AIStackCount[StackerTypeCount] = standart.AIStackCountTemp + (factor.AIStackCount[StackerTypeCount] * constant.AIStackCountTemp);
         GameManager.Instance.FactorPlacementWrite(factor);
@@ -77,7 +76,7 @@ public class ItemData : MonoSingleton<ItemData>
     public void SetDirtyGarbage()
     {
         fieldPrice.dirtyGarbage = fieldPrice.dirtyGarbage / factor.dirtyGarbage;
-        fieldPrice.dirtyGarbage++;
+        factor.dirtyGarbage++;
         fieldPrice.dirtyGarbage = fieldPrice.dirtyGarbage * factor.dirtyGarbage;
         field.dirtyGarbage = standart.dirtyGarbage + (factor.dirtyGarbage * constant.dirtyGarbage);
         GameManager.Instance.FactorPlacementWrite(factor);
@@ -86,10 +85,12 @@ public class ItemData : MonoSingleton<ItemData>
     public void SetGarbageCar()
     {
         fieldPrice.garbageCar = fieldPrice.garbageCar / factor.garbageCar;
-        fieldPrice.garbageCar++;
+        factor.garbageCar++;
         fieldPrice.garbageCar = fieldPrice.garbageCar * factor.garbageCar;
         field.garbageCar = standart.garbageCar + (factor.garbageCar * constant.garbageCar);
         GameManager.Instance.FactorPlacementWrite(factor);
         ContractSystem.Instance.FocusContract.contractLimit = field.garbageCar;
+        GameManager.Instance.ContractPlacementWrite(ContractSystem.Instance.FocusContract);
+
     }
 }

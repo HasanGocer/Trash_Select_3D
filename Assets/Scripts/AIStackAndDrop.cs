@@ -45,7 +45,7 @@ public class AIStackAndDrop : MonoBehaviour
                                         {
                                             _stackersStack.Add(lastObjectGO);
                                             _stackerStackCount.Add(i2);
-                                            if (_stackerStackCount.Count == _stackMaxStackCount)
+                                            if (_stackerStackCount.Count == ItemData.Instance.field.AIStackCount[_AIStackerContractCount])
                                             {
                                                 backpack›sFull = true;
                                             }

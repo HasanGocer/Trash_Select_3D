@@ -33,6 +33,7 @@ public class GameManager : MonoSingleton<GameManager>
             PlayerPrefs.SetInt("money", 100);
             money = PlayerPrefs.GetInt("money");
         }
+        MoneySystem.Instance.MoneyTextRevork(0);
 
         if (PlayerPrefs.HasKey("level"))
         {
@@ -120,9 +121,8 @@ public class GameManager : MonoSingleton<GameManager>
         return factor;
     }
 
-    public void SetMoney(int plus)
+    public void SetMoney()
     {
-        money += plus;
         PlayerPrefs.SetInt("money", money);
         Buttons.Instance.moneyText.text = money.ToString();
     }

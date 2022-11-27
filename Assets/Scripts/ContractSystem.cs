@@ -57,7 +57,7 @@ public class ContractSystem : MonoSingleton<ContractSystem>
 
     public void ContractCanceled(Contract contract)
     {
-        GameManager.Instance.SetMoney(contract.money * -1);
+        MoneySystem.Instance.MoneyTextRevork(contract.money * -1);
         contract.objectCount.Clear();
         contract.objectTypeCount.Clear();
         contract.money = 0;
@@ -187,7 +187,7 @@ public class ContractSystem : MonoSingleton<ContractSystem>
 
     public void ContractCompleted(Contract contract, int contractCount)
     {
-        GameManager.Instance.SetMoney(contract.money);
+        MoneySystem.Instance.MoneyTextRevork(contract.money);
         contract.objectCount.Clear();
         contract.objectTypeCount.Clear();
         contract.money = 0;
