@@ -20,8 +20,9 @@ public class AIManager : MonoSingleton<AIManager>
 
     public void StartPlace()
     {
-        for (int i1 = 0; i1 < maxStackerTypeCount; i1++)
+        for (int i1 = 0; i1 < ItemData.Instance.field.AICount.Length; i1++)
         {
+            print(ItemData.Instance.field.AICount[i1]);
             for (int i2 = 0; i2 < ItemData.Instance.field.AICount[i1]; i2++)
             {
                 stackerInGame[i1].boolStacker[i2] = true;

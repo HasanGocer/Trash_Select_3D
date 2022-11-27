@@ -18,18 +18,25 @@ public class AIStackAndDrop : MonoBehaviour
     {
         while (true)
         {
+            print(1);
             if (ContractSystem.Instance.FocusContract.Contracts[_AIStackerContractCount].contractBool && !(ContractControl()) && !backpack›sFull)
             {
+                print(2);
                 for (int i1 = 0; i1 < ContractSystem.Instance.FocusContract.Contracts[_AIStackerContractCount].objectTypeCount.Count; i1++)
                 {
+                    print(3);
                     for (int i2 = 0; i2 < ObjectManager.Instance.object›nGame.Count; i2++)
                     {
+                        print(4);
                         if (ContractSystem.Instance.FocusContract.Contracts[_AIStackerContractCount].objectTypeCount[i1] == i2 && ObjectManager.Instance.object›nGame[i2].gameObject›nGame.Count > 0)
                         {
+                            print(5);
                             for (int i3 = 0; i3 < ContractSystem.Instance.FocusContract.Contracts[_AIStackerContractCount].objectCount[i1]; i3++)
                             {
+                                print(6);
                                 if (!backpack›sFull)
                                 {
+                                    print(7);
                                     List<GameObject> gameObject›nGame = ObjectManager.Instance.object›nGame[i2].gameObject›nGame;
                                     int lastStackCount = gameObject›nGame.Count - 1;
                                     lastStackCount = OpenObjectCall(lastStackCount, gameObject›nGame);
@@ -137,6 +144,7 @@ public class AIStackAndDrop : MonoBehaviour
         if (game)
         {
             backpack›sFull = true;
+            print("tru");
         }
         return game;
     }

@@ -22,14 +22,10 @@ public class ItemData : MonoSingleton<ItemData>
     public Field max;
     public Field fieldPrice;
 
-    private void Start()
+    public void IDAwake()
     {
         field.playerStackCount = standart.playerStackCount + (factor.playerStackCount * constant.playerStackCount);
         fieldPrice.playerStackCount = fieldPrice.playerStackCount * factor.playerStackCount;
-
-        field.AICount = new int[AIManager.Instance.maxStackerTypeCount];
-        factor.AICount = new int[AIManager.Instance.maxStackerTypeCount];
-        fieldPrice.AICount = new int[AIManager.Instance.maxStackerTypeCount];
 
         for (int i = 0; i < AIManager.Instance.maxStackerTypeCount; i++)
         {
@@ -37,16 +33,11 @@ public class ItemData : MonoSingleton<ItemData>
             fieldPrice.AICount[i] = fieldPrice.AICount[i] * factor.AICount[i];
         }
 
-        field.AIStackCount = new int[ AIManager.Instance.maxStackerCount];
-        factor.AIStackCount = new int[ AIManager.Instance.maxStackerCount];
-        fieldPrice.AIStackCount = new int[AIManager.Instance.maxStackerCount];
-
-            for (int i = 0; i < AIManager.Instance.maxStackerCount; i++)
-            {
-                factor.AIStackCount[i] = 1;
-                field.AIStackCount[i] = standart.AIStackCountTemp + (factor.AIStackCount[i] * constant.AIStackCountTemp);
-                fieldPrice.AIStackCount[i] = fieldPrice.AIStackCountTemp * factor.AIStackCount[i];
-            }
+        for (int i = 0; i < AIManager.Instance.maxStackerTypeCount; i++)
+        {
+            field.AIStackCount[i] = standart.AIStackCountTemp + (factor.AIStackCount[i] * constant.AIStackCountTemp);
+            fieldPrice.AIStackCount[i] = fieldPrice.AIStackCountTemp * factor.AIStackCount[i];
+        }
 
         field.dirtyGarbage = standart.dirtyGarbage + (factor.dirtyGarbage * constant.dirtyGarbage);
         fieldPrice.dirtyGarbage = fieldPrice.dirtyGarbage * factor.dirtyGarbage;

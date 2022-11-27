@@ -76,12 +76,23 @@ public class GameManager : MonoSingleton<GameManager>
                 ContractSystem.Contract contract = new ContractSystem.Contract();
                 ContractSystem.Instance.FocusContract.Contracts.Add(contract);
             }
+
+            ItemData.Instance.factor.AICount = new int[AIManager.Instance.maxStackerTypeCount];
+            ItemData.Instance.factor.AIStackCount = new int[AIManager.Instance.maxStackerTypeCount];
+
+            for (int i = 0; i < AIManager.Instance.maxStackerTypeCount; i++)
+            {
+                ItemData.Instance.factor.AICount[i] = 1;
+                ItemData.Instance.factor.AIStackCount[i] = 1;
+            }
+
             ContractPlacementWrite(ContractSystem.Instance.FocusContract);
             FactorPlacementWrite(ItemData.Instance.factor);
             PlayerPrefs.SetInt("first", 1);
         }
         ContractSystem.Instance.FocusContract = ContractPlacementRead();
         ItemData.Instance.factor = FactorPlacementRead();
+        ItemData.Instance.IDAwake();
     }
 
     public void ContractPlacementWrite(ContractSystem.ContractArray contract)
