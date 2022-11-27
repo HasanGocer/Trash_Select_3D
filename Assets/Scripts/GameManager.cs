@@ -80,11 +80,8 @@ public class GameManager : MonoSingleton<GameManager>
             ItemData.Instance.factor.AICount = new int[AIManager.Instance.maxStackerTypeCount];
             ItemData.Instance.factor.AIStackCount = new int[AIManager.Instance.maxStackerTypeCount];
 
-            for (int i = 0; i < AIManager.Instance.maxStackerTypeCount; i++)
-            {
-                ItemData.Instance.factor.AICount[i] = 1;
-                ItemData.Instance.factor.AIStackCount[i] = 1;
-            }
+            ItemData.Instance.factor.AICount[0] = 1;
+            ItemData.Instance.factor.AIStackCount[0] = 1;
 
             ContractPlacementWrite(ContractSystem.Instance.FocusContract);
             FactorPlacementWrite(ItemData.Instance.factor);

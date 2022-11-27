@@ -87,9 +87,9 @@ public class Buttons : MonoSingleton<Buttons>
         }
         StartCoroutine(RocketManager.Instance.RocketStart());
         DirtyManager.Instance.DirtyManagerStart();
-        AIManager.Instance.StartPlace();
         UpgradeManager.Instance.UpgradeSystemStart();
         ContractUISystem.Instance.contract = new ContractSystem.Contract[ContractUISystem.Instance.contractLimitCount];
+        AIManager.Instance.StartPlace();
     }
 
     private void ContractCloseButton()
