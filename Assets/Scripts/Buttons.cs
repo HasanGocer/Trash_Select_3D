@@ -76,7 +76,7 @@ public class Buttons : MonoSingleton<Buttons>
         ContractUISystem.Instance.backContractButton.onClick.AddListener(ContractUISystem.Instance.BackToTheContracts);
         ContractUISystem.Instance.acceptedContractButton.onClick.AddListener(() => ContractUISystem.Instance.SelectTheContract(ContractUISystem.Instance.contractCount, ContractUISystem.Instance.contract[ContractUISystem.Instance.selectContractCount]));
     }
-
+    //WC
     private void TextPlacement()
     {
         AICountText.text = ItemData.Instance.fieldPrice.AICount[GarbageCarCount].ToString();
