@@ -12,6 +12,7 @@ public class FirstSpawn : MonoBehaviour
     [SerializeField] private GameObject _spawnPosition;
 
     public List<GameObject> Objects = new List<GameObject>();
+    public List<bool> ObjectsBool = new List<bool>();
 
     public IEnumerator ItemSpawn()
     {
@@ -33,7 +34,8 @@ public class FirstSpawn : MonoBehaviour
                             obj.transform.GetChild(_dirtyThrashItemID).gameObject.SetActive(true);
                             obj.transform.DOMove(pos, _objectTransferTime);
                             Objects.Add(obj);
-                            obj.GetComponent<ObjectTouchPlane>().objectCount = _dirtyThrashItemID;  
+                            ObjectsBool.Add(true);
+                            obj.GetComponent<ObjectTouchPlane>().objectCount = _dirtyThrashItemID;
                             yield return new WaitForSeconds(_objectTransferTime);
                             obj.GetComponent<ObjectTouchPlane>().DirtyThrashFirstSpawn();
                         }

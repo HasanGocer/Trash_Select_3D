@@ -31,8 +31,15 @@ public class StackSystem : MonoSingleton<StackSystem>
         }
         else if (other.CompareTag("DirtyInput"))
         {
-            if (Objects.Count < ItemData.Instance.field.playerStackCount)
-                StartCoroutine(StackAdd(other.gameObject, true));
+            FirstSpawn firstSpawn = other.GetComponent<FirstSpawn>();
+            for (int i = 0; i < firstSpawn.ObjectsBool.Count; i++)
+            {
+                if (Objects.Count < ItemData.Instance.field.playerStackCount && firstSpawn.ObjectsBool[i])
+                {
+                    StartCoroutine(StackAdd(firstSpawn.Objects[i], true));
+                    firstSpawn.ObjectsBool[i] = false;
+                }
+            }
         }
     }
 

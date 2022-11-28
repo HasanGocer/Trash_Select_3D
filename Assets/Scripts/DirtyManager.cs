@@ -36,16 +36,12 @@ public class DirtyManager : MonoSingleton<DirtyManager>
     {
         for (int i = 0; i < this.openObjectTypeCount.Count; i++)
         {
-            print(1);
             if (openObjectTypeCount == this.openObjectTypeCount[i])
             {
-                print(2);
                 this.openObjectCount[i]--;
-                print(3);
                 if (this.openObjectCount[i] == 0)
                     for (int i1 = 0; i1 < RocketManager.Instance.openObjectTypeCount.Count; i1++)
                     {
-                        print(5);
                         print(RocketManager.Instance.openObjectTypeCount[i1]);
                         print(this.openObjectTypeCount[i]);
                         if (RocketManager.Instance.openObjectTypeCount[i1] == this.openObjectTypeCount[i])
@@ -53,7 +49,6 @@ public class DirtyManager : MonoSingleton<DirtyManager>
                             ReturnDirtyListPlacement(i);
                             RocketManager.Instance.openObjectTypeBool[i1] = true;
                         }
-                        print(6);
                     }
             }
         }

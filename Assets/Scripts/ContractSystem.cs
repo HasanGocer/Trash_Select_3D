@@ -165,6 +165,7 @@ public class ContractSystem : MonoSingleton<ContractSystem>
             if (FocusContract.Contracts[contractCount].objectTypeCount[i] == objectTypeCount)
             {
                 FocusContract.Contracts[contractCount].objectCount[i]--;
+                DeleteFirstPlaceList(contractCount, objectTypeCount);
                 GameManager.Instance.ContractPlacementWrite(ContractSystem.Instance.FocusContract);
                 if (isStack)
                 {
@@ -174,6 +175,7 @@ public class ContractSystem : MonoSingleton<ContractSystem>
 
                 if (FocusContract.Contracts[contractCount].objectCount[i] <= 0)
                 {
+
                     FocusContract.Contracts[contractCount].objectTypeCount.RemoveAt(i);
                     FocusContract.Contracts[contractCount].objectCount.RemoveAt(i);
                 }
@@ -185,6 +187,13 @@ public class ContractSystem : MonoSingleton<ContractSystem>
                 ObjectCountUpdate();
             }
         }
+    }
+
+    public void DeleteFirstPlaceList(int contractCount, int objectTypeCount)
+    {
+        FirstSpawn firstSpawn = UpgradeManager.Instance._upgradeItem[GarbageSystem.Instance.garbagePlaceUSCount]._items[FocusContract.Contracts[contractCount].objectTypeCount[objectTypeCount]].GetComponent<FirstSpawn>();
+        firstSpawn.Objects.RemoveAt(firstSpawn.Objects.Count - 1);
+        firstSpawn.ObjectsBool.RemoveAt(firstSpawn.ObjectsBool.Count - 1);
     }
 
 

@@ -47,5 +47,6 @@ public class ObjectTouchPlane : MonoBehaviour
     public void DirtyThrashFirstSpawn()
     {
         _rb.isKinematic = true;
+        _boxCollider.enabled = false;
     }
 }
