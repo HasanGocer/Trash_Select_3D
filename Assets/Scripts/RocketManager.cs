@@ -19,18 +19,24 @@ public class RocketManager : MonoSingleton<RocketManager>
     {
         while (true)
         {
+            print(1);
             if (GameManager.Instance.inStart)
                 for (int i = 0; i < ContractSystem.Instance.FocusContract.Contracts.Count; i++)
                 {
+                    print(2);
                     for (int i1 = 0; i1 < openObjectTypeCount.Count; i1++)
                     {
+                        print(3);
                         for (int i2 = 0; i2 < ContractSystem.Instance.FocusContract.Contracts[i].objectTypeCount.Count; i2++)
                         {
+                            print(4);
                             if (openObjectTypeCount[i1] == ContractSystem.Instance.FocusContract.Contracts[i].objectTypeCount[i2] && openObjectTypeBool[i1])
                             {
+                                print(5);
                                 //buraya arkadan gelecek nesile göre atama yapýlacak
                                 for (int i3 = 0; i3 < openObjectCount[i1]; i3++)
                                 {
+                                    print(6);
                                     JumpObject(_rocketPushPos.transform.position, ContractSystem.Instance.FocusContract.Contracts[i].objectTypeCount[i2], _minVeloCityPower, _maxVeloCityPower);
                                     yield return new WaitForSeconds(_pushTime);
                                 }
@@ -59,5 +65,15 @@ public class RocketManager : MonoSingleton<RocketManager>
     public void AddedObjectPool(GameObject obj)
     {
         ObjectPool.Instance.AddObject(_OPTrashCount, obj);
+    }
+
+    public void DeleteListsAll()
+    {
+        for (int i = 0; i < openObjectTypeCount.Count; i++)
+        {
+            openObjectTypeCount.RemoveAt(i);
+            openObjectCount.RemoveAt(i);
+            openObjectTypeBool.RemoveAt(i);
+        }
     }
 }

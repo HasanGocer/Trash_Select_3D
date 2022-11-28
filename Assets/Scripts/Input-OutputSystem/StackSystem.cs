@@ -52,8 +52,8 @@ public class StackSystem : MonoSingleton<StackSystem>
 
     public IEnumerator DirtyThrashDropObject(GameObject dropParent, Vector3 dropPos)
     {
-        int misObject = 0;
-        for (int i1 = 0; (i1 < ObjectsCount.Count); i1++)
+        int misObject = 0, limit = ObjectsCount.Count;
+        for (int i1 = limit - 1; i1 >= 0; i1--)
         {
             GameObject obj = Objects[i1];
             if (!Objects[i1].GetComponent<ObjectTouchPlane>().isClear)
@@ -61,7 +61,7 @@ public class StackSystem : MonoSingleton<StackSystem>
                 misObject++;
                 Vector3 pos = dropPos;
                 obj.transform.DOMove(pos, _dropMoveTime);
-                yield return new WaitForSeconds(_dropMoveTime);
+                yield return new WaitForSecondsRealtime(_dropMoveTime);
                 obj.transform.SetParent(dropParent.transform);
                 DirtyManager.Instance.ListPlacement(ObjectsCount[i1]);
                 Objects.RemoveAt(i1);
@@ -76,7 +76,8 @@ public class StackSystem : MonoSingleton<StackSystem>
 
     public IEnumerator StackDrop(WaitSystem waitSystem, GameObject dropParent, Vector3 dropPos, int contractCount)
     {
-        for (int i1 = 0; (i1 < ObjectsCount.Count && ContractSystem.Instance.FocusContract.Contracts[contractCount].contractBool); i1++)
+        int limit = ObjectsCount.Count;
+        for (int i1 = limit - 1; (i1 >= 0 && ContractSystem.Instance.FocusContract.Contracts[contractCount].contractBool); i1--)
         {
             for (int i = 0; (i < waitSystem.placeCount.Length && Objects[i].GetComponent<ObjectTouchPlane>().isClear); i++)
             {
@@ -88,7 +89,7 @@ public class StackSystem : MonoSingleton<StackSystem>
                     ContractSystem.Instance.ContractDownÝtem(contractCount, ObjectsCount[i1], i1, true);
                     Vector3 pos = new Vector3(dropPos.x, dropPos.y, dropPos.z);
                     obj.transform.DOMove(pos, _dropMoveTime);
-                    yield return new WaitForSeconds(_dropMoveTime);
+                    yield return new WaitForSecondsRealtime(_dropMoveTime);
                     obj.transform.SetParent(dropParent.transform);
 
                     //bunu contract bitince yapýcaz kamyon gidince
@@ -96,7 +97,7 @@ public class StackSystem : MonoSingleton<StackSystem>
                     RocketManager.Instance.AddedObjectPool(obj);*/
                 }
                 else
-                StartCoroutine(ObjectDistancePlacement(obj, misObject, stackDistance));
+                    StartCoroutine(ObjectDistancePlacement(obj, misObject, stackDistance));
             }
             yield return null;
         }

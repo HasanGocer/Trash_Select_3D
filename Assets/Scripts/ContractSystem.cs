@@ -124,6 +124,7 @@ public class ContractSystem : MonoSingleton<ContractSystem>
 
     public void CheckObject(int objectType, int objectCount)
     {
+        RocketManager.Instance.DeleteListsAll();
         bool isThere = false;
         for (int i = 0; i < RocketManager.Instance.openObjectTypeCount.Count; i++)
         {
@@ -141,6 +142,8 @@ public class ContractSystem : MonoSingleton<ContractSystem>
             RocketManager.Instance.openObjectCount.Add(objectCount);
             RocketManager.Instance.openObjectTypeBool.Add(false);
         }
+        DirtyManager.Instance.AllListDelete();
+        DirtyManager.Instance.NewDirtyListPlacement();
     }
 
     public void WaitSystemCountPlacement(int waitBar, int contractCount)

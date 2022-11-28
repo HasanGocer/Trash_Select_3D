@@ -7,11 +7,6 @@ public class DirtyManager : MonoSingleton<DirtyManager>
     public List<int> openObjectTypeCount = new List<int>();
     public List<int> openObjectCount = new List<int>();
 
-    public void DirtyManagerStart()
-    {
-        DirtyManager.Instance.NewDirtyListPlacement();
-    }
-
     public void NewDirtyListPlacement()
     {
         for (int i = 0; i < RocketManager.Instance.openObjectTypeCount.Count; i++)
@@ -21,21 +16,45 @@ public class DirtyManager : MonoSingleton<DirtyManager>
         }
     }
 
+    public void ReturnDirtyListPlacement(int openObjectTypeCount)
+    {
+        openObjectCount.RemoveAt(openObjectTypeCount);
+        this.openObjectTypeCount.RemoveAt(openObjectTypeCount);
+    }
+
+    public void AllListDelete()
+    {
+        for (int i = 0; i < openObjectCount.Count; i++)
+        {
+            openObjectCount.RemoveAt(i);
+            openObjectTypeCount.RemoveAt(i);
+
+        }
+    }
+
     public void ListPlacement(int openObjectTypeCount)
     {
         for (int i = 0; i < this.openObjectTypeCount.Count; i++)
         {
+            print(1);
             if (openObjectTypeCount == this.openObjectTypeCount[i])
             {
+                print(2);
                 this.openObjectCount[i]--;
+                print(3);
                 if (this.openObjectCount[i] == 0)
-                {
                     for (int i1 = 0; i1 < RocketManager.Instance.openObjectTypeCount.Count; i1++)
                     {
+                        print(5);
+                        print(RocketManager.Instance.openObjectTypeCount[i1]);
+                        print(this.openObjectTypeCount[i]);
                         if (RocketManager.Instance.openObjectTypeCount[i1] == this.openObjectTypeCount[i])
+                        {
+                            ReturnDirtyListPlacement(i);
                             RocketManager.Instance.openObjectTypeBool[i1] = true;
+                        }
+                        print(6);
                     }
-                }
             }
         }
     }
