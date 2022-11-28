@@ -42,8 +42,6 @@ public class DirtyManager : MonoSingleton<DirtyManager>
                 if (this.openObjectCount[i] == 0)
                     for (int i1 = 0; i1 < RocketManager.Instance.openObjectTypeCount.Count; i1++)
                     {
-                        print(RocketManager.Instance.openObjectTypeCount[i1]);
-                        print(this.openObjectTypeCount[i]);
                         if (RocketManager.Instance.openObjectTypeCount[i1] == this.openObjectTypeCount[i])
                         {
                             ReturnDirtyListPlacement(i);

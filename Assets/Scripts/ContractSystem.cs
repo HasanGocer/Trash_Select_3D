@@ -166,7 +166,6 @@ public class ContractSystem : MonoSingleton<ContractSystem>
             {
                 FocusContract.Contracts[contractCount].objectCount[i]--;
                 DeleteFirstPlaceList(contractCount, objectTypeCount);
-                GameManager.Instance.ContractPlacementWrite(ContractSystem.Instance.FocusContract);
                 if (isStack)
                 {
                     StackSystem.Instance.ObjectsCount.RemoveAt(forCount);
@@ -185,6 +184,7 @@ public class ContractSystem : MonoSingleton<ContractSystem>
                     ContractCompleted(FocusContract.Contracts[contractCount], i);
                 }
                 ObjectCountUpdate();
+                GameManager.Instance.ContractPlacementWrite(ContractSystem.Instance.FocusContract);
             }
         }
     }
@@ -204,7 +204,7 @@ public class ContractSystem : MonoSingleton<ContractSystem>
         contract.objectTypeCount.Clear();
         contract.money = 0;
         FocusContract.Contracts[contractCount].contractBool = false;
-        //yeni kontrat UI
+        StartCoroutine(UpgradeManager.Instance._upgradeItem[GarbageSystem.Instance.garbageCarUSCount]._items[contractCount].GetComponent<GarbageCarMove>().GarbageCarMoveFunc());
         ObjectCountUpdate();
     }
 }

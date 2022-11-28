@@ -98,6 +98,7 @@ public class StackSystem : MonoSingleton<StackSystem>
                     obj.transform.DOMove(pos, _dropMoveTime);
                     yield return new WaitForSecondsRealtime(_dropMoveTime);
                     obj.transform.SetParent(dropParent.transform);
+                    UpgradeManager.Instance._upgradeItem[GarbageSystem.Instance.garbageCarUSCount]._items[contractCount].GetComponent<GarbageCarMove>().clearTrash.Add(obj);
 
                     //bunu contract bitince yapýcaz kamyon gidince
                     /*obj.GetComponent<ObjectTouchPlane>().AddedObjectPool(waitSystem.placeCount[i]);
