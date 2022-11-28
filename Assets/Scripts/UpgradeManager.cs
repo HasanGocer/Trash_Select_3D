@@ -22,9 +22,14 @@ public class UpgradeManager : MonoSingleton<UpgradeManager>
     }
     public void StartFirstSpawn()
     {
-        for (int i = 0; i < _upgradeItem[2]._items.Count; i++)
+        for (int i = 0; i < ItemData.Instance.field.dirtyGarbage; i++)
         {
-            StartCoroutine(_upgradeItem[2]._items[i].GetComponent<FirstSpawn>().ItemSpawn());
+            StartCoroutine(_upgradeItem[GarbageSystem.Instance.garbagePlaceUSCount]._items[i].GetComponent<FirstSpawn>().ItemSpawn());
+        }
+
+        for (int i = 0; i < ItemData.Instance.field.garbageCar; i++)
+        {
+            _upgradeItem[GarbageSystem.Instance.ContractGarbageUSCount]._items[i].SetActive(true);
         }
     }
 }

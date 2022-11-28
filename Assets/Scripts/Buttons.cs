@@ -29,7 +29,6 @@ public class Buttons : MonoSingleton<Buttons>
     private void Start()
     {
         ButtonPlacement();
-        TextPlacement();
         if (GameManager.Instance.sound == 1)
         {
             _soundButton.gameObject.GetComponent<Image>().sprite = _green;
@@ -75,15 +74,6 @@ public class Buttons : MonoSingleton<Buttons>
 
         ContractUISystem.Instance.backContractButton.onClick.AddListener(ContractUISystem.Instance.BackToTheContracts);
         ContractUISystem.Instance.acceptedContractButton.onClick.AddListener(() => ContractUISystem.Instance.SelectTheContract(ContractUISystem.Instance.contractCount, ContractUISystem.Instance.contract[ContractUISystem.Instance.selectContractCount]));
-    }
-    //WC
-    private void TextPlacement()
-    {
-        AICountText.text = ItemData.Instance.fieldPrice.AICount[GarbageCarCount].ToString();
-        AIStackCountText.text = ItemData.Instance.fieldPrice.AIStackCount[GarbageCarCount].ToString();
-        contractCountText.text = ItemData.Instance.fieldPrice.garbageCar.ToString();
-        stackCountText.text = ItemData.Instance.fieldPrice.playerStackCount.ToString();
-        dirtyThrashCountText.text = ItemData.Instance.fieldPrice.dirtyGarbage.ToString();
     }
 
     private void StartButton()
@@ -159,29 +149,27 @@ public class Buttons : MonoSingleton<Buttons>
 
     private void AIStackCountFunc()
     {
-        if (GameManager.Instance.money >= ItemData.Instance.fieldPrice.AIStackCount[GarbageCarCount] && ItemData.Instance.factor.AIStackCount[GarbageCarCount] <= ItemData.Instance.maxFactor.AIStackCount[GarbageCarCount])
+        if (GameManager.Instance.money >= ItemData.Instance.fieldPrice.AIStackCount[GarbageCarCount] && ItemData.Instance.factor.AIStackCount[GarbageCarCount] <= ItemData.Instance.maxFactor.AIStackCountTemp)
         {
             MoneySystem.Instance.MoneyTextRevork(ItemData.Instance.fieldPrice.AIStackCount[GarbageCarCount] * -1);
-            ItemData.Instance.factor.AIStackCount[GarbageCarCount]++;
             ItemData.Instance.SetAIStackCount(GarbageCarCount);
-            AIStackCountText.text = ItemData.Instance.fieldPrice.AIStackCount[GarbageCarCount].ToString();
         }
     }
 
     private void AIStackFunc()
     {
-        if (GameManager.Instance.money >= ItemData.Instance.fieldPrice.AICount[GarbageCarCount] && ItemData.Instance.factor.AICount[GarbageCarCount] <= ItemData.Instance.maxFactor.AICount[GarbageCarCount])
+        if (GameManager.Instance.money >= ItemData.Instance.fieldPrice.AICount[GarbageCarCount] && ItemData.Instance.factor.AICount[GarbageCarCount] <= ItemData.Instance.maxFactor.AICountTemp)
         {
             MoneySystem.Instance.MoneyTextRevork(ItemData.Instance.fieldPrice.AICount[GarbageCarCount] * -1);
-            ItemData.Instance.factor.AICount[GarbageCarCount]++;
             ItemData.Instance.SetAICount(GarbageCarCount);
-            AICountText.text = ItemData.Instance.fieldPrice.AICount[GarbageCarCount].ToString();
+            print(1);
 
             if (ItemData.Instance.factor.AICount[GarbageCarCount] == 1)
                 ItemData.Instance.factor.AIStackCount[GarbageCarCount]++;
-            AIManager.Instance.stackerInGame[GarbageCarCount].gameObjectStacker[ItemData.Instance.field.AICount[GarbageCarCount]].SetActive(true);
+
             AIManager.Instance.stackerInGame[GarbageCarCount].boolStacker.Add(true);
-            StartCoroutine(AIManager.Instance.stackerInGame[GarbageCarCount].gameObjectStacker[ItemData.Instance.field.AICount[GarbageCarCount]].GetComponent<AIStackAndDrop>().WalkAI(AIManager.Instance.stackerInGame[GarbageCarCount].stackOutPlace));
+            AIManager.Instance.stackerInGame[GarbageCarCount].gameObjectStacker[ItemData.Instance.field.AICount[GarbageCarCount] - 1].SetActive(true);
+            StartCoroutine(AIManager.Instance.stackerInGame[GarbageCarCount].gameObjectStacker[ItemData.Instance.field.AICount[GarbageCarCount] - 1].GetComponent<AIStackAndDrop>().WalkAI(AIManager.Instance.stackerInGame[GarbageCarCount].stackOutPlace));
         }
     }
 
@@ -190,9 +178,7 @@ public class Buttons : MonoSingleton<Buttons>
         if (GameManager.Instance.money >= ItemData.Instance.fieldPrice.garbageCar && ItemData.Instance.factor.garbageCar <= ItemData.Instance.maxFactor.garbageCar)
         {
             MoneySystem.Instance.MoneyTextRevork(ItemData.Instance.fieldPrice.garbageCar * -1);
-            ItemData.Instance.factor.garbageCar++;
             ItemData.Instance.SetGarbageCar();
-            contractCountText.text = ItemData.Instance.fieldPrice.garbageCar.ToString();
 
             ContractSystem.Contract contract = new ContractSystem.Contract();
             ContractSystem.Instance.FocusContract.Contracts.Add(contract);
@@ -205,9 +191,7 @@ public class Buttons : MonoSingleton<Buttons>
         if (GameManager.Instance.money >= ItemData.Instance.fieldPrice.playerStackCount && ItemData.Instance.factor.playerStackCount <= ItemData.Instance.maxFactor.playerStackCount)
         {
             MoneySystem.Instance.MoneyTextRevork(ItemData.Instance.fieldPrice.playerStackCount * -1);
-            ItemData.Instance.factor.playerStackCount++;
             ItemData.Instance.SetPlayerStackCount();
-            stackCountText.text = ItemData.Instance.fieldPrice.playerStackCount.ToString();
         }
     }
 
@@ -216,11 +200,10 @@ public class Buttons : MonoSingleton<Buttons>
         if (GameManager.Instance.money >= ItemData.Instance.fieldPrice.dirtyGarbage && ItemData.Instance.factor.dirtyGarbage <= ItemData.Instance.maxFactor.dirtyGarbage)
         {
             MoneySystem.Instance.MoneyTextRevork(ItemData.Instance.fieldPrice.dirtyGarbage * -1);
-            ItemData.Instance.factor.dirtyGarbage++;
             ItemData.Instance.SetDirtyGarbage();
-            dirtyThrashCountText.text = ItemData.Instance.fieldPrice.dirtyGarbage.ToString();
 
             UpgradeManager.Instance._upgradeItem[GarbageSystem.Instance.garbagePlaceUSCount]._items[ItemData.Instance.factor.dirtyGarbage - 1].SetActive(true);
+            StartCoroutine(UpgradeManager.Instance._upgradeItem[GarbageSystem.Instance.garbagePlaceUSCount]._items[ItemData.Instance.factor.dirtyGarbage - 1].GetComponent<FirstSpawn>().ItemSpawn());
         }
     }
 }

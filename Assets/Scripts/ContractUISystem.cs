@@ -90,7 +90,7 @@ public class ContractUISystem : MonoSingleton<ContractUISystem>
         Buttons.Instance.newContractSelectGame.SetActive(true);
         for (int i = 0; i < contractLimitCount; i++)
         {
-            contract[i] = ContractSystem.Instance.NewContractForUI(ContractSystem.Instance.levelMod, ContractSystem.Instance.maxItemCount, ContractSystem.Instance.maxitemTypeCount, ContractSystem.Instance.contractBudge);
+            contract[i] = ContractSystem.Instance.NewContractForUI(ContractSystem.Instance.levelMod, ContractSystem.Instance.maxItemCount, ItemData.Instance.field.dirtyGarbage, ContractSystem.Instance.contractBudge);
             PosNewContractButton[i].gameObject.SetActive(true);
         }
     }

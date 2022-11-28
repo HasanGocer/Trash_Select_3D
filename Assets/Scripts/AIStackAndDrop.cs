@@ -112,16 +112,12 @@ public class AIStackAndDrop : MonoBehaviour
         List<bool> globalBool = new List<bool>();
         for (int i1 = 0; i1 < ContractSystem.Instance.FocusContract.Contracts[_AIStackerContractCount].objectTypeCount.Count; i1++)
         {
-            print(1);
             globalBool.Add(false);
-            print(2);
             for (int i2 = 0; i2 < ContractSystem.Instance.FocusContract.Contracts[_AIStackerContractCount].objectCount[i1]; i2++)
             {
-                print(3);
                 int contractCount = ContractSystem.Instance.FocusContract.Contracts[_AIStackerContractCount].objectCount[i1];
                 for (int i3 = 0; i3 < _stackersStack.Count; i3++)
                 {
-                    print(4);
                     if (_stackerStackCount[i3] == ContractSystem.Instance.FocusContract.Contracts[_AIStackerContractCount].objectTypeCount[i1])
                     {
                         contractCount--;

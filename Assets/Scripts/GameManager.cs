@@ -33,7 +33,7 @@ public class GameManager : MonoSingleton<GameManager>
             PlayerPrefs.SetInt("money", 100);
             money = PlayerPrefs.GetInt("money");
         }
-        MoneySystem.Instance.MoneyTextRevork(0);
+        MoneySystem.Instance.MoneyTextRevork(10000);
 
         if (PlayerPrefs.HasKey("level"))
         {
@@ -77,12 +77,9 @@ public class GameManager : MonoSingleton<GameManager>
                 ContractSystem.Contract contract = new ContractSystem.Contract();
                 ContractSystem.Instance.FocusContract.Contracts.Add(contract);
             }
+            ItemData.Instance.fieldPrice.AICount[0] = ItemData.Instance.fieldPrice.AICountTemp;
+            ItemData.Instance.fieldPrice.AIStackCount[0] = ItemData.Instance.fieldPrice.AIStackCountTemp;
 
-            ItemData.Instance.factor.AICount = new int[AIManager.Instance.maxStackerTypeCount];
-            ItemData.Instance.factor.AIStackCount = new int[AIManager.Instance.maxStackerTypeCount];
-
-            ItemData.Instance.factor.AICount[0] = 1;
-            ItemData.Instance.factor.AIStackCount[0] = 1;
 
             ContractPlacementWrite(ContractSystem.Instance.FocusContract);
             FactorPlacementWrite(ItemData.Instance.factor);

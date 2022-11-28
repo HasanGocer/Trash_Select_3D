@@ -22,14 +22,14 @@ public class ContractSystem : MonoSingleton<ContractSystem>
     }
     public ContractArray FocusContract;
 
-    public int levelMod, maxItemCount, maxitemTypeCount, contractBudge;
+    public int levelMod, maxItemCount, contractBudge;
     public int waitBarUSCount;
 
     public void ContractStart()
     {
         FocusContract.contractLimit = ItemData.Instance.field.garbageCar;
         ContractUISystem.Instance.contract = new Contract[FocusContract.contractLimit];
-        Contract contract = NewContractForUI(levelMod, maxItemCount, maxitemTypeCount, contractBudge);
+        Contract contract = NewContractForUI(levelMod, maxItemCount, ItemData.Instance.field.dirtyGarbage, contractBudge);
         for (int i = 0; i < FocusContract.contractLimit; i++)
         {
             ContractUISystem.Instance.contract[i] = contract;

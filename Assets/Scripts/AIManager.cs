@@ -25,7 +25,7 @@ public class AIManager : MonoSingleton<AIManager>
             for (int i2 = 0; i2 < ItemData.Instance.field.AICount[i1]; i2++)
             {
                 stackerInGame[i1].boolStacker.Add(true);
-                stackerInGame[i1].boolStacker[i2] = true;
+                stackerInGame[i1].gameObjectStacker[i2].SetActive(true);
                 StartCoroutine(stackerInGame[i1].gameObjectStacker[i2].GetComponent<AIStackAndDrop>().WalkAI(stackerInGame[i1].stackOutPlace));
             }
         }
