@@ -45,6 +45,15 @@ public class GameManager : MonoSingleton<GameManager>
             level = PlayerPrefs.GetInt("level");
         }
 
+        if (PlayerPrefs.HasKey("XP"))
+        {
+            LevelSystem.Instance.XP = PlayerPrefs.GetInt("XP");
+        }
+        else
+        {
+            PlayerPrefs.SetInt("XP", LevelSystem.Instance.XP);
+        }
+
         if (PlayerPrefs.HasKey("vibration"))
         {
             vibration = PlayerPrefs.GetInt("vibration");
@@ -122,6 +131,16 @@ public class GameManager : MonoSingleton<GameManager>
     {
         PlayerPrefs.SetInt("money", money);
         Buttons.Instance.moneyText.text = money.ToString();
+    }
+
+    public void SetLevel()
+    {
+        PlayerPrefs.SetInt("level", level);
+    }
+
+    public void SetXP()
+    {
+        PlayerPrefs.SetInt("XP", LevelSystem.Instance.XP);
     }
 
     public void SetSound()

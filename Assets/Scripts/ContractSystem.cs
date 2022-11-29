@@ -10,6 +10,7 @@ public class ContractSystem : MonoSingleton<ContractSystem>
         public List<int> objectTypeCount = new List<int>();
         public List<int> objectCount = new List<int>();
         public int money = 0;
+        public int XPPlus = 0;
         public bool contractBool = false;
         public bool contractBuy = false;
     }
@@ -22,14 +23,12 @@ public class ContractSystem : MonoSingleton<ContractSystem>
     }
     public ContractArray FocusContract;
 
-    public int levelMod, maxItemCount, contractBudge;
-    public int waitBarUSCount;
 
     public void ContractStart()
     {
         FocusContract.contractLimit = ItemData.Instance.field.garbageCar;
         ContractUISystem.Instance.contract = new Contract[FocusContract.contractLimit];
-        Contract contract = NewContractForUI(levelMod, maxItemCount, ItemData.Instance.field.dirtyGarbage, contractBudge);
+        Contract contract = NewContractForUI(LevelSystem.Instance.levelMod, GameManager.Instance.level * LevelSystem.Instance.generalXPFactor, ItemData.Instance.field.dirtyGarbage);
         for (int i = 0; i < FocusContract.contractLimit; i++)
         {
             ContractUISystem.Instance.contract[i] = contract;
@@ -38,10 +37,11 @@ public class ContractSystem : MonoSingleton<ContractSystem>
         }
     }
 
-    public Contract NewContractForUI(int levelMod, int maxItemCount, int maxitemTypeCount, int contractBudget)
+    public Contract NewContractForUI(int levelMod, int maxItemCount, int maxitemTypeCount)
     {
         Contract contract = new Contract();
-        contract.money = contractBudget;
+        contract.money = Random.Range(1, maxitemTypeCount * LevelSystem.Instance.generalMoneyFactor);
+        contract.XPPlus = Random.Range(1, maxitemTypeCount * LevelSystem.Instance.generalXPFactor);
 
         for (int i = 0; i < GameManager.Instance.level / levelMod; i++)
         {
@@ -61,6 +61,7 @@ public class ContractSystem : MonoSingleton<ContractSystem>
         contract.objectCount.Clear();
         contract.objectTypeCount.Clear();
         contract.money = 0;
+        contract.XPPlus = 0;
         //yeni kontrat UI
         ObjectCountUpdate();
     }
@@ -200,9 +201,11 @@ public class ContractSystem : MonoSingleton<ContractSystem>
     public void ContractCompleted(Contract contract, int contractCount)
     {
         MoneySystem.Instance.MoneyTextRevork(contract.money);
+        LevelSystem.Instance.BarLerp(contract.XPPlus);
         contract.objectCount.Clear();
         contract.objectTypeCount.Clear();
         contract.money = 0;
+        contract.XPPlus = 0;
         FocusContract.Contracts[contractCount].contractBool = false;
         StartCoroutine(UpgradeManager.Instance._upgradeItem[GarbageSystem.Instance.garbageCarUSCount]._items[contractCount].GetComponent<GarbageCarMove>().GarbageCarMoveFunc());
         ObjectCountUpdate();

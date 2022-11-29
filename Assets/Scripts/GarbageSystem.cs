@@ -7,6 +7,7 @@ public class GarbageSystem : MonoSingleton<GarbageSystem>
     public int garbagePlaceUSCount;
     public int garbageCarUSCount;
     public int ContractGarbageUSCount;
+    public int waitBarUSCount;
 
     public void GarbagePlacement()
     {

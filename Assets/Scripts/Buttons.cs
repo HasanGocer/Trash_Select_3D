@@ -79,12 +79,11 @@ public class Buttons : MonoSingleton<Buttons>
     private void StartButton()
     {
         _startButton.gameObject.SetActive(false);
+        LevelSystem.Instance.LevelStart();
         GarbageSystem.Instance.GarbagePlacement();
         ContractSystem.Instance.ObjectCountUpdate();
         for (int i = 0; i < ContractSystem.Instance.FocusContract.Contracts.Count; i++)
-        {
-            ContractSystem.Instance.WaitSystemCountPlacement(ContractSystem.Instance.waitBarUSCount, i);
-        }
+            ContractSystem.Instance.WaitSystemCountPlacement(GarbageSystem.Instance.waitBarUSCount, i);
         StartCoroutine(RocketManager.Instance.RocketStart());
         UpgradeManager.Instance.UpgradeSystemStart();
         ContractUISystem.Instance.contract = new ContractSystem.Contract[ContractUISystem.Instance.contractLimitCount];

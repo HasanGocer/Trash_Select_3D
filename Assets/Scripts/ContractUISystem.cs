@@ -71,7 +71,7 @@ public class ContractUISystem : MonoSingleton<ContractUISystem>
         ContractSystem.Instance.FocusContract.Contracts[contractCount].contractBool = true;
         ContractSystem.Instance.FocusContract.Contracts[contractCount].contractBuy = true;
         ContractSystem.Instance.ObjectCountUpdate();
-        ContractSystem.Instance.WaitSystemCountPlacement(ContractSystem.Instance.waitBarUSCount, contractCount);
+        ContractSystem.Instance.WaitSystemCountPlacement(GarbageSystem.Instance.waitBarUSCount, contractCount);
         GameManager.Instance.ContractPlacementWrite(ContractSystem.Instance.FocusContract);
     }
 
@@ -90,7 +90,7 @@ public class ContractUISystem : MonoSingleton<ContractUISystem>
         Buttons.Instance.newContractSelectGame.SetActive(true);
         for (int i = 0; i < contractLimitCount; i++)
         {
-            contract[i] = ContractSystem.Instance.NewContractForUI(ContractSystem.Instance.levelMod, ContractSystem.Instance.maxItemCount, ItemData.Instance.field.dirtyGarbage, ContractSystem.Instance.contractBudge);
+            contract[i] = ContractSystem.Instance.NewContractForUI(LevelSystem.Instance.levelMod, GameManager.Instance.level * LevelSystem.Instance.generalXPFactor, ItemData.Instance.field.dirtyGarbage);
             PosNewContractButton[i].gameObject.SetActive(true);
         }
     }
