@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ContractSystem : MonoSingleton<ContractSystem>
 {
+
+    //contract cancel yok kullanlýmýyor
     [System.Serializable]
     public class Contract
     {
@@ -36,7 +38,7 @@ public class ContractSystem : MonoSingleton<ContractSystem>
             ContractUISystem.Instance.contract[i].contractBuy = true;
         }
     }
-
+    //True
     public Contract NewContractForUI(int levelMod, int maxItemCount, int maxitemTypeCount)
     {
         Contract contract = new Contract();
@@ -55,6 +57,7 @@ public class ContractSystem : MonoSingleton<ContractSystem>
         return contract;
     }
 
+    //True
     public void ContractCanceled(Contract contract)
     {
         MoneySystem.Instance.MoneyTextRevork(contract.money * -1);
@@ -109,6 +112,7 @@ public class ContractSystem : MonoSingleton<ContractSystem>
         RocketManager.Instance.openObjectCount.Clear();
         RocketManager.Instance.openObjectTypeBool.Clear();
 
+        
         for (int i1 = 0; i1 < FocusContract.Contracts.Count; i1++)
         {
             if (FocusContract.Contracts[i1].contractBool)
@@ -143,6 +147,7 @@ public class ContractSystem : MonoSingleton<ContractSystem>
             RocketManager.Instance.openObjectCount.Add(objectCount);
             RocketManager.Instance.openObjectTypeBool.Add(false);
         }
+        RocketManager.Instance.openObjectTypeCount.Sort()
         DirtyManager.Instance.AllListDelete();
         DirtyManager.Instance.NewDirtyListPlacement();
     }
@@ -151,21 +156,22 @@ public class ContractSystem : MonoSingleton<ContractSystem>
     {
         GameObject obj = UpgradeManager.Instance.ItemSelect(waitBar, contractCount);
         WaitSystem waitSystem = obj.GetComponent<WaitSystem>();
-        waitSystem.placeCount = new int[FocusContract.Contracts[contractCount].objectTypeCount.Count];
-
-        for (int i = 0; i < FocusContract.Contracts[contractCount].objectTypeCount.Count; i++)
+        Contract contract = CallContract(contractCount);
+        waitSystem.placeCount = new int[contract.objectTypeCount.Count];
+        for (int i = 0; i < contract.objectTypeCount.Count; i++)
         {
-            waitSystem.placeCount[i] = FocusContract.Contracts[contractCount].objectTypeCount[i];
+            waitSystem.placeCount[i] = contract.objectTypeCount[i];
         }
     }
 
     public void ContractDownÝtem(int contractCount, int objectTypeCount, int forCount, bool isStack)
     {
-        for (int i = 0; i < FocusContract.Contracts[contractCount].objectTypeCount.Count; i++)
+        Contract contract = CallContract(contractCount);
+        for (int i = 0; i < contract.objectTypeCount.Count; i++)
         {
-            if (FocusContract.Contracts[contractCount].objectTypeCount[i] == objectTypeCount)
+            if (contract.objectTypeCount[i] == objectTypeCount)
             {
-                FocusContract.Contracts[contractCount].objectCount[i]--;
+                contract.objectCount[i]--;
                 DeleteFirstPlaceList(contractCount, objectTypeCount);
                 if (isStack)
                 {
@@ -173,21 +179,25 @@ public class ContractSystem : MonoSingleton<ContractSystem>
                     StackSystem.Instance.Objects.RemoveAt(forCount);
                 }
 
-                if (FocusContract.Contracts[contractCount].objectCount[i] <= 0)
+                if (contract.objectCount[i] <= 0)
                 {
 
-                    FocusContract.Contracts[contractCount].objectTypeCount.RemoveAt(i);
-                    FocusContract.Contracts[contractCount].objectCount.RemoveAt(i);
+                    contract.objectTypeCount.RemoveAt(i);
+                    contract.objectCount.RemoveAt(i);
                 }
 
-                if (FocusContract.Contracts[contractCount].objectTypeCount.Count == 0)
+                if (contract.objectTypeCount.Count == 0)
                 {
-                    ContractCompleted(FocusContract.Contracts[contractCount], i);
+                    ContractCompleted(contract, i);
                 }
                 ObjectCountUpdate();
-                GameManager.Instance.ContractPlacementWrite(ContractSystem.Instance.FocusContract);
+                GameManager.Instance.ContractPlacementWrite(FocusContract);
             }
         }
+    }
+    private Contract CallContract(int contractCount)
+    {
+        return FocusContract.Contracts[contractCount];
     }
 
     public void DeleteFirstPlaceList(int contractCount, int objectTypeCount)

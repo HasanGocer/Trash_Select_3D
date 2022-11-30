@@ -7,7 +7,7 @@ public class LevelSystem : MonoSingleton<LevelSystem>
 {
     [SerializeField] private float _levelConstant, _levelConstantPlus;
     [SerializeField] private int _levelStandart, _maxXP;
-    [SerializeField] private Image barImage;
+    [SerializeField] private Image _barImage;
     public int levelMod;
 
     public int generalMoneyFactor, generalXPFactor;
@@ -27,7 +27,7 @@ public class LevelSystem : MonoSingleton<LevelSystem>
             }
             else
             {
-                barImage.fillAmount = (float)XP / (float)_maxXP;
+                _barImage.fillAmount = (float)XP / (float)_maxXP;
                 break;
             }
         }
@@ -38,7 +38,7 @@ public class LevelSystem : MonoSingleton<LevelSystem>
         for (int i = 0; i < XPPlus; i++)
         {
             XP++;
-            barImage.fillAmount = (float)XP / (float)_maxXP;
+            _barImage.fillAmount = (float)XP / (float)_maxXP;
             LevelUpgradeCheck();
             GameManager.Instance.SetXP();
         }

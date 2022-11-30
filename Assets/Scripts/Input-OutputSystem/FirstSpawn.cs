@@ -5,7 +5,7 @@ using DG.Tweening;
 
 public class FirstSpawn : MonoBehaviour
 {
-    [SerializeField] private int _dirtyThrashItemID;
+    public int dirtyThrashItemID;
     [SerializeField] private float _spawnDistance;
     [SerializeField] private int _objectTransferTime, _OPDirtyThrashCount;
 
@@ -21,7 +21,7 @@ public class FirstSpawn : MonoBehaviour
             if (GameManager.Instance.inStart)
                 for (int i1 = 0; i1 < RocketManager.Instance.openObjectTypeCount.Count; i1++)
                 {
-                    if (_dirtyThrashItemID == RocketManager.Instance.openObjectTypeCount[i1] && Objects.Count < RocketManager.Instance.openObjectCount[i1])
+                    if (dirtyThrashItemID == RocketManager.Instance.openObjectTypeCount[i1] && Objects.Count < RocketManager.Instance.openObjectCount[i1])
                     {
                         for (int i2 = 0; i2 < RocketManager.Instance.openObjectCount[i1]; i2++)
                         {
@@ -31,11 +31,11 @@ public class FirstSpawn : MonoBehaviour
                             Vector3 pos = new Vector3(_spawnPosition.transform.position.x,
                                                     _spawnPosition.transform.position.y + (Objects.Count * _spawnDistance),
                                                     _spawnPosition.transform.position.z);
-                            obj.transform.GetChild(_dirtyThrashItemID).gameObject.SetActive(true);
+                            obj.transform.GetChild(dirtyThrashItemID).gameObject.SetActive(true);
                             obj.transform.DOMove(pos, _objectTransferTime);
                             Objects.Add(obj);
                             ObjectsBool.Add(true);
-                            obj.GetComponent<ObjectTouchPlane>().objectCount = _dirtyThrashItemID;
+                            obj.GetComponent<ObjectTouchPlane>().objectCount = dirtyThrashItemID;
                             yield return new WaitForSeconds(_objectTransferTime);
                             obj.GetComponent<ObjectTouchPlane>().DirtyThrashFirstSpawn();
                         }

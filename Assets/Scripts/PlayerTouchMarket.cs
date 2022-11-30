@@ -10,58 +10,70 @@ public class PlayerTouchMarket : MonoBehaviour
     {
         if (other.CompareTag("GarbageCar"))
         {
+            Buttons buttons = Buttons.Instance;
+            ItemData itemData = ItemData.Instance;
+
             gabageCarSidePanel.SetActive(true);
-            Buttons.Instance.GarbageCarCount = other.GetComponent<ColliderManager>().ContractCount;
-            Buttons.Instance.AICountText.text = ItemData.Instance.fieldPrice.AICount[Buttons.Instance.GarbageCarCount].ToString();
-            Buttons.Instance.AICountButton.enabled = true;
-            if (ItemData.Instance.factor.AICount[Buttons.Instance.GarbageCarCount] == ItemData.Instance.maxFactor.AICountTemp)
+            buttons.GarbageCarCount = other.GetComponent<ColliderManager>().ContractCount;
+            buttons.AICountText.text = itemData.fieldPrice.AICount[buttons.GarbageCarCount].ToString();
+            buttons.AICountButton.enabled = true;
+            if (itemData.factor.AICount[buttons.GarbageCarCount] == itemData.maxFactor.AICountTemp)
             {
-                Buttons.Instance.AICountText.text = "Full";
-                Buttons.Instance.AICountButton.enabled = false;
+                buttons.AICountText.text = "Full";
+                buttons.AICountButton.enabled = false;
             }
-            Buttons.Instance.AIStackCountText.text = ItemData.Instance.fieldPrice.AIStackCount[Buttons.Instance.GarbageCarCount].ToString();
-            Buttons.Instance.AIStackCountButton.enabled = true;
-            if (ItemData.Instance.factor.AIStackCount[Buttons.Instance.GarbageCarCount] == ItemData.Instance.maxFactor.AIStackCountTemp)
+            buttons.AIStackCountText.text = itemData.fieldPrice.AIStackCount[buttons.GarbageCarCount].ToString();
+            buttons.AIStackCountButton.enabled = true;
+            if (itemData.factor.AIStackCount[buttons.GarbageCarCount] == itemData.maxFactor.AIStackCountTemp)
             {
-                Buttons.Instance.AIStackCountText.text = "Full";
-                Buttons.Instance.AIStackCountButton.enabled = false;
+                buttons.AIStackCountText.text = "Full";
+                buttons.AIStackCountButton.enabled = false;
             }
-            Buttons.Instance.contractCountText.text = ItemData.Instance.fieldPrice.garbageCar.ToString();
-            Buttons.Instance.contractCountButton.enabled = true;
-            if (ItemData.Instance.factor.garbageCar == ItemData.Instance.maxFactor.garbageCar)
+            buttons.contractCountText.text = itemData.fieldPrice.garbageCar.ToString();
+            buttons.contractCountButton.enabled = true;
+            if (itemData.factor.garbageCar == itemData.maxFactor.garbageCar)
             {
-                Buttons.Instance.contractCountText.text = "Full";
-                Buttons.Instance.contractCountButton.enabled = false;
+                buttons.contractCountText.text = "Full";
+                buttons.contractCountButton.enabled = false;
             }
         }
         else if (other.CompareTag("Mid"))
         {
+            Buttons buttons = Buttons.Instance;
+            ItemData itemData = ItemData.Instance;
+
             midSidePanel.SetActive(true);
-            Buttons.Instance.stackCountText.text = ItemData.Instance.fieldPrice.playerStackCount.ToString();
-            Buttons.Instance.stackCountButton.enabled = true;
-            if (ItemData.Instance.factor.playerStackCount == ItemData.Instance.maxFactor.playerStackCount)
+            buttons.stackCountText.text = itemData.fieldPrice.playerStackCount.ToString();
+            buttons.stackCountButton.enabled = true;
+            if (itemData.factor.playerStackCount == itemData.maxFactor.playerStackCount)
             {
-                Buttons.Instance.stackCountText.text = "Full";
-                Buttons.Instance.stackCountButton.enabled = false;
+                buttons.stackCountText.text = "Full";
+                buttons.stackCountButton.enabled = false;
             }
         }
         else if (other.CompareTag("Dirty"))
         {
+            Buttons buttons = Buttons.Instance;
+            ItemData itemData = ItemData.Instance;
+
             dirtySidePanel.SetActive(true);
-            Buttons.Instance.dirtyThrashCountText.text = ItemData.Instance.fieldPrice.dirtyGarbage.ToString();
-            Buttons.Instance.dirtyThrashCountButton.enabled = true;
-            if (ItemData.Instance.factor.AIStackCount[Buttons.Instance.GarbageCarCount] == ItemData.Instance.maxFactor.AIStackCountTemp)
+            buttons.dirtyThrashCountText.text = itemData.fieldPrice.dirtyGarbage.ToString();
+            buttons.dirtyThrashCountButton.enabled = true;
+            if (itemData.factor.AIStackCount[buttons.GarbageCarCount] == itemData.maxFactor.AIStackCountTemp)
             {
-                Buttons.Instance.dirtyThrashCountText.text = "Full";
-                Buttons.Instance.dirtyThrashCountButton.enabled = false;
+                buttons.dirtyThrashCountText.text = "Full";
+                buttons.dirtyThrashCountButton.enabled = false;
             }
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        gabageCarSidePanel.SetActive(false);
-        midSidePanel.SetActive(false);
-        dirtySidePanel.SetActive(false);
+        if (other.CompareTag("GarbageCar") || other.CompareTag("Mid") || other.CompareTag("Dirty"))
+        {
+            gabageCarSidePanel.SetActive(false);
+            dirtySidePanel.SetActive(false);
+            midSidePanel.SetActive(false);
+        }
     }
 }

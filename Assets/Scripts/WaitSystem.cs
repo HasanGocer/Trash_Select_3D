@@ -20,7 +20,7 @@ public class WaitSystem : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             inPlace = true;
-            StartCoroutine(bar(isClear));
+            StartCoroutine(TempBar(isClear, _barImage, _timerSpeed));
         }
     }
 
@@ -30,8 +30,32 @@ public class WaitSystem : MonoBehaviour
             inPlace = false;
     }
 
+    IEnumerator TempBar(bool isClear, Image barImage, float timerSpeed)
+    {
+        float timer = 0;
+        while (inPlace)
+        {
+            timer += Time.deltaTime * timerSpeed;
+            barImage.fillAmount = Mathf.Lerp(1, 0, timer);
+            yield return new WaitForEndOfFrame();
 
-    public IEnumerator bar(bool isClear)
+            if (barImage.fillAmount == 0)
+            {
+                if (isClear)
+                    StartCoroutine(StackSystem.Instance.TemplateStackDrop(this, objectPos, objectPos.transform.position, contractCount, StackSystem.Instance.dropMoveTime, StackSystem.Instance.stackDistance, StackSystem.Instance.ObjectsCount, StackSystem.Instance.Objects));
+                else
+                    StartCoroutine(StackSystem.Instance.TemplateDirtyTrashDrop(this, objectPos, StackSystem.Instance.stackDistance, objectPos.transform.position, StackSystem.Instance.dropMoveTime, StackSystem.Instance.Objects, StackSystem.Instance.ObjectsCount, StackSystem.Instance.ObjectsBool));
+
+                barImage.fillAmount = 1;
+                break;
+            }
+        }
+        barImage.fillAmount = 1;
+        yield return null;
+    }
+
+    //kullanýlmýyor
+    /*public IEnumerator bar(bool isClear)
     {
         float timer = 0;
 
@@ -44,14 +68,14 @@ public class WaitSystem : MonoBehaviour
             {
                 inPlace = false;
                 if (isClear)
-                    StartCoroutine(StackSystem.Instance.StackDrop(this, objectPos, objectPos.transform.position, contractCount));
+                    StartCoroutine(StackSystem.Instance.TemplateStackDrop(this, objectPos, objectPos.transform.position, contractCount, StackSystem.Instance.dropMoveTime, StackSystem.Instance.stackDistance, StackSystem.Instance.ObjectsCount, StackSystem.Instance.Objects));
                 else
-                    StartCoroutine(StackSystem.Instance.DirtyThrashDropObject(objectPos, objectPos.transform.position));
+                    StartCoroutine(StackSystem.Instance.TemplateDirtyTrashDrop(this,objectPos, StackSystem.Instance.stackDistance, objectPos.transform.position, StackSystem.Instance.dropMoveTime, StackSystem.Instance.Objects, StackSystem.Instance.ObjectsCount, StackSystem.Instance.ObjectsBool));
 
                 _barImage.fillAmount = 1;
                 break;
             }
         }
         _barImage.fillAmount = 1;
-    }
+    }*/
 }
