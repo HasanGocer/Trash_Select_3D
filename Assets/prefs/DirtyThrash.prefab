@@ -54,6 +54,7 @@ MonoBehaviour:
   _objectOfCircle: {fileID: 0}
   _rb: {fileID: 6323490857961647584}
   _boxCollider: {fileID: 5990387323949364401}
+  _OPDirtyTrashCount: 1
 --- !u!54 &6323490857961647584
 Rigidbody:
   m_ObjectHideFlags: 0

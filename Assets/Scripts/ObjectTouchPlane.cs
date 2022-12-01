@@ -12,6 +12,7 @@ public class ObjectTouchPlane : MonoBehaviour
     [SerializeField] private GameObject _objectOfCircle;
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private BoxCollider _boxCollider;
+    [SerializeField] private int _OPDirtyTrashCount;
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Plane") && isClear)
@@ -48,5 +49,11 @@ public class ObjectTouchPlane : MonoBehaviour
     {
         _rb.isKinematic = true;
         _boxCollider.enabled = false;
+    }
+
+    public void DirtyTrashAddedOPFunc()
+    {
+        transform.GetChild(objectCount).gameObject.SetActive(false);
+        ObjectPool.Instance.AddObject(_OPDirtyTrashCount, this.gameObject);
     }
 }

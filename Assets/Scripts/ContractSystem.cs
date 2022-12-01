@@ -147,7 +147,6 @@ public class ContractSystem : MonoSingleton<ContractSystem>
             RocketManager.Instance.openObjectCount.Add(objectCount);
             RocketManager.Instance.openObjectTypeBool.Add(false);
         }
-        RocketManager.Instance.openObjectTypeCount.Sort()
         DirtyManager.Instance.AllListDelete();
         DirtyManager.Instance.NewDirtyListPlacement();
     }

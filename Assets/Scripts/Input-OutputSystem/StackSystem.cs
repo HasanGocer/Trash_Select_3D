@@ -41,7 +41,7 @@ public class StackSystem : MonoSingleton<StackSystem>
     IEnumerator InputStackAdd(FirstSpawn firstSpawn, Vector3 stackPos, GameObject stackParent, float stackMoveTime, int objectCount, bool isDirty, List<GameObject> Objects, List<int> ObjectsCount, List<bool> ObjectsBool)
     {
         for (int i = 0; i < firstSpawn.ObjectsBool.Count; i++)
-            if (Objects.Count < ItemData.Instance.field.playerStackCount && firstSpawn.ObjectsBool[i])
+            if (Objects.Count < ItemData.Instance.field.playerStackCount && firstSpawn.ObjectsBool[i] && firstSpawn.isStay)
             {
                 StackAddPrivateFunc(firstSpawn.Objects[i], true);
                 StartCoroutine(TemplateStackAdd(firstSpawn.Objects[i], stackPos, stackParent, stackMoveTime, objectCount, isDirty, Objects, ObjectsCount, ObjectsBool));
@@ -83,11 +83,11 @@ public class StackSystem : MonoSingleton<StackSystem>
         int misObject = 0, limit = ObjectsCount.Count;
         for (int i1 = limit - 1; i1 >= 0; i1--)
         {
+            if (!waitSystem.inPlace)
+                break;
             GameObject obj = Objects[i1];
             if (ObjectControlFunc(obj))
             {
-                if (!waitSystem.inPlace)
-                    break;
                 misObject++;
                 obj.transform.SetParent(dropParent.transform);
                 obj.transform.DOLocalMove(dropPos, dropMoveTime);
@@ -107,6 +107,7 @@ public class StackSystem : MonoSingleton<StackSystem>
     private void ObjectRemoveControlFunc(int objCount, int forCount, List<GameObject> Objects, List<int> ObjectsCount, List<bool> ObjectsBool)
     {
         DirtyManager.Instance.ListPlacement(objCount);
+        Objects[forCount].GetComponent<ObjectTouchPlane>().DirtyTrashAddedOPFunc();
         Objects.RemoveAt(forCount);
         ObjectsCount.RemoveAt(forCount);
         ObjectsBool.RemoveAt(forCount);

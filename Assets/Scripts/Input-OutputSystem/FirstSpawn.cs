@@ -11,8 +11,19 @@ public class FirstSpawn : MonoBehaviour
 
     [SerializeField] private GameObject _spawnPosition;
 
+    public bool isStay;
+
     public List<GameObject> Objects = new List<GameObject>();
     public List<bool> ObjectsBool = new List<bool>();
+
+    private void OnTriggerEnter(Collider other)
+    {
+        isStay = true;   
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        isStay = false;
+    }
 
     public IEnumerator ItemSpawn()
     {
