@@ -43,24 +43,32 @@ public class StackSystem : MonoSingleton<StackSystem>
         for (int i = 0; i < firstSpawn.ObjectsBool.Count; i++)
             if (Objects.Count < ItemData.Instance.field.playerStackCount && firstSpawn.ObjectsBool[i] && firstSpawn.isStay)
             {
+                GameManager.Instance.inTransfer = true;
+                GetComponent<Rigidbody>().velocity = Vector3.zero;
                 StackAddPrivateFunc(firstSpawn.Objects[i], true);
                 StartCoroutine(TemplateStackAdd(firstSpawn.Objects[i], stackPos, stackParent, stackMoveTime, objectCount, isDirty, Objects, ObjectsCount, ObjectsBool));
                 firstSpawn.ObjectsBool[i] = false;
                 yield return new WaitForSeconds(stackMoveTime);
+                GameManager.Instance.inTransfer = false;
             }
         yield return null;
     }
 
     IEnumerator TemplateStackAdd(GameObject obj, Vector3 stackPos, GameObject stackParent, float stackMoveTime, int objectCount, bool isDirty, List<GameObject> Objects, List<int> ObjectsCount, List<bool> ObjectsBool)
     {
-        Vector3 pos = new Vector3(stackPos.x, stackPos.y + stackDistance * Objects.Count, stackPos.z);
+        GameManager.Instance.inTransfer = true;
+        GetComponent<Rigidbody>().velocity = Vector3.zero;
         Objects.Add(obj);
         ObjectsCount.Add(objectCount);
         ObjectsBool.Add(isDirty);
+        Vector3 pos = new Vector3(stackPos.x, stackPos.y + stackDistance * Objects.Count, stackPos.z);
+        obj.GetComponent<BoxMove>().isTransfer = true;
         obj.transform.transform.DOLocalMove(pos, stackMoveTime);
         yield return new WaitForSeconds(stackMoveTime);
         obj.transform.SetParent(stackParent.transform);
+        obj.GetComponent<BoxMove>().isTransfer = false;
         StartCoroutine(DoShaker(stackShakeTime, Objects));
+        GameManager.Instance.inTransfer = false;
     }
 
     private void StackAddPrivateFunc(GameObject obj, bool isDirty)

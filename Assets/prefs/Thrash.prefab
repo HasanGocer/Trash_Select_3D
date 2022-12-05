@@ -253,6 +253,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8277364546913418379}
   - component: {fileID: 4107269582712874576}
+  - component: {fileID: 8821884591430810086}
   - component: {fileID: 272880845084802899}
   - component: {fileID: 516466209763583490}
   m_Layer: 0
@@ -298,6 +299,21 @@ MonoBehaviour:
   _objectOfCircle: {fileID: 8117316471750582209}
   _rb: {fileID: 272880845084802899}
   _boxCollider: {fileID: 516466209763583490}
+  _OPDirtyTrashCount: 0
+--- !u!114 &8821884591430810086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9027098051370951863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f8e05995f2129040b4fe57ab906fbd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isTransfer: 0
+  rb: {fileID: 272880845084802899}
 --- !u!54 &272880845084802899
 Rigidbody:
   m_ObjectHideFlags: 0

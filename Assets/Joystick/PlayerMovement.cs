@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : MonoSingleton<PlayerMovement>
 {
     [SerializeField] private new Rigidbody rigidbody;
     [SerializeField] private FixedJoystick joystick;
@@ -12,15 +12,19 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        Movement();
+        Movement(rigidbody, this.gameObject);
     }
 
-    void Movement()
+    public void Movement(Rigidbody rigidbody, GameObject obj)
     {
-        rigidbody.velocity = new Vector3(joystick.Horizontal * movementSpeed, rigidbody.velocity.y, joystick.Vertical * movementSpeed);
-        if (joystick.Horizontal != 0 || joystick.Vertical != 0)
+        if (!GameManager.Instance.inTransfer)
         {
-            transform.rotation = Quaternion.LookRotation(rigidbody.velocity);
+            rigidbody.velocity = new Vector3(joystick.Horizontal * movementSpeed, rigidbody.velocity.y, joystick.Vertical * movementSpeed);
+            if (joystick.Horizontal != 0 || joystick.Vertical != 0 && !GameManager.Instance.inTransfer)
+            {
+                obj.transform.rotation = Quaternion.LookRotation(rigidbody.velocity);
+            }
         }
+
     }
 }
