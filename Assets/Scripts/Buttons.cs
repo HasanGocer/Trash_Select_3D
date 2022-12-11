@@ -79,6 +79,7 @@ public class Buttons : MonoSingleton<Buttons>
     private void StartButton()
     {
         _startButton.gameObject.SetActive(false);
+        PlayerMovement.Instance.joystick.gameObject.SetActive(true);
         LevelSystem.Instance.LevelStart();
         GarbageSystem.Instance.GarbagePlacement();
         ContractSystem.Instance.ObjectCountUpdate();

@@ -88,6 +88,7 @@ public class StackSystem : MonoSingleton<StackSystem>
 
     public IEnumerator TemplateDirtyTrashDrop(WaitSystem waitSystem, GameObject dropParent, float stackDistance, Vector3 dropPos, float dropMoveTime, List<GameObject> Objects, List<int> ObjectsCount, List<bool> ObjectsBool)
     {
+        print(1);
         int misObject = 0, limit = ObjectsCount.Count;
         for (int i1 = limit - 1; i1 >= 0; i1--)
         {

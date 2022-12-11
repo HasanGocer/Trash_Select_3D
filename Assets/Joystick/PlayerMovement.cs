@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoSingleton<PlayerMovement>
 {
     [SerializeField] private new Rigidbody rigidbody;
-    [SerializeField] private FixedJoystick joystick;
+    public FixedJoystick joystick;
     [SerializeField] private Animator animator;
 
     [SerializeField] private float movementSpeed;
